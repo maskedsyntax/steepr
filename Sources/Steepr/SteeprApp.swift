@@ -30,7 +30,7 @@ struct SteeprApp: App {
         NSApplication.shared.activate(ignoringOtherApps: true)
         
         // Load and set the application icon
-        if let iconImage = NSImage(contentsOfFile: "steepr-logo.jpeg") {
+        if let iconImage = NSImage(contentsOfFile: "steepr-logo.png") {
             // Apply standard macOS rounded corner radius (~22.5% of width)
             let radius = iconImage.size.width * 0.225
             let maskedIcon = iconImage.withRoundedCorners(radius: radius)
