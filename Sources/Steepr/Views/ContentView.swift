@@ -9,8 +9,8 @@ struct ContentView: View {
     @State private var showingSwitchAlert = false
     
     var body: some View {
-        NavigationView {
-            VStack {
+        NavigationSplitView {
+            VStack(spacing: 0) {
                 ProfileListView(selectedProfile: Binding(
                     get: { selectedProfile },
                     set: { newProfile in
@@ -30,15 +30,15 @@ struct ContentView: View {
                 
                 Button(action: { showingAddProfile = true }) {
                     Label("Add Profile", systemImage: "plus.circle")
-                        .frame(maxWidth: .infinity)
+                        .padding(12)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .buttonStyle(.plain)
-                .padding(10)
             }
-            .frame(minWidth: 200)
-            
-            Group {
-                if let profile = selectedProfile {
+            .navigationSplitViewColumnWidth(min: 250, ideal: 280)
+        } detail: {
+            ZStack {
+                if selectedProfile != nil {
                     TimerView(viewModel: sessionViewModel, onDismiss: {
                         sessionViewModel.stop()
                         selectedProfile = nil
@@ -52,11 +52,12 @@ struct ContentView: View {
                             .font(.title2)
                             .foregroundColor(.secondary)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(VisualEffectView(material: .windowBackground, blendingMode: .withinWindow))
         }
-        .frame(minWidth: 700, minHeight: 500)
+        .frame(minWidth: 800, minHeight: 600)
         .alert("Stop current session?", isPresented: $showingSwitchAlert) {
             Button("Stop and Start New", role: .destructive) {
                 selectedProfile = pendingProfile
@@ -74,5 +75,23 @@ struct ContentView: View {
         .sheet(isPresented: $showingAddProfile) {
             ProfileEditView(profile: Profile(name: "", steps: []))
         }
+    }
+}
+
+struct VisualEffectView: NSViewRepresentable {
+    var material: NSVisualEffectView.Material
+    var blendingMode: NSVisualEffectView.BlendingMode
+
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = material
+        view.blendingMode = blendingMode
+        view.state = .active
+        return view
+    }
+
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
+        nsView.material = material
+        nsView.blendingMode = blendingMode
     }
 }

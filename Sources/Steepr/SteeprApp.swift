@@ -17,6 +17,7 @@ struct SteeprApp: App {
                 .environmentObject(profileStore)
         }
         .windowStyle(.hiddenTitleBar)
+        .windowToolbarStyle(.unified(showsTitle: false))
         .commands {
             SidebarCommands()
         }

@@ -7,32 +7,43 @@ struct ProfileListView: View {
     @State private var profileToEdit: Profile?
     
     var body: some View {
-        List {
-            ForEach(store.profiles) { profile in
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(profile.name)
-                            .font(.headline)
-                        Text("\(profile.steps.count) steps • \(formattedTotalDuration(profile.totalDuration))")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+        List(selection: $selectedProfile) {
+            Section("Tea Profiles") {
+                ForEach(store.profiles) { profile in
+                    NavigationLink(value: profile) {
+                        HStack {
+                            Image(systemName: "leaf.fill")
+                                .foregroundColor(.green)
+                                .frame(width: 20)
+                            
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(profile.name)
+                                    .font(.body)
+                                Text("\(formattedTotalDuration(profile.totalDuration))")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .padding(.vertical, 2)
                     }
-                    Spacer()
-                    Button(action: { profileToEdit = profile }) {
-                        Label("Edit", systemImage: "pencil")
-                            .labelStyle(.iconOnly)
+                    .contextMenu {
+                        Button {
+                            profileToEdit = profile
+                        } label: {
+                            Label("Edit", systemImage: "pencil")
+                        }
+                        
+                        Button(role: .destructive) {
+                            if let index = store.profiles.firstIndex(where: { $0.id == profile.id }) {
+                                store.deleteProfile(at: IndexSet(integer: index))
+                            }
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
                     }
-                    .buttonStyle(.bordered)
-                    .help("Edit Profile")
-                    
-                    Button(action: { selectedProfile = profile }) {
-                        Label("Start", systemImage: "play.fill")
-                    }
-                    .buttonStyle(.borderedProminent)
                 }
-                .padding(.vertical, 4)
+                .onDelete(perform: store.deleteProfile)
             }
-            .onDelete(perform: store.deleteProfile)
         }
         .listStyle(.sidebar)
         .sheet(item: $profileToEdit) { profile in
