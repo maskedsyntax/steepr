@@ -28,6 +28,11 @@ struct SteeprApp: App {
         // even when run as a raw binary via 'swift run'
         NSApplication.shared.setActivationPolicy(.regular)
         NSApplication.shared.activate(ignoringOtherApps: true)
+        
+        // Load and set the application icon
+        if let iconImage = NSImage(contentsOfFile: "steepr-logo.jpeg") {
+            NSApplication.shared.applicationIconImage = iconImage
+        }
     }
     
     private func requestNotificationPermission() {
