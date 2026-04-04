@@ -1,8 +1,17 @@
-# <img src="steepr-logo.png" width="128" align="right" /> Steepr
+<div align="center">
+  <img src="steepr-logo-rounded.png" width="160" />
+  <h1>Steepr</h1>
+  <p>Minimal, step-based tea timer for macOS.</p>
+  <p>
+    <img src="https://img.shields.io/badge/Swift-5.9-orange.svg" />
+    <img src="https://img.shields.io/badge/Platform-macOS-blue.svg" />
+    <img src="https://img.shields.io/badge/License-MIT-green.svg" />
+  </p>
+</div>
 
-Minimal, step-based tea timer for macOS.
+---
 
-For people who take tea way too seriously 🍵
+![Steepr Screenshot](screenshot.png)
 
 ---
 
