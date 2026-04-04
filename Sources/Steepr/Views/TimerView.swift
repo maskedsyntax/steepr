@@ -59,31 +59,40 @@ struct TimerView: View {
                 .frame(maxWidth: 300)
                 
                 HStack(spacing: 40) {
-                    if viewModel.state == .running {
-                        Button(action: viewModel.pause) {
-                            Image(systemName: "pause.fill")
-                                .font(.largeTitle)
+                    Button(action: {
+                        if viewModel.state == .running {
+                            viewModel.pause()
+                        } else {
+                            viewModel.resume()
                         }
-                    } else if viewModel.state == .paused || viewModel.state == .idle {
-                        Button(action: viewModel.resume) {
-                            Image(systemName: "play.fill")
-                                .font(.largeTitle)
-                        }
+                    }) {
+                        Image(systemName: viewModel.state == .running ? "pause.circle.fill" : "play.circle.fill")
+                            .resizable()
+                            .frame(width: 44, height: 44)
                     }
+                    .buttonStyle(.plain)
                     
                     Button(action: viewModel.skip) {
-                        Image(systemName: "forward.fill")
-                            .font(.largeTitle)
+                        Image(systemName: "forward.circle.fill")
+                            .resizable()
+                            .frame(width: 44, height: 44)
                     }
+                    .buttonStyle(.plain)
                     
                     Button(action: onDismiss) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.largeTitle)
+                        Image(systemName: "stop.circle.fill")
+                            .resizable()
+                            .frame(width: 44, height: 44)
                             .foregroundColor(.red)
                     }
+                    .buttonStyle(.plain)
                 }
             } else if viewModel.state == .completed {
-                VStack(spacing: 20) {
+                VStack(spacing: 30) {
+                    Image(systemName: "cup.and.saucer.fill")
+                        .font(.system(size: 100))
+                        .foregroundColor(.blue)
+                    
                     Text("Enjoy your tea!")
                         .font(.largeTitle)
                         .fontWeight(.bold)

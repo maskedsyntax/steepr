@@ -18,13 +18,15 @@ struct ProfileListView: View {
                             .foregroundColor(.secondary)
                     }
                     Spacer()
-                    Button("Edit") {
-                        profileToEdit = profile
+                    Button(action: { profileToEdit = profile }) {
+                        Label("Edit", systemImage: "pencil")
+                            .labelStyle(.iconOnly)
                     }
                     .buttonStyle(.bordered)
+                    .help("Edit Profile")
                     
-                    Button("Start") {
-                        selectedProfile = profile
+                    Button(action: { selectedProfile = profile }) {
+                        Label("Start", systemImage: "play.fill")
                     }
                     .buttonStyle(.borderedProminent)
                 }
