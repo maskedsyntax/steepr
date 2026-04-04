@@ -18,7 +18,22 @@ mkdir -p "${RESOURCES_DIR}"
 # 4. Copy the binary
 cp "${BINARY_PATH}" "${MACOS_DIR}/${APP_NAME}"
 
-# 5. Copy the icon
+# 5. Create and Copy the icon
+# To make it show up in Finder, we need a .icns file
+mkdir -p AppIcon.iconset
+sips -z 16 16     steepr-logo.png --out AppIcon.iconset/icon_16x16.png > /dev/null 2>&1
+sips -z 32 32     steepr-logo.png --out AppIcon.iconset/icon_16x16@2x.png > /dev/null 2>&1
+sips -z 32 32     steepr-logo.png --out AppIcon.iconset/icon_32x32.png > /dev/null 2>&1
+sips -z 64 64     steepr-logo.png --out AppIcon.iconset/icon_32x32@2x.png > /dev/null 2>&1
+sips -z 128 128   steepr-logo.png --out AppIcon.iconset/icon_128x128.png > /dev/null 2>&1
+sips -z 256 256   steepr-logo.png --out AppIcon.iconset/icon_128x128@2x.png > /dev/null 2>&1
+sips -z 256 256   steepr-logo.png --out AppIcon.iconset/icon_256x256.png > /dev/null 2>&1
+sips -z 512 512   steepr-logo.png --out AppIcon.iconset/icon_256x256@2x.png > /dev/null 2>&1
+sips -z 512 512   steepr-logo.png --out AppIcon.iconset/icon_512x512.png > /dev/null 2>&1
+sips -z 1024 1024 steepr-logo.png --out AppIcon.iconset/icon_512x512@2x.png > /dev/null 2>&1
+
+iconutil -c icns AppIcon.iconset -o "${RESOURCES_DIR}/AppIcon.icns"
+rm -rf AppIcon.iconset
 cp "steepr-logo.png" "${RESOURCES_DIR}/"
 
 # 6. Create Info.plist
@@ -33,6 +48,8 @@ cat > "${CONTENTS_DIR}/Info.plist" <<EOF
     <string>com.maskedsyntax.steepr</string>
     <key>CFBundleName</key>
     <string>${APP_NAME}</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
