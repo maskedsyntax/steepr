@@ -19,9 +19,8 @@ mkdir -p "${RESOURCES_DIR}"
 cp "${BINARY_PATH}" "${MACOS_DIR}/${APP_NAME}"
 
 # 5. Create and Copy the icon
-# We'll use a Swift one-liner to mask the PNG into a squircle and inset it (80% size)
-# so it looks exactly like a native macOS icon in Finder and Launchpad.
-swift <<EOF
+# We'll use a temporary Swift script to mask the PNG into a squircle and inset it
+cat > icon_gen.swift <<EOF
 import AppKit
 
 extension NSImage {
@@ -44,7 +43,6 @@ if let image = NSImage(contentsOfFile: "steepr-logo.png") {
     let contentSize: CGFloat = size - (inset * 2)
     let radius: CGFloat = contentSize * 0.225
     
-    // 1. Resize and mask the original content
     let resizedImage = NSImage(size: NSSize(width: contentSize, height: contentSize))
     resizedImage.lockFocus()
     image.draw(in: NSRect(origin: .zero, size: NSSize(width: contentSize, height: contentSize)))
@@ -52,7 +50,6 @@ if let image = NSImage(contentsOfFile: "steepr-logo.png") {
     
     let maskedImage = resizedImage.withRoundedCorners(radius: radius)
     
-    // 2. Create the final 1024x1024 canvas and center the masked image
     let finalImage = NSImage(size: NSSize(width: size, height: size))
     finalImage.lockFocus()
     maskedImage.draw(in: NSRect(x: inset, y: inset, width: contentSize, height: contentSize))
@@ -65,6 +62,14 @@ if let image = NSImage(contentsOfFile: "steepr-logo.png") {
     }
 }
 EOF
+
+swift icon_gen.swift
+rm icon_gen.swift
+
+if [ ! -f "native-icon.png" ]; then
+    echo "❌ Failed to generate native-icon.png"
+    exit 1
+fi
 
 mkdir -p AppIcon.iconset
 sips -z 16 16     native-icon.png --out AppIcon.iconset/icon_16x16.png > /dev/null 2>&1

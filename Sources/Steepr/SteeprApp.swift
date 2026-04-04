@@ -42,10 +42,21 @@ struct SteeprApp: App {
         }
 
         if let finalIcon = iconImage {
-            // Apply standard macOS rounded corner radius (~22.5% of width)
-            let radius = finalIcon.size.width * 0.225
-            let maskedIcon = finalIcon.withRoundedCorners(radius: radius)
-            NSApplication.shared.applicationIconImage = maskedIcon
+            let size = finalIcon.size
+            let inset = size.width * 0.1 // 10% padding to match native icons
+            let contentSize = size.width - (inset * 2)
+            let radius = contentSize * 0.225
+            
+            // Mask the icon with rounded corners at its content size
+            let maskedIcon = finalIcon.withRoundedCorners(radius: radius, targetSize: NSSize(width: contentSize, height: contentSize))
+            
+            // Draw it onto a padded canvas
+            let paddedIcon = NSImage(size: size)
+            paddedIcon.lockFocus()
+            maskedIcon.draw(in: NSRect(x: inset, y: inset, width: contentSize, height: contentSize))
+            paddedIcon.unlockFocus()
+            
+            NSApplication.shared.applicationIconImage = paddedIcon
         }
     }
     
@@ -65,14 +76,14 @@ struct SteeprApp: App {
 }
 
 extension NSImage {
-    func withRoundedCorners(radius: CGFloat) -> NSImage {
-        let destSize = NSSize(width: size.width, height: size.height)
+    func withRoundedCorners(radius: CGFloat, targetSize: NSSize? = nil) -> NSImage {
+        let destSize = targetSize ?? size
         let newImage = NSImage(size: destSize)
         newImage.lockFocus()
         let rect = NSRect(origin: .zero, size: destSize)
         let path = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
         path.addClip()
-        self.draw(in: rect)
+        self.draw(in: rect, from: NSRect(origin: .zero, size: size), operation: .sourceOver, fraction: 1.0)
         newImage.unlockFocus()
         return newImage
     }
