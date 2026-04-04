@@ -30,10 +30,21 @@ struct SteeprApp: App {
         NSApplication.shared.activate(ignoringOtherApps: true)
         
         // Load and set the application icon
-        if let iconImage = NSImage(contentsOfFile: "steepr-logo.png") {
+        let iconName = "steepr-logo.png"
+        var iconImage: NSImage?
+        
+        // Try to find it in the bundle first (if bundled)
+        if let bundlePath = Bundle.main.path(forResource: "steepr-logo", ofType: "png") {
+            iconImage = NSImage(contentsOfFile: bundlePath)
+        } else if let fallbackImage = NSImage(contentsOfFile: iconName) {
+            // Fallback to current directory (for swift run)
+            iconImage = fallbackImage
+        }
+
+        if let finalIcon = iconImage {
             // Apply standard macOS rounded corner radius (~22.5% of width)
-            let radius = iconImage.size.width * 0.225
-            let maskedIcon = iconImage.withRoundedCorners(radius: radius)
+            let radius = finalIcon.size.width * 0.225
+            let maskedIcon = finalIcon.withRoundedCorners(radius: radius)
             NSApplication.shared.applicationIconImage = maskedIcon
         }
     }
