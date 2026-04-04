@@ -1,7 +1,14 @@
 <div align="center">
-  <img src="steepr-logo-rounded.png" width="160" />
+  <p align="center">
+    <img src="steepr-logo-rounded.png" width="160" />
+  </p>
   <h1>Steepr</h1>
   <p>Minimal, step-based tea timer for macOS.</p>
+  <p>
+    <a href="https://github.com/maskedsyntax/steepr/raw/master/Steepr.zip">
+      <img src="https://img.shields.io/badge/Download-Steepr.zip-blue?style=for-the-badge&logo=apple" />
+    </a>
+  </p>
   <p>
     <img src="https://img.shields.io/badge/Swift-5.9-orange.svg" />
     <img src="https://img.shields.io/badge/Platform-macOS-blue.svg" />
@@ -22,18 +29,8 @@
 * **Sequential Timing:** Steps run automatically with clear transitions.
 * **Notifications:** Get notified when your tea is ready (even when in the background).
 
-## Installation
+## Usage
 
-### From Source
-1. Clone the repository.
-2. Build the app bundle:
-   ```bash
-   ./bundle.sh
-   ```
-3. Drag `Steepr.app` to your **Applications** folder.
-
-## Tech Stack
-* **Language:** Swift 5.9
-* **Framework:** SwiftUI / AppKit
-* **Persistence:** JSON (Application Support)
-* **Architecture:** MVVM
+1. Download the [Steepr.zip](https://github.com/maskedsyntax/steepr/raw/master/Steepr.zip).
+2. Unzip and drag `Steepr.app` to your **Applications** folder.
+3. Open and start steeping!
