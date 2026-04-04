@@ -31,7 +31,10 @@ struct SteeprApp: App {
         
         // Load and set the application icon
         if let iconImage = NSImage(contentsOfFile: "steepr-logo.jpeg") {
-            NSApplication.shared.applicationIconImage = iconImage
+            // Apply standard macOS rounded corner radius (~22.5% of width)
+            let radius = iconImage.size.width * 0.225
+            let maskedIcon = iconImage.withRoundedCorners(radius: radius)
+            NSApplication.shared.applicationIconImage = maskedIcon
         }
     }
     
@@ -47,5 +50,19 @@ struct SteeprApp: App {
                 print("Notification permission error: \(error.localizedDescription)")
             }
         }
+    }
+}
+
+extension NSImage {
+    func withRoundedCorners(radius: CGFloat) -> NSImage {
+        let destSize = NSSize(width: size.width, height: size.height)
+        let newImage = NSImage(size: destSize)
+        newImage.lockFocus()
+        let rect = NSRect(origin: .zero, size: destSize)
+        let path = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
+        path.addClip()
+        self.draw(in: rect)
+        newImage.unlockFocus()
+        return newImage
     }
 }
