@@ -3,7 +3,7 @@
     <img src="steepr-logo-rounded.png" width="160" />
   </p>
   <h1>Steepr</h1>
-  <p>Minimal, step-based tea timer for macOS.</p>
+  <p>For people who take tea way too seriously 🍵</p>
   <p>
     <a href="https://github.com/maskedsyntax/steepr/raw/master/Steepr.zip">
       <img src="https://img.shields.io/badge/Download-Steepr.zip-blue?style=for-the-badge&logo=apple" />
