@@ -10,88 +10,127 @@ struct ProfileEditView: View {
     @State private var newStepDuration: TimeInterval = 60
     
     var body: some View {
-        NavigationStack {
+        VStack(spacing: 0) {
+            Text(profile.name.isEmpty ? "New Profile" : "Edit Profile")
+                .font(.headline)
+                .padding()
+            
             Form {
-                Section("Profile Name") {
-                    TextField("Name", text: $profile.name)
+                Section {
+                    TextField("Profile Name", text: $profile.name)
+                        .textFieldStyle(.roundedBorder)
+                } header: {
+                    Text("Profile Details")
                 }
                 
-                Section("Steps") {
-                    ForEach($profile.steps) { $step in
-                        VStack(alignment: .leading) {
-                            TextField("Step Name", text: $step.name)
-                                .font(.headline)
-                            HStack {
-                                Text("Duration:")
-                                TextField("Seconds", value: $step.duration, format: .number)
-                                    .textFieldStyle(.roundedBorder)
-                                    .frame(width: 60)
-                                Text("sec")
-                                Spacer()
+                Section {
+                    List {
+                        ForEach($profile.steps) { $step in
+                            VStack(alignment: .leading, spacing: 8) {
+                                TextField("Step Name", text: $step.name)
+                                    .textFieldStyle(.plain)
+                                    .font(.body.bold())
+                                
+                                HStack {
+                                    Text("Duration")
+                                        .foregroundColor(.secondary)
+                                    Spacer()
+                                    TextField("Seconds", value: $step.duration, format: .number)
+                                        .textFieldStyle(.roundedBorder)
+                                        .frame(width: 60)
+                                    Text("sec")
+                                }
                             }
+                            .padding(.vertical, 4)
                         }
+                        .onDelete { indices in
+                            profile.steps.remove(atOffsets: indices)
+                        }
+                        .onMove { from, to in
+                            profile.steps.move(fromOffsets: from, toOffset: to)
+                        }
+                        
+                        Button(action: { showingAddStep = true }) {
+                            Label("Add Step", systemImage: "plus.circle")
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.vertical, 8)
+                        .foregroundColor(.blue)
                     }
-                    .onDelete { indices in
-                        profile.steps.remove(atOffsets: indices)
-                    }
-                    .onMove { from, to in
-                        profile.steps.move(fromOffsets: from, toOffset: to)
-                    }
-                    
-                    Button(action: { showingAddStep = true }) {
-                        Label("Add Step", systemImage: "plus.circle")
-                    }
+                    .listStyle(.plain)
+                    .frame(minHeight: 200)
+                } header: {
+                    Text("Steps")
                 }
             }
-            .navigationTitle(profile.name.isEmpty ? "New Profile" : "Edit Profile")
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        if store.profiles.contains(where: { $0.id == profile.id }) {
-                            store.updateProfile(profile)
-                        } else {
-                            store.addProfile(profile)
-                        }
-                        dismiss()
-                    }
+            .formStyle(.grouped)
+            
+            HStack {
+                Button("Cancel") {
+                    dismiss()
                 }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
+                .keyboardShortcut(.cancelAction)
+                
+                Spacer()
+                
+                Button("Save") {
+                    if store.profiles.contains(where: { $0.id == profile.id }) {
+                        store.updateProfile(profile)
+                    } else {
+                        store.addProfile(profile)
                     }
+                    dismiss()
                 }
+                .buttonStyle(.borderedProminent)
+                .keyboardShortcut(.defaultAction)
+                .disabled(profile.name.isEmpty || profile.steps.isEmpty)
             }
-            .sheet(isPresented: $showingAddStep) {
-                VStack(spacing: 20) {
-                    Text("Add New Step")
-                        .font(.headline)
-                    
-                    TextField("Step Name", text: $newStepName)
+            .padding()
+            .background(Color(NSColor.windowBackgroundColor))
+        }
+        .frame(width: 450, height: 600)
+        .sheet(isPresented: $showingAddStep) {
+            VStack(spacing: 20) {
+                Text("Add New Step")
+                    .font(.headline)
+                
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Step Name")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    TextField("e.g., Steep, Cool Down", text: $newStepName)
                         .textFieldStyle(.roundedBorder)
-                    
-                    Stepper(value: $newStepDuration, in: 0...3600, step: 10) {
-                        Text("Duration: \(Int(newStepDuration))s")
-                    }
-                    
+                }
+                
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Duration")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                     HStack {
-                        Button("Cancel") {
-                            showingAddStep = false
+                        Stepper(value: $newStepDuration, in: 0...3600, step: 10) {
+                            Text("\(Int(newStepDuration)) seconds")
                         }
-                        Spacer()
-                        Button("Add") {
-                            let step = Step(name: newStepName, duration: newStepDuration)
-                            profile.steps.append(step)
-                            newStepName = ""
-                            newStepDuration = 60
-                            showingAddStep = false
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .disabled(newStepName.isEmpty)
                     }
                 }
-                .padding()
-                .frame(width: 300)
+                
+                HStack {
+                    Button("Cancel") {
+                        showingAddStep = false
+                    }
+                    Spacer()
+                    Button("Add") {
+                        let step = Step(name: newStepName, duration: newStepDuration)
+                        profile.steps.append(step)
+                        newStepName = ""
+                        newStepDuration = 60
+                        showingAddStep = false
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(newStepName.isEmpty)
+                }
             }
+            .padding()
+            .frame(width: 300)
         }
     }
 }
