@@ -1,80 +1,45 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var store: ProfileStore
-    @StateObject private var sessionViewModel = SessionViewModel()
-    @State private var selectedProfile: Profile?
-    @State private var showingAddProfile = false
-    @State private var pendingProfile: Profile?
-    @State private var showingSwitchAlert = false
-    
+    @EnvironmentObject private var teaStore: TeaStore
+    @StateObject private var timerCoordinator = TimerCoordinator()
+    @State private var selectedTab = 0
+    @State private var libraryPath = NavigationPath()
+
     var body: some View {
-        NavigationSplitView {
-            VStack(spacing: 0) {
-                ProfileListView(selectedProfile: Binding(
-                    get: { selectedProfile },
-                    set: { newProfile in
-                        if let _ = selectedProfile, (sessionViewModel.state == .running || sessionViewModel.state == .paused) {
-                            pendingProfile = newProfile
-                            showingSwitchAlert = true
-                        } else {
-                            selectedProfile = newProfile
-                            if let profile = newProfile {
-                                sessionViewModel.start(with: profile)
-                            }
-                        }
-                    }
-                ))
-                
-                Divider()
-                
-                Button(action: { showingAddProfile = true }) {
-                    Label("Add Profile", systemImage: "plus.circle")
-                        .padding(12)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .buttonStyle(.plain)
+        TabView(selection: $selectedTab) {
+            BrewView(
+                timerCoordinator: timerCoordinator,
+                selectedTab: $selectedTab
+            )
+            .tabItem {
+                Label("Brew", systemImage: "cup.and.saucer.fill")
             }
-            #if os(macOS)
-            .navigationSplitViewColumnWidth(min: 250, ideal: 280)
-            #endif
-        } detail: {
-            ZStack {
-                if selectedProfile != nil {
-                    TimerView(viewModel: sessionViewModel, onDismiss: {
-                        sessionViewModel.stop()
-                        selectedProfile = nil
-                    })
-                } else {
-                    VStack(spacing: 20) {
-                        Image(systemName: "cup.and.saucer.fill")
-                            .font(.system(size: 80))
-                            .foregroundColor(.secondary)
-                        Text("Select a profile to start steeping")
-                            .font(.title2)
-                            .foregroundColor(.secondary)
-                    }
-                }
+            .tag(0)
+
+            LibraryView(
+                timerCoordinator: timerCoordinator,
+                selectedTab: $selectedTab,
+                path: $libraryPath
+            )
+            .tabItem {
+                Label("Library", systemImage: "books.vertical.fill")
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.ultraThinMaterial)
+            .tag(1)
+
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gearshape.fill")
+                }
+                .tag(2)
         }
-        .alert("Stop current session?", isPresented: $showingSwitchAlert) {
-            Button("Stop and Start New", role: .destructive) {
-                selectedProfile = pendingProfile
-                if let profile = selectedProfile {
-                    sessionViewModel.start(with: profile)
-                }
-                pendingProfile = nil
-            }
-            Button("Cancel", role: .cancel) {
-                pendingProfile = nil
-            }
-        } message: {
-            Text("A timer is already running. Do you want to stop it and start the new one?")
-        }
-        .sheet(isPresented: $showingAddProfile) {
-            ProfileEditView(profile: Profile(name: "", steps: []))
+        .tint(TeaColorSlot.green.color)
+        .sheet(isPresented: Binding(
+            get: { !teaStore.preferences.onboardingComplete },
+            set: { if !$0 { teaStore.setOnboardingComplete(true) } }
+        )) {
+            OnboardingView()
+                .interactiveDismissDisabled()
         }
     }
 }

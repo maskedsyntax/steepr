@@ -4,7 +4,8 @@ import PackageDescription
 let package = Package(
     name: "Steepr",
     platforms: [
-        .macOS(.v13)
+        .macOS(.v14),
+        .iOS(.v17)
     ],
     products: [
         .executable(name: "Steepr", targets: ["Steepr"])
@@ -14,7 +15,10 @@ let package = Package(
         .executableTarget(
             name: "Steepr",
             dependencies: [],
-            path: "Sources/Steepr"
+            path: "Sources/Steepr",
+            resources: [
+                .process("Assets.xcassets")
+            ]
         )
     ]
 )
