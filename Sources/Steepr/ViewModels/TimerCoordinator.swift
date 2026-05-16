@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import UserNotifications
 
-enum ActiveTimerState: Equatable {
+enum ActiveTimerState: String, Codable, Equatable {
     case idle
     case running
     case paused
@@ -18,6 +18,8 @@ final class TimerCoordinator: ObservableObject {
     private var timer: AnyCancellable?
     private var endDate: Date?
     private var pausedRemainingSeconds = 0
+    private var hasRestoredPersistedTimer = false
+    private let persistedTimerKey = "steepr.activeTimer"
     private let notificationIdentifier = "steepr.brew.complete"
     private let preAlertIdentifier = "steepr.brew.pre-alert"
 
@@ -27,14 +29,50 @@ final class TimerCoordinator: ObservableObject {
     }
 
     func start(_ tea: Tea, preferences: UserPreferences) {
-        cancel(scheduleNotification: false)
+        cancel()
         activeTea = tea
         durationSeconds = tea.steepSeconds
         secondsRemaining = tea.steepSeconds
         endDate = Date().addingTimeInterval(TimeInterval(tea.steepSeconds))
         state = .running
         scheduleNotifications(for: tea, preferences: preferences)
+        persistTimer()
         startTicker()
+    }
+
+    func restoreIfNeeded(preferences: UserPreferences) {
+        guard !hasRestoredPersistedTimer else { return }
+        hasRestoredPersistedTimer = true
+
+        guard
+            let data = UserDefaults.standard.data(forKey: persistedTimerKey),
+            let snapshot = try? JSONDecoder().decode(PersistedTimer.self, from: data)
+        else {
+            return
+        }
+
+        activeTea = snapshot.tea
+        durationSeconds = snapshot.durationSeconds
+        endDate = snapshot.endDate
+        pausedRemainingSeconds = snapshot.pausedRemainingSeconds
+        state = snapshot.state
+
+        switch snapshot.state {
+        case .idle:
+            cancel()
+        case .paused:
+            secondsRemaining = max(0, snapshot.pausedRemainingSeconds)
+        case .running:
+            refreshRemaining()
+            if secondsRemaining <= 0 {
+                complete(playFeedback: false)
+            } else {
+                scheduleNotifications(for: snapshot.tea, preferences: preferences)
+                startTicker()
+            }
+        case .completed:
+            secondsRemaining = 0
+        }
     }
 
     func pause() {
@@ -45,6 +83,7 @@ final class TimerCoordinator: ObservableObject {
         endDate = nil
         timer?.cancel()
         removeNotifications()
+        persistTimer()
     }
 
     func resume(preferences: UserPreferences) {
@@ -53,6 +92,7 @@ final class TimerCoordinator: ObservableObject {
         endDate = Date().addingTimeInterval(TimeInterval(pausedRemainingSeconds))
         state = .running
         scheduleNotifications(for: tea, preferences: preferences)
+        persistTimer()
         startTicker()
     }
 
@@ -67,6 +107,7 @@ final class TimerCoordinator: ObservableObject {
         durationSeconds = 0
         endDate = nil
         pausedRemainingSeconds = 0
+        clearPersistedTimer()
     }
 
     func brewAgain(preferences: UserPreferences) {
@@ -104,13 +145,16 @@ final class TimerCoordinator: ObservableObject {
         secondsRemaining = max(0, Int(ceil(endDate.timeIntervalSinceNow)))
     }
 
-    private func complete() {
+    private func complete(playFeedback: Bool = true) {
         timer?.cancel()
         secondsRemaining = 0
         state = .completed
         endDate = nil
-        Haptics.shared.playSuccess()
-        Haptics.shared.playCompletionSound()
+        persistTimer()
+        if playFeedback {
+            Haptics.shared.playSuccess()
+            Haptics.shared.playCompletionSound()
+        }
     }
 
     private func scheduleNotifications(for tea: Tea, preferences: UserPreferences) {
@@ -161,4 +205,36 @@ final class TimerCoordinator: ObservableObject {
         }
         return "\(minutes) min \(remainingSeconds) sec"
     }
+
+    private func persistTimer() {
+        guard let activeTea else {
+            clearPersistedTimer()
+            return
+        }
+
+        let snapshot = PersistedTimer(
+            tea: activeTea,
+            state: state,
+            durationSeconds: durationSeconds,
+            secondsRemaining: secondsRemaining,
+            endDate: endDate,
+            pausedRemainingSeconds: pausedRemainingSeconds
+        )
+
+        guard let data = try? JSONEncoder().encode(snapshot) else { return }
+        UserDefaults.standard.set(data, forKey: persistedTimerKey)
+    }
+
+    private func clearPersistedTimer() {
+        UserDefaults.standard.removeObject(forKey: persistedTimerKey)
+    }
+}
+
+private struct PersistedTimer: Codable {
+    var tea: Tea
+    var state: ActiveTimerState
+    var durationSeconds: Int
+    var secondsRemaining: Int
+    var endDate: Date?
+    var pausedRemainingSeconds: Int
 }

@@ -41,5 +41,8 @@ struct ContentView: View {
             OnboardingView()
                 .interactiveDismissDisabled()
         }
+        .task {
+            timerCoordinator.restoreIfNeeded(preferences: teaStore.preferences)
+        }
     }
 }
