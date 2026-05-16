@@ -35,7 +35,9 @@ struct ContentView: View {
                 }
                 .buttonStyle(.plain)
             }
+            #if os(macOS)
             .navigationSplitViewColumnWidth(min: 250, ideal: 280)
+            #endif
         } detail: {
             ZStack {
                 if selectedProfile != nil {
@@ -55,9 +57,8 @@ struct ContentView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(VisualEffectView(material: .windowBackground, blendingMode: .withinWindow))
+            .background(.ultraThinMaterial)
         }
-        .frame(minWidth: 800, minHeight: 600)
         .alert("Stop current session?", isPresented: $showingSwitchAlert) {
             Button("Stop and Start New", role: .destructive) {
                 selectedProfile = pendingProfile
@@ -75,23 +76,5 @@ struct ContentView: View {
         .sheet(isPresented: $showingAddProfile) {
             ProfileEditView(profile: Profile(name: "", steps: []))
         }
-    }
-}
-
-struct VisualEffectView: NSViewRepresentable {
-    var material: NSVisualEffectView.Material
-    var blendingMode: NSVisualEffectView.BlendingMode
-
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        view.material = material
-        view.blendingMode = blendingMode
-        view.state = .active
-        return view
-    }
-
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
-        nsView.material = material
-        nsView.blendingMode = blendingMode
     }
 }

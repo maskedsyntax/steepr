@@ -16,6 +16,37 @@ class SessionViewModel: ObservableObject {
     @Published var state: SessionState = .idle
     
     private var timer: AnyCancellable?
+    private var lastBackgroundDate: Date?
+    
+    init() {
+        setupLifecycleObservers()
+    }
+    
+    private func setupLifecycleObservers() {
+        #if os(iOS)
+        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.lastBackgroundDate = Date()
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.handleForeground()
+        }
+        #endif
+    }
+    
+    private func handleForeground() {
+        guard let backgroundDate = lastBackgroundDate, state == .running else { return }
+        let elapsed = Date().timeIntervalSince(backgroundDate)
+        lastBackgroundDate = nil
+        
+        if elapsed >= timeRemaining {
+            // Multiple steps might have passed, but for simplicity let's just finish current or move to next
+            timeRemaining = 0
+            tick()
+        } else {
+            timeRemaining -= elapsed
+        }
+    }
     
     var currentStep: Step? {
         guard let steps = profile?.steps, currentStepIndex < steps.count else { return nil }
@@ -37,6 +68,7 @@ class SessionViewModel: ObservableObject {
     func pause() {
         state = .paused
         timer?.cancel()
+        cancelNotifications()
     }
     
     func resume() {
@@ -46,11 +78,13 @@ class SessionViewModel: ObservableObject {
     func stop() {
         state = .idle
         timer?.cancel()
+        cancelNotifications()
         currentStepIndex = 0
         timeRemaining = 0
     }
     
     func skip() {
+        cancelNotifications()
         nextStep()
     }
     
@@ -77,6 +111,8 @@ class SessionViewModel: ObservableObject {
         }
         
         state = .running
+        scheduleNotification()
+        
         timer = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
@@ -88,7 +124,6 @@ class SessionViewModel: ObservableObject {
         if timeRemaining > 0 {
             timeRemaining -= 1
         } else {
-            notifyStepCompletion()
             nextStep()
         }
     }
@@ -96,6 +131,7 @@ class SessionViewModel: ObservableObject {
     private func nextStep() {
         currentStepIndex += 1
         if let steps = profile?.steps, currentStepIndex < steps.count {
+            Haptics.shared.playImpact()
             setupCurrentStep()
             if state == .running {
                 startTimer()
@@ -103,25 +139,33 @@ class SessionViewModel: ObservableObject {
         } else {
             state = .completed
             timer?.cancel()
+            cancelNotifications()
+            Haptics.shared.playSuccess()
+            Haptics.shared.playCompletionSound()
         }
     }
     
-    private func notifyStepCompletion() {
+    private func scheduleNotification() {
+        guard let step = currentStep, timeRemaining > 0 else { return }
+        
         // Guard against crashes when running without a proper app bundle
         guard Bundle.main.bundleIdentifier != nil else {
-            print("Step Complete: \(currentStep?.name ?? "Unknown")")
             return
         }
-        
-        guard let step = currentStep else { return }
         
         let content = UNMutableNotificationContent()
         content.title = "Step Complete"
         content.body = "\(step.name) is done!"
         content.sound = UNNotificationSound.default
         
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeRemaining, repeats: false)
+        let request = UNNotificationRequest(identifier: "steepr.step.complete", content: content, trigger: trigger)
+        
         UNUserNotificationCenter.current().add(request)
+    }
+    
+    private func cancelNotifications() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["steepr.step.complete"])
     }
     
     func formattedTime(_ seconds: TimeInterval) -> String {

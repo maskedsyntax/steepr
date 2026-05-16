@@ -5,6 +5,8 @@ struct ProfileListView: View {
     @Binding var selectedProfile: Profile?
     
     @State private var profileToEdit: Profile?
+    @State private var showingGuide = false
+    @State private var showingHistory = false
     
     var body: some View {
         List(selection: $selectedProfile) {
@@ -19,9 +21,15 @@ struct ProfileListView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(profile.name)
                                     .font(.body)
-                                Text("\(formattedTotalDuration(profile.totalDuration))")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
+                                HStack {
+                                    Text("\(formattedTotalDuration(profile.totalDuration))")
+                                    if let firstTemp = profile.steps.first?.formattedTemperature, !firstTemp.isEmpty {
+                                        Text("•")
+                                        Text(firstTemp)
+                                    }
+                                }
+                                .font(.caption)
+                                .foregroundColor(.secondary)
                             }
                         }
                         .padding(.vertical, 2)
@@ -46,8 +54,29 @@ struct ProfileListView: View {
             }
         }
         .listStyle(.sidebar)
+        .toolbar {
+            ToolbarItemGroup {
+                Button {
+                    showingGuide = true
+                } label: {
+                    Label("Tea Guide", systemImage: "info.circle")
+                }
+                
+                Button {
+                    showingHistory = true
+                } label: {
+                    Label("History", systemImage: "clock.arrow.circlepath")
+                }
+            }
+        }
         .sheet(item: $profileToEdit) { profile in
             ProfileEditView(profile: profile)
+        }
+        .sheet(isPresented: $showingGuide) {
+            TeaGuideView()
+        }
+        .sheet(isPresented: $showingHistory) {
+            HistoryView()
         }
     }
     
