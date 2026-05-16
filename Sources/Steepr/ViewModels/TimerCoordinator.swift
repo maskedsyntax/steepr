@@ -10,14 +10,20 @@ enum ActiveTimerState: String, Codable, Equatable {
 }
 
 final class TimerCoordinator: ObservableObject {
+    static var notificationsEnabled = true
+
     @Published private(set) var activeTea: Tea?
     @Published private(set) var state: ActiveTimerState = .idle
     @Published private(set) var secondsRemaining = 0
     @Published private(set) var durationSeconds = 0
+    @Published private(set) var currentSessionID = UUID()
+    @Published private(set) var startedAt: Date?
 
     private var timer: AnyCancellable?
     private var endDate: Date?
     private var pausedRemainingSeconds = 0
+    private var completionHapticStyle: HapticStyle = .standard
+    private var completionSoundEnabled = true
     private var hasRestoredPersistedTimer = false
     private let persistedTimerKey = "steepr.activeTimer"
     private let notificationIdentifier = "steepr.brew.complete"
@@ -31,6 +37,10 @@ final class TimerCoordinator: ObservableObject {
     func start(_ tea: Tea, preferences: UserPreferences) {
         cancel()
         activeTea = tea
+        currentSessionID = UUID()
+        startedAt = Date()
+        completionHapticStyle = preferences.hapticStyle
+        completionSoundEnabled = preferences.soundEnabled
         durationSeconds = tea.steepSeconds
         secondsRemaining = tea.steepSeconds
         endDate = Date().addingTimeInterval(TimeInterval(tea.steepSeconds))
@@ -52,6 +62,10 @@ final class TimerCoordinator: ObservableObject {
         }
 
         activeTea = snapshot.tea
+        currentSessionID = snapshot.sessionID
+        startedAt = snapshot.startedAt
+        completionHapticStyle = snapshot.hapticStyle
+        completionSoundEnabled = snapshot.soundEnabled
         durationSeconds = snapshot.durationSeconds
         endDate = snapshot.endDate
         pausedRemainingSeconds = snapshot.pausedRemainingSeconds
@@ -89,6 +103,8 @@ final class TimerCoordinator: ObservableObject {
     func resume(preferences: UserPreferences) {
         guard let tea = activeTea, state == .paused, pausedRemainingSeconds > 0 else { return }
         secondsRemaining = pausedRemainingSeconds
+        completionHapticStyle = preferences.hapticStyle
+        completionSoundEnabled = preferences.soundEnabled
         endDate = Date().addingTimeInterval(TimeInterval(pausedRemainingSeconds))
         state = .running
         scheduleNotifications(for: tea, preferences: preferences)
@@ -105,8 +121,11 @@ final class TimerCoordinator: ObservableObject {
         state = .idle
         secondsRemaining = 0
         durationSeconds = 0
+        startedAt = nil
         endDate = nil
         pausedRemainingSeconds = 0
+        completionHapticStyle = .standard
+        completionSoundEnabled = true
         clearPersistedTimer()
     }
 
@@ -152,14 +171,13 @@ final class TimerCoordinator: ObservableObject {
         endDate = nil
         persistTimer()
         if playFeedback {
-            Haptics.shared.playSuccess()
-            Haptics.shared.playCompletionSound()
+            Haptics.shared.playCompletion(style: completionHapticStyle, soundEnabled: completionSoundEnabled)
         }
     }
 
     private func scheduleNotifications(for tea: Tea, preferences: UserPreferences) {
         removeNotifications()
-        guard Bundle.main.bundleIdentifier != nil, secondsRemaining > 0 else { return }
+        guard Self.notificationsEnabled, Bundle.main.bundleIdentifier != nil, secondsRemaining > 0 else { return }
 
         let content = UNMutableNotificationContent()
         content.title = "Your \(tea.name) is ready"
@@ -188,6 +206,7 @@ final class TimerCoordinator: ObservableObject {
     }
 
     private func removeNotifications() {
+        guard Self.notificationsEnabled, Bundle.main.bundleIdentifier != nil else { return }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [
             notificationIdentifier,
             preAlertIdentifier
@@ -214,8 +233,12 @@ final class TimerCoordinator: ObservableObject {
         }
 
         let snapshot = PersistedTimer(
+            sessionID: currentSessionID,
             tea: activeTea,
             state: state,
+            startedAt: startedAt ?? Date(),
+            hapticStyle: completionHapticStyle,
+            soundEnabled: completionSoundEnabled,
             durationSeconds: durationSeconds,
             secondsRemaining: secondsRemaining,
             endDate: endDate,
@@ -232,8 +255,12 @@ final class TimerCoordinator: ObservableObject {
 }
 
 private struct PersistedTimer: Codable {
+    var sessionID: UUID
     var tea: Tea
     var state: ActiveTimerState
+    var startedAt: Date
+    var hapticStyle: HapticStyle
+    var soundEnabled: Bool
     var durationSeconds: Int
     var secondsRemaining: Int
     var endDate: Date?

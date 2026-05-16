@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PaywallView: View {
     @EnvironmentObject private var teaStore: TeaStore
+    @EnvironmentObject private var purchaseCoordinator: PurchaseCoordinator
     @Environment(\.dismiss) private var dismiss
 
     let trigger: String
@@ -37,20 +38,52 @@ struct PaywallView: View {
                 Spacer()
 
                 Button {
-                    teaStore.preferences.proPurchased = true
-                    dismiss()
+                    Task {
+                        await purchaseCoordinator.purchasePro(store: teaStore)
+                        if teaStore.preferences.proPurchased {
+                            dismiss()
+                        }
+                    }
                 } label: {
-                    Text("Buy Steep Pro - $4.99")
-                        .frame(maxWidth: .infinity)
+                    if purchaseCoordinator.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                    } else {
+                        Text("Buy Steep Pro - \(purchaseCoordinator.priceText)")
+                            .frame(maxWidth: .infinity)
+                    }
                 }
+                .disabled(purchaseCoordinator.isLoading)
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
 
                 Button("Restore") {
+                    Task {
+                        await purchaseCoordinator.restorePurchases(store: teaStore)
+                        if teaStore.preferences.proPurchased {
+                            dismiss()
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity)
+
+                #if DEBUG
+                Button("Unlock for Debug") {
                     teaStore.preferences.proPurchased = true
                     dismiss()
                 }
+                .font(.footnote)
+                .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity)
+                #endif
+
+                if let errorMessage = purchaseCoordinator.errorMessage {
+                    Text(errorMessage)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .multilineTextAlignment(.center)
+                }
             }
             .padding()
             .navigationTitle(trigger)
@@ -61,6 +94,9 @@ struct PaywallView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Done") { dismiss() }
                 }
+            }
+            .task {
+                await purchaseCoordinator.loadProducts()
             }
         }
     }

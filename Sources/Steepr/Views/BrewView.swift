@@ -1,9 +1,17 @@
 import SwiftUI
+import UserNotifications
+
+#if os(iOS)
+import UIKit
+#endif
 
 struct BrewView: View {
     @EnvironmentObject private var teaStore: TeaStore
+    @EnvironmentObject private var brewSessionStore: BrewSessionStore
+    @Environment(\.openURL) private var openURL
     @ObservedObject var timerCoordinator: TimerCoordinator
     @Binding var selectedTab: Int
+    @State private var notificationsDenied = false
 
     private let gridColumns = [
         GridItem(.flexible(), spacing: 12),
@@ -14,6 +22,10 @@ struct BrewView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
+                    if notificationsDenied {
+                        notificationDeniedBanner
+                    }
+
                     switch timerCoordinator.state {
                     case .idle:
                         idleContent
@@ -31,7 +43,40 @@ struct BrewView: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
+            .task {
+                await refreshNotificationStatus()
+            }
         }
+    }
+
+    private var notificationDeniedBanner: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "bell.slash.fill")
+                .foregroundStyle(.secondary)
+                .frame(width: 24)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Notifications are off")
+                    .font(.headline)
+                Text("Enable notifications so steepr can alert you when your tea is ready.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Button("Settings") {
+                #if os(iOS)
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    openURL(url)
+                }
+                #endif
+            }
+            .buttonStyle(.bordered)
+        }
+        .padding(12)
+        .background(.thinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 
     private var idleContent: some View {
@@ -113,6 +158,7 @@ struct BrewView: View {
                     .buttonStyle(.borderedProminent)
 
                     Button(role: .destructive) {
+                        recordCancellationIfNeeded()
                         timerCoordinator.cancel()
                     } label: {
                         Label("Cancel", systemImage: "xmark")
@@ -152,6 +198,30 @@ struct BrewView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 60)
+    }
+
+    private func recordCancellationIfNeeded() {
+        guard
+            let tea = timerCoordinator.activeTea,
+            let startedAt = timerCoordinator.startedAt
+        else {
+            return
+        }
+
+        let elapsedSeconds = max(0, timerCoordinator.durationSeconds - timerCoordinator.secondsRemaining)
+        brewSessionStore.recordCancellation(
+            sessionID: timerCoordinator.currentSessionID,
+            tea: tea,
+            startedAt: startedAt,
+            elapsedSeconds: elapsedSeconds
+        )
+    }
+
+    private func refreshNotificationStatus() async {
+        let settings = await UNUserNotificationCenter.current().notificationSettings()
+        await MainActor.run {
+            notificationsDenied = settings.authorizationStatus == .denied
+        }
     }
 }
 

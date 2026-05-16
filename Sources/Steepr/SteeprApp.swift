@@ -11,6 +11,8 @@ struct SteeprApp: App {
     #endif
 
     @StateObject private var teaStore = TeaStore()
+    @StateObject private var brewSessionStore = BrewSessionStore()
+    @StateObject private var purchaseCoordinator = PurchaseCoordinator()
     
     init() {
         NotificationService.configure()
@@ -23,6 +25,12 @@ struct SteeprApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(teaStore)
+                .environmentObject(brewSessionStore)
+                .environmentObject(purchaseCoordinator)
+                .task {
+                    await purchaseCoordinator.refreshEntitlements(store: teaStore)
+                    await purchaseCoordinator.loadProducts()
+                }
         }
         #if os(macOS)
         .windowStyle(.hiddenTitleBar)

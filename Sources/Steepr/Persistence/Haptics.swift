@@ -12,6 +12,21 @@ import AppKit
 
 class Haptics {
     static let shared = Haptics()
+
+    func playCompletion(style: HapticStyle, soundEnabled: Bool) {
+        switch style {
+        case .standard:
+            playSuccess()
+        case .soft:
+            playImpact()
+        case .strong:
+            playStrongCompletion()
+        }
+
+        if soundEnabled {
+            playCompletionSound()
+        }
+    }
     
     func playSuccess() {
         #if os(iOS)
@@ -45,6 +60,21 @@ class Haptics {
         AudioServicesPlaySystemSound(1005) // Standard notification sound
         #elseif os(macOS)
         AudioServicesPlaySystemSound(1013) // 'Glass' or standard ping on Mac
+        #endif
+    }
+
+    private func playStrongCompletion() {
+        #if os(iOS)
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+            generator.impactOccurred()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.32) {
+            generator.impactOccurred()
+        }
+        #elseif os(macOS)
+        NSHapticFeedbackManager.defaultPerformer.perform(.levelChange, performanceTime: .now)
         #endif
     }
 }

@@ -3,6 +3,7 @@ import UserNotifications
 
 struct SettingsView: View {
     @EnvironmentObject private var teaStore: TeaStore
+    @EnvironmentObject private var purchaseCoordinator: PurchaseCoordinator
     @State private var showingPaywall = false
     @State private var notificationStatus = "Not requested"
 
@@ -20,6 +21,10 @@ struct SettingsView: View {
                 }
 
                 Section("Brewing") {
+                    NavigationLink("Brew History") {
+                        BrewHistoryView()
+                    }
+
                     Picker("Temperature", selection: $teaStore.preferences.useCelsius) {
                         Text("°F").tag(false)
                         Text("°C").tag(true)
@@ -88,7 +93,9 @@ struct SettingsView: View {
 
                 Section("Pro") {
                     Button("Restore purchases") {
-                        teaStore.preferences.proPurchased = true
+                        Task {
+                            await purchaseCoordinator.restorePurchases(store: teaStore)
+                        }
                     }
                 }
 
