@@ -6,9 +6,14 @@ import AppKit
 
 @main
 struct SteeprApp: App {
+    #if os(iOS)
+    @UIApplicationDelegateAdaptor(AppNotificationDelegate.self) private var notificationDelegate
+    #endif
+
     @StateObject private var teaStore = TeaStore()
     
     init() {
+        NotificationService.configure()
         #if os(macOS)
         setupActivationPolicy()
         #endif

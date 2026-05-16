@@ -165,6 +165,7 @@ final class TimerCoordinator: ObservableObject {
         content.title = "Your \(tea.name) is ready"
         content.body = "Steeped for \(formattedDuration(tea.steepSeconds)). Tap to brew again."
         content.sound = preferences.soundEnabled ? .default : nil
+        content.categoryIdentifier = NotificationService.brewCompleteCategory
         content.threadIdentifier = "brew-timer"
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(secondsRemaining), repeats: false)
