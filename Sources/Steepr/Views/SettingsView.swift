@@ -10,12 +10,19 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                if !teaStore.preferences.proPurchased {
-                    Section("Steep Pro") {
+                Section("Steep Pro") {
+                    if teaStore.preferences.proPurchased {
+                        LabeledContent {
+                            Text("Active")
+                                .foregroundStyle(TeaColorSlot.green.color)
+                        } label: {
+                            Label("Steep Pro", systemImage: "checkmark.seal.fill")
+                        }
+                    } else {
                         Button {
                             showingPaywall = true
                         } label: {
-                            Label("Unlock Pro", systemImage: "sparkles")
+                            Label("Unlock Steep Pro", systemImage: "sparkles")
                         }
                     }
                 }
@@ -91,12 +98,15 @@ struct SettingsView: View {
                     Toggle("Auto-start same tea on complication tap", isOn: $teaStore.preferences.autoStartSameTea)
                 }
 
-                Section("Pro") {
+                Section("Purchases") {
                     Button("Restore purchases") {
                         Task {
                             await purchaseCoordinator.restorePurchases(store: teaStore)
                         }
                     }
+                    Text(teaStore.preferences.proPurchased ? "Use restore if Pro ever stops showing as active on this device." : "Use restore if you already bought Pro on this Apple ID.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                 }
 
                 Section("About") {
