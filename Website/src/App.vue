@@ -233,9 +233,9 @@ const faqs = [
                 </div>
               </div>
               <div class="tab-bar">
-                <span class="active-tab">☕<small>Brew</small></span>
-                <span>▥<small>Library</small></span>
-                <span>⚙<small>Settings</small></span>
+                <span class="active-tab"><b>☕</b><small>Brew</small></span>
+                <span><b>▥</b><small>Library</small></span>
+                <span><b>⚙</b><small>Settings</small></span>
               </div>
             </div>
           </div>
