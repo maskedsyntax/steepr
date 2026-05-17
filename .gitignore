@@ -79,3 +79,7 @@ Steepr.zip
 native-icon.png
 icon_gen.swift
 AppIcon.iconset/
+
+# Website
+Website/node_modules/
+Website/dist/
