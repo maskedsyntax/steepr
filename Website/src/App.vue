@@ -44,6 +44,13 @@ const proItems = [
   'Family Sharing support'
 ]
 
+const teaPresets = [
+  { name: 'Green', meta: '2m 30s · 80°C', tone: 'green' },
+  { name: 'Black', meta: '4m · 95°C', tone: 'black' },
+  { name: 'Oolong', meta: '3m 30s · 90°C', tone: 'oolong' },
+  { name: 'Herbal', meta: '5m · 100°C', tone: 'herbal' }
+]
+
 const privacySections = [
   {
     title: 'Data Steepr Stores',
@@ -148,14 +155,56 @@ const faqs = [
           </div>
         </div>
 
-        <div class="device-stage" aria-label="Steepr app preview">
-          <div class="phone-frame">
-            <img src="/assets/steepr-screenshot.png" alt="Steepr app showing tea timer and custom profiles" />
+        <div class="device-stage" aria-label="Steepr iPhone and Apple Watch preview">
+          <div class="phone-mockup" aria-hidden="true">
+            <div class="dynamic-island"></div>
+            <div class="phone-screen">
+              <div class="status-row">
+                <span>9:42</span>
+                <span class="status-icons">•••• 􀙇</span>
+              </div>
+              <div class="app-title">
+                Brew
+              </div>
+              <div class="timer-orbit">
+                <div class="timer-ring">
+                  <span class="timer-time">4:30</span>
+                </div>
+              </div>
+              <div class="brew-current">
+                <strong>Herbal</strong>
+                <span>100°C</span>
+              </div>
+              <div class="brew-actions">
+                <span class="pause-action">Ⅱ Pause</span>
+                <span class="cancel-action">× Cancel</span>
+              </div>
+              <div class="preset-peek">
+                <div
+                  v-for="tea in teaPresets"
+                  :key="tea.name"
+                  class="preset-tile"
+                  :class="`tone-${tea.tone}`"
+                >
+                  <span class="preset-icon"></span>
+                  <strong>{{ tea.name }}</strong>
+                  <small>{{ tea.meta }}</small>
+                </div>
+              </div>
+              <div class="tab-bar">
+                <span class="active-tab">☕<small>Brew</small></span>
+                <span>▥<small>Library</small></span>
+                <span>⚙<small>Settings</small></span>
+              </div>
+            </div>
           </div>
-          <div class="watch-card" aria-hidden="true">
-            <span class="watch-label">Watch</span>
-            <strong>02:15</strong>
-            <span>Green Tea</span>
+          <div class="watch-mockup" aria-hidden="true">
+            <div class="watch-screen">
+              <span class="watch-label">Watch</span>
+              <strong>02:15</strong>
+              <span>Green Tea</span>
+              <div class="watch-progress"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -250,7 +299,7 @@ const faqs = [
         </article>
         <article class="document-section">
           <h2>Contact</h2>
-          <p>For privacy questions, contact <a href="mailto:support@maskedsyntax.com">support@maskedsyntax.com</a>.</p>
+          <p>For privacy questions, contact <a href="mailto:support@maskedsyntax.com">Aftaab Siddiqui</a>.</p>
         </article>
       </section>
     </main>
@@ -260,8 +309,8 @@ const faqs = [
         <p class="eyebrow">Steepr</p>
         <h1>Support</h1>
         <p>
-          For help with Steepr, email
-          <a href="mailto:support@maskedsyntax.com">support@maskedsyntax.com</a>.
+          For help with Steepr, contact
+          <a href="mailto:support@maskedsyntax.com">Aftaab Siddiqui</a>.
         </p>
       </section>
 
@@ -274,7 +323,7 @@ const faqs = [
         <article class="document-section">
           <h3>How do I contact support?</h3>
           <p>
-            Email <a href="mailto:support@maskedsyntax.com">support@maskedsyntax.com</a>
+            Email <a href="mailto:support@maskedsyntax.com">Aftaab Siddiqui</a>
             with your device model, iOS or watchOS version, and a short description of the issue.
           </p>
         </article>
@@ -282,7 +331,7 @@ const faqs = [
     </main>
 
     <footer class="site-footer">
-      <p>© 2026 Masked Syntax. Steepr is built for iPhone and Apple Watch.</p>
+      <p>© 2026 Aftaab Siddiqui. Steepr is built for iPhone and Apple Watch.</p>
       <div>
         <a href="/privacy/">Privacy</a>
         <a href="/support/">Support</a>
