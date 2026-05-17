@@ -273,10 +273,10 @@ const faqs = [
         <img src="/assets/steepr-logo-rounded.png" alt="" width="88" height="88" loading="lazy" />
         <div>
           <p class="eyebrow">Launching soon</p>
-          <h2 id="launch-title">Prepared for App Store submission.</h2>
+          <h2 id="launch-title">A calmer brew timer is on the way.</h2>
           <p>
-            Steepr is not released yet. This site is ready for product, support,
-            and privacy links required during submission.
+            Steepr is being prepared for iPhone and Apple Watch. Privacy,
+            support, and product details will stay available here as launch approaches.
           </p>
         </div>
       </section>
