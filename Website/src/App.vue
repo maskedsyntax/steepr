@@ -8,8 +8,8 @@ defineProps({
 
 const navItems = [
   { label: 'Home', href: '/' },
-  { label: 'Privacy', href: '/privacy.html' },
-  { label: 'Support', href: '/support.html' }
+  { label: 'Privacy', href: '/privacy/' },
+  { label: 'Support', href: '/support/' }
 ]
 
 const features = [
@@ -144,7 +144,7 @@ const faqs = [
           </p>
           <div class="hero-actions" aria-label="Primary actions">
             <a class="button primary" href="#notify">Available on the App Store soon</a>
-            <a class="button secondary" href="/privacy.html">Read privacy policy</a>
+            <a class="button secondary" href="/privacy/">Read privacy policy</a>
           </div>
         </div>
 
@@ -284,8 +284,8 @@ const faqs = [
     <footer class="site-footer">
       <p>© 2026 Masked Syntax. Steepr is built for iPhone and Apple Watch.</p>
       <div>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/support.html">Support</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/support/">Support</a>
       </div>
     </footer>
   </div>
