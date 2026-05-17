@@ -21,6 +21,7 @@ let package = Package(
             exclude: ["Steepr.entitlements"],
             resources: [
                 .process("Assets.xcassets"),
+                .process("PrivacyInfo.xcprivacy"),
                 .process("Resources")
             ]
         ),

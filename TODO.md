@@ -56,9 +56,20 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 - [x] Add StoreKit configuration for local purchase testing.
 - [ ] Verify product ID `com.steepr.app.pro` in App Store Connect.
 - [ ] Add production App Group, iCloud, notification, and in-app purchase capabilities.
+- [ ] Add Apple Developer team signing settings for the iOS app and widget targets.
+- [x] Add privacy manifest files for the app and widget targets.
+- [x] Declare required-reason API usage for App Group `UserDefaults` access.
+- [x] Enable Live Activities in the iOS app Info.plist with `NSSupportsLiveActivities`.
+- [x] Decide whether v1 is iPhone-only or universal iPhone/iPad: v1 is iPhone-only, per `spec.md`.
+- [x] If v1 is iPhone-only, remove iPad from `TARGETED_DEVICE_FAMILY`; otherwise prepare iPad screenshots and QA.
+- [x] Decide whether Apple Watch ships in v1: Watch ships in v1, per `spec.md`.
+- [x] If Watch does not ship in v1, remove Watch-facing onboarding, settings, support, and marketing copy: not required because Watch ships in v1.
 - [x] Verify final 1024x1024 app icon asset.
 - [ ] Capture final App Store screenshots from release builds.
+- [ ] Capture required iPhone screenshots for App Store Connect.
+- [x] Capture required iPad screenshots if the app remains universal: not required for iPhone-only v1.
 - [x] Create privacy policy and marketing site content.
+- [ ] Publish production privacy policy and support URLs.
 - [x] Run unsigned Release build.
 - [ ] Run signed archive validation.
 - [ ] Run device and TestFlight QA.
