@@ -128,7 +128,8 @@ const faqs = [
         <img src="/assets/steepr-logo-rounded.png" alt="" width="40" height="40" />
         <span>Steepr</span>
       </a>
-      <nav aria-label="Primary navigation">
+      <nav class="nav-tabs" :class="`nav-${page}`" aria-label="Primary navigation">
+        <span class="nav-indicator" aria-hidden="true"></span>
         <a
           v-for="item in navItems"
           :key="item.href"

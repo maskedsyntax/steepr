@@ -30,6 +30,10 @@ html {
   scroll-behavior: smooth;
 }
 
+@view-transition {
+  navigation: auto;
+}
+
 body {
   margin: 0;
   min-width: 320px;
@@ -101,32 +105,76 @@ img {
   box-shadow: 0 8px 20px rgba(74, 124, 78, 0.2);
 }
 
-nav {
-  display: flex;
+.nav-tabs {
+  --active-index: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(5.35rem, 1fr));
   align-items: center;
   gap: 0.25rem;
   border-radius: 999px;
   padding: 0.25rem;
   background: rgba(238, 245, 236, 0.78);
+  isolation: isolate;
+  view-transition-name: steepr-navigation;
 }
 
-nav a {
+.nav-tabs.nav-privacy {
+  --active-index: 1;
+}
+
+.nav-tabs.nav-support {
+  --active-index: 2;
+}
+
+.nav-indicator {
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  left: 0.25rem;
+  z-index: -1;
+  width: calc((100% - 1rem) / 3);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(49, 89, 54, 0.1);
+  transform: translateX(calc(var(--active-index) * (100% + 0.25rem)));
+  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 180ms ease;
+}
+
+.nav-tabs a {
+  position: relative;
   min-height: 2.75rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   border-radius: 999px;
   padding: 0 1rem;
   color: var(--muted);
   font-size: 0.94rem;
   font-weight: 800;
-  transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease;
+  transform: translateY(0);
+  transition: color 180ms ease, transform 180ms ease;
 }
 
-nav a[aria-current="page"],
-nav a:hover {
-  background: #ffffff;
+.nav-tabs a[aria-current="page"] {
   color: var(--green-strong);
-  box-shadow: 0 8px 18px rgba(49, 89, 54, 0.1);
+}
+
+.nav-tabs a:hover {
+  color: var(--green-strong);
+  transform: translateY(-1px);
+}
+
+.nav-tabs:has(a:nth-of-type(1):hover) .nav-indicator {
+  transform: translateX(0);
+}
+
+.nav-tabs:has(a:nth-of-type(2):hover) .nav-indicator {
+  transform: translateX(calc(100% + 0.25rem));
+}
+
+.nav-tabs:has(a:nth-of-type(3):hover) .nav-indicator {
+  transform: translateX(calc(200% + 0.5rem));
 }
 
 main {
@@ -839,13 +887,13 @@ p {
     margin-top: 0.5rem;
   }
 
-  nav {
+  .nav-tabs {
     flex: 1;
     min-width: 0;
     justify-content: flex-end;
   }
 
-  nav a {
+  .nav-tabs a {
     min-height: 2.5rem;
     padding: 0 0.7rem;
     font-size: 0.84rem;
@@ -908,5 +956,6 @@ p {
   *::before,
   *::after {
     scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
 }
