@@ -1,5 +1,7 @@
 <script setup>
-defineProps({
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+
+const props = defineProps({
   page: {
     type: String,
     default: 'home'
@@ -7,10 +9,46 @@ defineProps({
 })
 
 const navItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Privacy', href: '/privacy/' },
-  { label: 'Support', href: '/support/' }
+  { label: 'Home', href: '/', page: 'home', title: 'Steepr - Calm Tea Timer for iPhone and Apple Watch' },
+  { label: 'Privacy', href: '/privacy/', page: 'privacy', title: 'Privacy Policy - Steepr' },
+  { label: 'Support', href: '/support/', page: 'support', title: 'Support - Steepr' }
 ]
+
+const currentPage = ref(props.page)
+
+const setPageFromPath = () => {
+  const path = window.location.pathname
+  if (path.startsWith('/privacy')) currentPage.value = 'privacy'
+  else if (path.startsWith('/support')) currentPage.value = 'support'
+  else currentPage.value = 'home'
+  updateTitle()
+}
+
+const updateTitle = () => {
+  const navItem = navItems.find((item) => item.page === currentPage.value)
+  if (navItem) document.title = navItem.title
+}
+
+const navigate = (event, item) => {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+  if ('button' in event && event.button !== 0) return
+  event.preventDefault()
+  if (currentPage.value === item.page) return
+
+  currentPage.value = item.page
+  window.history.pushState({}, '', item.href)
+  updateTitle()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+onMounted(() => {
+  updateTitle()
+  window.addEventListener('popstate', setPageFromPath)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('popstate', setPageFromPath)
+})
 
 const features = [
   {
@@ -124,24 +162,26 @@ const faqs = [
 <template>
   <div class="site-shell">
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Steepr home">
+      <a class="brand" href="/" aria-label="Steepr home" @click="navigate($event, navItems[0])">
         <img src="/assets/steepr-logo-rounded.png" alt="" width="40" height="40" />
         <span>Steepr</span>
       </a>
-      <nav class="nav-tabs" :class="`nav-${page}`" aria-label="Primary navigation">
+      <nav class="nav-tabs" :class="`nav-${currentPage}`" aria-label="Primary navigation">
         <span class="nav-indicator" aria-hidden="true"></span>
         <a
           v-for="item in navItems"
           :key="item.href"
           :href="item.href"
-          :aria-current="(page === 'home' && item.href === '/') || item.href.includes(page) ? 'page' : undefined"
+          :aria-current="currentPage === item.page ? 'page' : undefined"
+          @click="navigate($event, item)"
         >
           {{ item.label }}
         </a>
       </nav>
     </header>
 
-    <main v-if="page === 'home'">
+    <Transition name="page-swap" mode="out-in">
+    <main v-if="currentPage === 'home'" key="home">
       <section class="hero section-grid">
         <div class="hero-copy">
           <p class="eyebrow">iPhone and Apple Watch tea timer</p>
@@ -152,7 +192,7 @@ const faqs = [
           </p>
           <div class="hero-actions" aria-label="Primary actions">
             <a class="button primary" href="#notify">Available on the App Store soon</a>
-            <a class="button secondary" href="/privacy/">Read privacy policy</a>
+            <a class="button secondary" href="/privacy/" @click="navigate($event, navItems[1])">Read privacy policy</a>
           </div>
         </div>
 
@@ -282,7 +322,7 @@ const faqs = [
       </section>
     </main>
 
-    <main v-else-if="page === 'privacy'" class="document-page">
+    <main v-else-if="currentPage === 'privacy'" key="privacy" class="document-page">
       <section class="document-hero">
         <p class="eyebrow">Steepr</p>
         <h1>Privacy Policy</h1>
@@ -305,7 +345,7 @@ const faqs = [
       </section>
     </main>
 
-    <main v-else class="document-page">
+    <main v-else key="support" class="document-page">
       <section class="document-hero">
         <p class="eyebrow">Steepr</p>
         <h1>Support</h1>
@@ -330,12 +370,13 @@ const faqs = [
         </article>
       </section>
     </main>
+    </Transition>
 
     <footer class="site-footer">
       <p>© 2026 Aftaab Siddiqui. Steepr is built for iPhone and Apple Watch.</p>
       <div>
-        <a href="/privacy/">Privacy</a>
-        <a href="/support/">Support</a>
+        <a href="/privacy/" @click="navigate($event, navItems[1])">Privacy</a>
+        <a href="/support/" @click="navigate($event, navItems[2])">Support</a>
       </div>
     </footer>
   </div>

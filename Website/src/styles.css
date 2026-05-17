@@ -30,10 +30,6 @@ html {
   scroll-behavior: smooth;
 }
 
-@view-transition {
-  navigation: auto;
-}
-
 body {
   margin: 0;
   min-width: 320px;
@@ -116,7 +112,6 @@ img {
   padding: 0.25rem;
   background: rgba(238, 245, 236, 0.78);
   isolation: isolate;
-  view-transition-name: steepr-navigation;
 }
 
 .nav-tabs.nav-privacy {
@@ -180,6 +175,17 @@ img {
 main {
   display: grid;
   gap: clamp(4rem, 8vw, 7rem);
+}
+
+.page-swap-enter-active,
+.page-swap-leave-active {
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.page-swap-enter-from,
+.page-swap-leave-to {
+  opacity: 0;
+  transform: translateY(0.35rem);
 }
 
 .section-grid {
@@ -901,6 +907,17 @@ p {
     min-height: 2.35rem;
     padding: 0 0.38rem;
     font-size: 0.78rem;
+    transition: background 140ms ease, color 140ms ease;
+  }
+
+  .nav-tabs a:hover,
+  .nav-tabs a:active {
+    transform: none;
+  }
+
+  .nav-tabs a[aria-current="page"] {
+    background: #ffffff;
+    box-shadow: 0 6px 14px rgba(49, 89, 54, 0.08);
   }
 
   .brand {
@@ -919,10 +936,7 @@ p {
   }
 
   .nav-indicator {
-    top: 0.18rem;
-    bottom: 0.18rem;
-    left: 0.18rem;
-    width: calc((100% - 0.6rem) / 3);
+    display: none;
   }
 
   h1 {
