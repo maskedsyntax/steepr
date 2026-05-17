@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PaywallView: View {
     @EnvironmentObject private var teaStore: TeaStore
+    @EnvironmentObject private var brewSessionStore: BrewSessionStore
     @EnvironmentObject private var purchaseCoordinator: PurchaseCoordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -39,7 +40,7 @@ struct PaywallView: View {
 
                 Button {
                     Task {
-                        await purchaseCoordinator.purchasePro(store: teaStore)
+                        await purchaseCoordinator.purchasePro(store: teaStore, brewSessionStore: brewSessionStore)
                         if teaStore.preferences.proPurchased {
                             dismiss()
                         }
@@ -59,7 +60,7 @@ struct PaywallView: View {
 
                 Button("Restore") {
                     Task {
-                        await purchaseCoordinator.restorePurchases(store: teaStore)
+                        await purchaseCoordinator.restorePurchases(store: teaStore, brewSessionStore: brewSessionStore)
                         if teaStore.preferences.proPurchased {
                             dismiss()
                         }

@@ -7,6 +7,7 @@ import UIKit
 
 struct SettingsView: View {
     @EnvironmentObject private var teaStore: TeaStore
+    @EnvironmentObject private var brewSessionStore: BrewSessionStore
     @EnvironmentObject private var purchaseCoordinator: PurchaseCoordinator
     @Environment(\.openURL) private var openURL
     @State private var showingPaywall = false
@@ -106,7 +107,7 @@ struct SettingsView: View {
                 Section("Purchases") {
                     Button("Restore purchases") {
                         Task {
-                            await purchaseCoordinator.restorePurchases(store: teaStore)
+                            await purchaseCoordinator.restorePurchases(store: teaStore, brewSessionStore: brewSessionStore)
                         }
                     }
                     Text(teaStore.preferences.proPurchased ? "Use restore if Pro ever stops showing as active on this device." : "Use restore if you already bought Pro on this Apple ID.")

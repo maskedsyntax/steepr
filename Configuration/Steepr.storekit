@@ -1,0 +1,41 @@
+{
+  "identifier" : "9A4B6F65-3E7E-4A9A-9F31-A12E8F5D4A20",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : true,
+      "internalID" : "1",
+      "localizations" : [
+        {
+          "description" : "Unlock unlimited custom teas, iCloud sync, stronger haptics, and additional alert sounds.",
+          "displayName" : "Steepr Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.steepr.app.pro",
+      "referenceName" : "Steepr Pro",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "1",
+    "_developerTeamID" : "",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 769000000,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

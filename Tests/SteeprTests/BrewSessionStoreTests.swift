@@ -3,7 +3,7 @@ import XCTest
 
 final class BrewSessionStoreTests: XCTestCase {
     func testRecordCompletionKeepsSingleSessionPerID() {
-        let store = BrewSessionStore(fileName: "brew-sessions-test-\(UUID().uuidString).json")
+        let store = BrewSessionStore(modelContainer: SteeprModelContainer.make(inMemory: true))
         let tea = testTea()
         let sessionID = UUID()
 
@@ -14,6 +14,18 @@ final class BrewSessionStoreTests: XCTestCase {
         XCTAssertEqual(matchingSessions.count, 1)
         XCTAssertEqual(matchingSessions.first?.teaSnapshotName, "Test Tea")
         XCTAssertNotNil(matchingSessions.first?.completedAt)
+    }
+
+    func testPersistsSessionsInSwiftData() {
+        let container = SteeprModelContainer.make(inMemory: true)
+        let firstStore = BrewSessionStore(modelContainer: container)
+        let tea = testTea()
+        let sessionID = UUID()
+
+        firstStore.recordCompletion(sessionID: sessionID, tea: tea, startedAt: Date(), durationSeconds: 150)
+
+        let restoredStore = BrewSessionStore(modelContainer: container)
+        XCTAssertEqual(restoredStore.sessions.filter { $0.id == sessionID }.count, 1)
     }
 
     private func testTea() -> Tea {

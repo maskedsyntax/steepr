@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import SwiftData
 
 final class TeaStore: ObservableObject {
     @Published private(set) var teas: [Tea] = []
@@ -9,12 +10,18 @@ final class TeaStore: ObservableObject {
             publishSharedState()
         }
     }
+    @Published private(set) var isCloudSyncEnabled = false
 
     private let fileManager = FileManager.default
+    private var modelContext: ModelContext
+    private let legacyDirectory: URL?
     private let teasFileName = "teas.json"
     private let preferencesFileName = "preferences.json"
 
-    init() {
+    init(modelContainer: ModelContainer = SteeprModelContainer.shared, legacyDirectory: URL? = nil) {
+        self.modelContext = ModelContext(modelContainer)
+        self.legacyDirectory = legacyDirectory
+        migrateLegacyJSONIfNeeded()
         loadTeas()
         loadPreferences()
         seedBuiltInsIfNeeded()
@@ -122,6 +129,24 @@ final class TeaStore: ObservableObject {
         publishSharedState()
     }
 
+    func enableCloudSyncIfNeeded() {
+        guard !isCloudSyncEnabled else { return }
+        let localTeas = teas
+        let localPreferences = preferences
+        let cloudContainer = SteeprModelContainer.make(cloudKitEnabled: true)
+
+        modelContext = ModelContext(cloudContainer)
+        isCloudSyncEnabled = true
+        loadTeas()
+
+        let mergedTeas = merge(current: teas, incoming: localTeas)
+        teas = mergedTeas
+        preferences = localPreferences
+        saveTeas()
+        savePreferences()
+        publishSharedState()
+    }
+
     private func seedBuiltInsIfNeeded() {
         var changed = false
         for builtIn in Tea.builtIns where !teas.contains(where: { $0.isBuiltIn && $0.name == builtIn.name }) {
@@ -166,6 +191,13 @@ final class TeaStore: ObservableObject {
     }
 
     private var appDirectory: URL {
+        if let legacyDirectory {
+            if !fileManager.fileExists(atPath: legacyDirectory.path) {
+                try? fileManager.createDirectory(at: legacyDirectory, withIntermediateDirectories: true)
+            }
+            return legacyDirectory
+        }
+
         let appSupport = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         let directory = appSupport.appendingPathComponent("Steepr", isDirectory: true)
         if !fileManager.fileExists(atPath: directory.path) {
@@ -183,10 +215,9 @@ final class TeaStore: ObservableObject {
     }
 
     private func loadTeas() {
-        guard fileManager.fileExists(atPath: teasURL.path) else { return }
         do {
-            let data = try Data(contentsOf: teasURL)
-            teas = try JSONDecoder().decode([Tea].self, from: data)
+            let models = try modelContext.fetch(FetchDescriptor<PersistentTea>())
+            teas = models.map(\.tea)
         } catch {
             print("Failed to load teas: \(error)")
         }
@@ -194,18 +225,35 @@ final class TeaStore: ObservableObject {
 
     private func saveTeas() {
         do {
-            let data = try JSONEncoder().encode(teas)
-            try data.write(to: teasURL, options: .atomic)
+            let existing = try modelContext.fetch(FetchDescriptor<PersistentTea>())
+            var existingByID = Dictionary(uniqueKeysWithValues: existing.map { ($0.id, $0) })
+            let currentIDs = Set(teas.map(\.id))
+
+            for tea in teas {
+                if let model = existingByID[tea.id] {
+                    model.apply(tea)
+                } else {
+                    modelContext.insert(PersistentTea(tea: tea))
+                }
+            }
+
+            for model in existing where !currentIDs.contains(model.id) {
+                modelContext.delete(model)
+            }
+            existingByID.removeAll()
+            try modelContext.save()
         } catch {
             print("Failed to save teas: \(error)")
         }
     }
 
     private func loadPreferences() {
-        guard fileManager.fileExists(atPath: preferencesURL.path) else { return }
         do {
-            let data = try Data(contentsOf: preferencesURL)
-            preferences = try JSONDecoder().decode(UserPreferences.self, from: data)
+            var descriptor = FetchDescriptor<PersistentUserPreferences>()
+            descriptor.fetchLimit = 1
+            if let model = try modelContext.fetch(descriptor).first {
+                preferences = model.preferences
+            }
         } catch {
             print("Failed to load preferences: \(error)")
         }
@@ -213,11 +261,54 @@ final class TeaStore: ObservableObject {
 
     private func savePreferences() {
         do {
-            let data = try JSONEncoder().encode(preferences)
-            try data.write(to: preferencesURL, options: .atomic)
+            let existing = try modelContext.fetch(FetchDescriptor<PersistentUserPreferences>())
+            if let model = existing.first {
+                model.apply(preferences)
+                for duplicate in existing.dropFirst() {
+                    modelContext.delete(duplicate)
+                }
+            } else {
+                modelContext.insert(PersistentUserPreferences(preferences: preferences))
+            }
+            try modelContext.save()
         } catch {
             print("Failed to save preferences: \(error)")
         }
+    }
+
+    private func migrateLegacyJSONIfNeeded() {
+        do {
+            let existingTeaCount = try modelContext.fetchCount(FetchDescriptor<PersistentTea>())
+            let existingPreferencesCount = try modelContext.fetchCount(FetchDescriptor<PersistentUserPreferences>())
+
+            if existingTeaCount == 0, fileManager.fileExists(atPath: teasURL.path) {
+                let data = try Data(contentsOf: teasURL)
+                let legacyTeas = try JSONDecoder().decode([Tea].self, from: data)
+                for tea in legacyTeas {
+                    modelContext.insert(PersistentTea(tea: tea))
+                }
+            }
+
+            if existingPreferencesCount == 0, fileManager.fileExists(atPath: preferencesURL.path) {
+                let data = try Data(contentsOf: preferencesURL)
+                let legacyPreferences = try JSONDecoder().decode(UserPreferences.self, from: data)
+                modelContext.insert(PersistentUserPreferences(preferences: legacyPreferences))
+            }
+
+            if modelContext.hasChanges {
+                try modelContext.save()
+            }
+        } catch {
+            print("Failed to migrate legacy tea data: \(error)")
+        }
+    }
+
+    private func merge(current: [Tea], incoming: [Tea]) -> [Tea] {
+        var mergedByID = Dictionary(uniqueKeysWithValues: current.map { ($0.id, $0) })
+        for tea in incoming {
+            mergedByID[tea.id] = tea
+        }
+        return Array(mergedByID.values)
     }
 }
 

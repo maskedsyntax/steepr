@@ -10,7 +10,7 @@ final class PurchaseCoordinator: ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
 
-    func refreshEntitlements(store: TeaStore) async {
+    func refreshEntitlements(store: TeaStore, brewSessionStore: BrewSessionStore? = nil) async {
         var hasPro = false
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result else { continue }
@@ -19,6 +19,10 @@ final class PurchaseCoordinator: ObservableObject {
             }
         }
         store.preferences.proPurchased = hasPro
+        if hasPro {
+            store.enableCloudSyncIfNeeded()
+            brewSessionStore?.enableCloudSyncIfNeeded()
+        }
     }
 
     func loadProducts() async {
@@ -33,7 +37,7 @@ final class PurchaseCoordinator: ObservableObject {
         }
     }
 
-    func purchasePro(store: TeaStore) async {
+    func purchasePro(store: TeaStore, brewSessionStore: BrewSessionStore? = nil) async {
         await loadProducts()
         guard let proProduct else {
             errorMessage = "Steepr Pro is not available right now."
@@ -49,6 +53,8 @@ final class PurchaseCoordinator: ObservableObject {
                     return
                 }
                 store.preferences.proPurchased = true
+                store.enableCloudSyncIfNeeded()
+                brewSessionStore?.enableCloudSyncIfNeeded()
                 await transaction.finish()
             case .pending:
                 errorMessage = "The purchase is pending approval."
@@ -62,10 +68,10 @@ final class PurchaseCoordinator: ObservableObject {
         }
     }
 
-    func restorePurchases(store: TeaStore) async {
+    func restorePurchases(store: TeaStore, brewSessionStore: BrewSessionStore? = nil) async {
         do {
             try await AppStore.sync()
-            await refreshEntitlements(store: store)
+            await refreshEntitlements(store: store, brewSessionStore: brewSessionStore)
         } catch {
             errorMessage = "Could not restore purchases."
         }

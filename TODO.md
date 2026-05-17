@@ -19,7 +19,8 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 
 - [x] Finish first-launch onboarding: welcome, starter favorites, notification prompt.
 - [x] Add explicit notification permission status actions in Settings.
-- [x] Add acknowledgments and support/privacy links that point to final production URLs.
+- [x] Add support/privacy links that point to final production URLs.
+- [x] Remove non-essential acknowledgments and maker attribution from Settings.
 - [x] Audit Dynamic Type, VoiceOver labels, Reduce Motion, and color-blind behavior.
 - [x] Set up committed localization resources.
 - [x] Finish migrating runtime-generated strings into localization resources.
@@ -44,19 +45,23 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 
 ## Persistence and Sync
 
-- [ ] Decide whether to keep the current JSON store for v1 or migrate to SwiftData before extensions.
-- [ ] If migrating, seed built-in teas into SwiftData and preserve existing user data.
-- [ ] Add Pro-only CloudKit sync after the local data model is stable.
-- [ ] Keep active timers local-only even when CloudKit sync is enabled.
+- [x] Decide on final persistence architecture: SwiftData for durable app data, JSON/App Group snapshots only for widgets, Watch, and Live Activities.
+- [x] Migrate durable local data from JSON storage to SwiftData before v1.
+- [x] Seed built-in teas into SwiftData and preserve existing user data during migration.
+- [x] Add Pro-only CloudKit sync after the SwiftData model is stable.
+- [x] Keep active timers local-only even when CloudKit sync is enabled.
 
 ## App Store Readiness
 
-- [ ] Add StoreKit configuration for local purchase testing.
+- [x] Add StoreKit configuration for local purchase testing.
 - [ ] Verify product ID `com.steepr.app.pro` in App Store Connect.
 - [ ] Add production App Group, iCloud, notification, and in-app purchase capabilities.
-- [ ] Build final app icon and screenshots from bundled assets.
-- [ ] Create privacy policy and marketing site content.
-- [ ] Run release build, archive validation, and device QA.
+- [x] Verify final 1024x1024 app icon asset.
+- [ ] Capture final App Store screenshots from release builds.
+- [x] Create privacy policy and marketing site content.
+- [x] Run unsigned Release build.
+- [ ] Run signed archive validation.
+- [ ] Run device and TestFlight QA.
 
 ## Deferred After V1
 
