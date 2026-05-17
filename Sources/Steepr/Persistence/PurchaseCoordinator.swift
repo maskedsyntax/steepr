@@ -29,14 +29,14 @@ final class PurchaseCoordinator: ObservableObject {
         do {
             proProduct = try await Product.products(for: [Self.proProductID]).first
         } catch {
-            errorMessage = "Could not load Steep Pro."
+            errorMessage = "Could not load Steepr Pro."
         }
     }
 
     func purchasePro(store: TeaStore) async {
         await loadProducts()
         guard let proProduct else {
-            errorMessage = "Steep Pro is not available right now."
+            errorMessage = "Steepr Pro is not available right now."
             return
         }
 

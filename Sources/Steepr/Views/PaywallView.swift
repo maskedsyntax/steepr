@@ -21,7 +21,7 @@ struct PaywallView: View {
                 .frame(maxWidth: .infinity)
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Steep Pro")
+                    Text("Steepr Pro")
                         .font(.largeTitle.bold())
                     Text("Unlock the extra room and polish for daily brewing.")
                         .font(.title3)
@@ -49,7 +49,7 @@ struct PaywallView: View {
                         ProgressView()
                             .frame(maxWidth: .infinity)
                     } else {
-                        Text("Buy Steep Pro - \(purchaseCoordinator.priceText)")
+                        Text("Buy Steepr Pro - \(purchaseCoordinator.priceText)")
                             .frame(maxWidth: .infinity)
                     }
                 }

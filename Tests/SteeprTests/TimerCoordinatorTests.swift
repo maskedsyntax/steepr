@@ -5,11 +5,15 @@ final class TimerCoordinatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         TimerCoordinator.notificationsEnabled = false
-        UserDefaults.standard.removeObject(forKey: "steepr.activeTimer")
+        AppGroup.userDefaults.removeObject(forKey: ActiveTimerSnapshot.storageKey)
+        AppGroup.userDefaults.removeObject(forKey: FavoriteTeasSnapshot.storageKey)
+        AppGroup.userDefaults.removeObject(forKey: UserPreferencesSnapshot.storageKey)
     }
 
     override func tearDown() {
-        UserDefaults.standard.removeObject(forKey: "steepr.activeTimer")
+        AppGroup.userDefaults.removeObject(forKey: ActiveTimerSnapshot.storageKey)
+        AppGroup.userDefaults.removeObject(forKey: FavoriteTeasSnapshot.storageKey)
+        AppGroup.userDefaults.removeObject(forKey: UserPreferencesSnapshot.storageKey)
         TimerCoordinator.notificationsEnabled = true
         super.tearDown()
     }
@@ -68,6 +72,21 @@ final class TimerCoordinatorTests: XCTestCase {
         XCTAssertEqual(restoredCoordinator.state, .running)
         XCTAssertEqual(restoredCoordinator.durationSeconds, 120)
         XCTAssertNotNil(restoredCoordinator.startedAt)
+    }
+
+    func testPersistsSharedActiveTimerSnapshot() throws {
+        let tea = testTea(seconds: 75)
+        let coordinator = TimerCoordinator()
+
+        coordinator.start(tea, preferences: .defaults)
+
+        let data = try XCTUnwrap(AppGroup.userDefaults.data(forKey: ActiveTimerSnapshot.storageKey))
+        let snapshot = try JSONDecoder().decode(ActiveTimerSnapshot.self, from: data)
+
+        XCTAssertEqual(snapshot.tea, tea)
+        XCTAssertEqual(snapshot.state, .running)
+        XCTAssertEqual(snapshot.durationSeconds, 75)
+        XCTAssertGreaterThan(snapshot.currentSecondsRemaining, 0)
     }
 
     private func testTea(seconds: Int = 60) -> Tea {

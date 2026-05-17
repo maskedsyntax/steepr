@@ -58,7 +58,7 @@ struct BrewView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Notifications are off")
                     .font(.headline)
-                Text("Enable notifications so steepr can alert you when your tea is ready.")
+                Text("Enable notifications so Steepr can alert you when your tea is ready.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
@@ -136,6 +136,13 @@ struct BrewView: View {
                 )
                 .frame(maxWidth: 360)
                 .accessibilityLabel("\(timerCoordinator.formattedTime()) remaining")
+                .accessibilityAction(named: timerCoordinator.state == .running ? "Pause timer" : "Resume timer") {
+                    if timerCoordinator.state == .running {
+                        timerCoordinator.pause()
+                    } else {
+                        timerCoordinator.resume(preferences: teaStore.preferences)
+                    }
+                }
 
                 VStack(spacing: 8) {
                     Text(tea.name)
@@ -251,5 +258,6 @@ private struct FavoriteTeaCard: View {
             RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .stroke(.quaternary, lineWidth: 1)
         }
+        .accessibilityElement(children: .combine)
     }
 }

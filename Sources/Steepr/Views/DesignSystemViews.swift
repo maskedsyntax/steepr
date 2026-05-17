@@ -44,6 +44,8 @@ struct TimerRingView: View {
                 .padding(.horizontal, 28)
         }
         .aspectRatio(1, contentMode: .fit)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(timeText) remaining")
     }
 }
 
@@ -59,6 +61,8 @@ struct TeaMetaLine: View {
         }
         .font(.footnote.weight(.medium))
         .foregroundStyle(.secondary)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(formatDuration(tea.steepSeconds)), \(formatTemperature(tea.temperatureCelsius, useCelsius: useCelsius))")
     }
 }
 

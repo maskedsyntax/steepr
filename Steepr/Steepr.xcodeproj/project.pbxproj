@@ -6,9 +6,78 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		52B000012FB8C00000A2D8F5 /* SteeprWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 52B000022FB8C00000A2D8F5 /* SteeprWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		52C000012FB8D00000A2D8F5 /* SteeprComplications.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 52C000022FB8D00000A2D8F5 /* SteeprComplications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		52B0000C2FB8C00000A2D8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51E9FA322FB83F1E00A2D8F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52B000092FB8C00000A2D8F5;
+			remoteInfo = SteeprWidgets;
+		};
+		52C0000C2FB8D00000A2D8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51E9FA322FB83F1E00A2D8F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52C000092FB8D00000A2D8F5;
+			remoteInfo = SteeprComplications;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		52B000042FB8C00000A2D8F5 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				52B000012FB8C00000A2D8F5 /* SteeprWidgets.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52C000042FB8D00000A2D8F5 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				52C000012FB8D00000A2D8F5 /* SteeprComplications.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		51E9FA3A2FB83F1E00A2D8F5 /* Steepr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Steepr.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		52A000012FB8A00000A2D8F5 /* SteeprWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SteeprWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		52B000022FB8C00000A2D8F5 /* SteeprWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SteeprWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		52C000022FB8D00000A2D8F5 /* SteeprComplications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SteeprComplications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		52B000122FB8C00000A2D8F5 /* Exceptions for "../Sources/SteeprWidgets" folder in "SteeprWidgets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+				SteeprWidgets.entitlements,
+			);
+			target = 52B000092FB8C00000A2D8F5 /* SteeprWidgets */;
+		};
+		52C000122FB8D00000A2D8F5 /* Exceptions for "../Sources/SteeprComplications" folder in "SteeprComplications" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+				SteeprComplications.entitlements,
+			);
+			target = 52C000092FB8D00000A2D8F5 /* SteeprComplications */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		51E9FA3C2FB83F1E00A2D8F5 /* ../Sources/Steepr */ = {
@@ -16,10 +85,52 @@
 			path = ../Sources/Steepr;
 			sourceTree = "<group>";
 		};
+		52A000022FB8A00000A2D8F5 /* ../Sources/SteeprWatch */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ../Sources/SteeprWatch;
+			sourceTree = "<group>";
+		};
+		52B000032FB8C00000A2D8F5 /* ../Sources/SteeprWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				52B000122FB8C00000A2D8F5 /* Exceptions for "../Sources/SteeprWidgets" folder in "SteeprWidgets" target */,
+			);
+			path = ../Sources/SteeprWidgets;
+			sourceTree = "<group>";
+		};
+		52C000032FB8D00000A2D8F5 /* ../Sources/SteeprComplications */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				52C000122FB8D00000A2D8F5 /* Exceptions for "../Sources/SteeprComplications" folder in "SteeprComplications" target */,
+			);
+			path = ../Sources/SteeprComplications;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		51E9FA372FB83F1E00A2D8F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52A000052FB8A00000A2D8F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52B000062FB8C00000A2D8F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52C000062FB8D00000A2D8F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +144,9 @@
 			isa = PBXGroup;
 			children = (
 				51E9FA3C2FB83F1E00A2D8F5 /* ../Sources/Steepr */,
+				52A000022FB8A00000A2D8F5 /* ../Sources/SteeprWatch */,
+				52B000032FB8C00000A2D8F5 /* ../Sources/SteeprWidgets */,
+				52C000032FB8D00000A2D8F5 /* ../Sources/SteeprComplications */,
 				51E9FA3B2FB83F1E00A2D8F5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +155,9 @@
 			isa = PBXGroup;
 			children = (
 				51E9FA3A2FB83F1E00A2D8F5 /* Steepr.app */,
+				52A000012FB8A00000A2D8F5 /* SteeprWatch.app */,
+				52B000022FB8C00000A2D8F5 /* SteeprWidgets.appex */,
+				52C000022FB8D00000A2D8F5 /* SteeprComplications.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,10 +172,12 @@
 				51E9FA362FB83F1E00A2D8F5 /* Sources */,
 				51E9FA372FB83F1E00A2D8F5 /* Frameworks */,
 				51E9FA382FB83F1E00A2D8F5 /* Resources */,
+				52B000042FB8C00000A2D8F5 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				52B0000D2FB8C00000A2D8F5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				51E9FA3C2FB83F1E00A2D8F5 /* ../Sources/Steepr */,
@@ -69,6 +188,74 @@
 			productName = Steepr;
 			productReference = 51E9FA3A2FB83F1E00A2D8F5 /* Steepr.app */;
 			productType = "com.apple.product-type.application";
+		};
+		52A000082FB8A00000A2D8F5 /* SteeprWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52A0000B2FB8A00000A2D8F5 /* Build configuration list for PBXNativeTarget "SteeprWatch" */;
+			buildPhases = (
+				52A000042FB8A00000A2D8F5 /* Sources */,
+				52A000052FB8A00000A2D8F5 /* Frameworks */,
+				52A000062FB8A00000A2D8F5 /* Resources */,
+				52C000042FB8D00000A2D8F5 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				52C0000D2FB8D00000A2D8F5 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				52A000022FB8A00000A2D8F5 /* ../Sources/SteeprWatch */,
+			);
+			name = SteeprWatch;
+			packageProductDependencies = (
+			);
+			productName = SteeprWatch;
+			productReference = 52A000012FB8A00000A2D8F5 /* SteeprWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		52B000092FB8C00000A2D8F5 /* SteeprWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52B0000A2FB8C00000A2D8F5 /* Build configuration list for PBXNativeTarget "SteeprWidgets" */;
+			buildPhases = (
+				52B000052FB8C00000A2D8F5 /* Sources */,
+				52B000062FB8C00000A2D8F5 /* Frameworks */,
+				52B000072FB8C00000A2D8F5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				52B000032FB8C00000A2D8F5 /* ../Sources/SteeprWidgets */,
+			);
+			name = SteeprWidgets;
+			packageProductDependencies = (
+			);
+			productName = SteeprWidgets;
+			productReference = 52B000022FB8C00000A2D8F5 /* SteeprWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		52C000092FB8D00000A2D8F5 /* SteeprComplications */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52C0000A2FB8D00000A2D8F5 /* Build configuration list for PBXNativeTarget "SteeprComplications" */;
+			buildPhases = (
+				52C000052FB8D00000A2D8F5 /* Sources */,
+				52C000062FB8D00000A2D8F5 /* Frameworks */,
+				52C000072FB8D00000A2D8F5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				52C000032FB8D00000A2D8F5 /* ../Sources/SteeprComplications */,
+			);
+			name = SteeprComplications;
+			packageProductDependencies = (
+			);
+			productName = SteeprComplications;
+			productReference = 52C000022FB8D00000A2D8F5 /* SteeprComplications.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -81,6 +268,15 @@
 				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					51E9FA392FB83F1E00A2D8F5 = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					52A000082FB8A00000A2D8F5 = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					52B000092FB8C00000A2D8F5 = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					52C000092FB8D00000A2D8F5 = {
 						CreatedOnToolsVersion = 26.5;
 					};
 				};
@@ -100,12 +296,36 @@
 			projectRoot = "";
 			targets = (
 				51E9FA392FB83F1E00A2D8F5 /* Steepr */,
+				52A000082FB8A00000A2D8F5 /* SteeprWatch */,
+				52B000092FB8C00000A2D8F5 /* SteeprWidgets */,
+				52C000092FB8D00000A2D8F5 /* SteeprComplications */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		51E9FA382FB83F1E00A2D8F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52A000062FB8A00000A2D8F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52B000072FB8C00000A2D8F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52C000072FB8D00000A2D8F5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +342,41 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		52A000042FB8A00000A2D8F5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52B000052FB8C00000A2D8F5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52C000052FB8D00000A2D8F5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		52B0000D2FB8C00000A2D8F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52B000092FB8C00000A2D8F5 /* SteeprWidgets */;
+			targetProxy = 52B0000C2FB8C00000A2D8F5 /* PBXContainerItemProxy */;
+		};
+		52C0000D2FB8D00000A2D8F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52C000092FB8D00000A2D8F5 /* SteeprComplications */;
+			targetProxy = 52C0000C2FB8D00000A2D8F5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		51E9FA432FB83F1F00A2D8F5 /* Debug */ = {
@@ -249,6 +503,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ../Sources/Steepr/Steepr.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
@@ -280,6 +535,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ../Sources/Steepr/Steepr.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
@@ -306,6 +562,188 @@
 			};
 			name = Release;
 		};
+		52A000092FB8A00000A2D8F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ../Sources/SteeprWatch/SteeprWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_WKApplication = YES;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maskedsyntax.Steepr.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		52A0000A2FB8A00000A2D8F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ../Sources/SteeprWatch/SteeprWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_WKApplication = YES;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maskedsyntax.Steepr.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		52B0000E2FB8C00000A2D8F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = ../Sources/SteeprWidgets/SteeprWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ../Sources/SteeprWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maskedsyntax.Steepr.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		52B0000F2FB8C00000A2D8F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = ../Sources/SteeprWidgets/SteeprWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ../Sources/SteeprWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maskedsyntax.Steepr.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		52C0000E2FB8D00000A2D8F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = ../Sources/SteeprComplications/SteeprComplications.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ../Sources/SteeprComplications/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maskedsyntax.Steepr.watchkitapp.complications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		52C0000F2FB8D00000A2D8F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = ../Sources/SteeprComplications/SteeprComplications.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ../Sources/SteeprComplications/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maskedsyntax.Steepr.watchkitapp.complications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -323,6 +761,33 @@
 			buildConfigurations = (
 				51E9FA462FB83F1F00A2D8F5 /* Debug */,
 				51E9FA472FB83F1F00A2D8F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		52A0000B2FB8A00000A2D8F5 /* Build configuration list for PBXNativeTarget "SteeprWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52A000092FB8A00000A2D8F5 /* Debug */,
+				52A0000A2FB8A00000A2D8F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		52B0000A2FB8C00000A2D8F5 /* Build configuration list for PBXNativeTarget "SteeprWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52B0000E2FB8C00000A2D8F5 /* Debug */,
+				52B0000F2FB8C00000A2D8F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		52C0000A2FB8D00000A2D8F5 /* Build configuration list for PBXNativeTarget "SteeprComplications" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52C0000E2FB8D00000A2D8F5 /* Debug */,
+				52C0000F2FB8D00000A2D8F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -3,7 +3,7 @@ import Foundation
 
 struct StartTeaTimerIntent: AppIntent {
     static var title: LocalizedStringResource = "Start Tea Timer"
-    static var description = IntentDescription("Starts a steepr timer for the selected tea.")
+    static var description = IntentDescription("Starts a Steepr timer for the selected tea.")
     static var openAppWhenRun = false
 
     @Parameter(title: "Tea")
@@ -19,19 +19,22 @@ struct StartTeaTimerIntent: AppIntent {
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let store = TeaStore()
         guard let teaID = tea.uuid, let selectedTea = store.tea(with: teaID) else {
-            return .result(dialog: "I couldn't find that tea.")
+            return .result(dialog: IntentDialog(stringLiteral: L10n.teaNotFound))
         }
 
         let coordinator = TimerCoordinator()
         coordinator.start(selectedTea, preferences: store.preferences)
 
-        return .result(dialog: "\(selectedTea.name) is steeping for \(formatIntentDuration(selectedTea.steepSeconds)).")
+        return .result(dialog: IntentDialog(stringLiteral: L10n.teaIsSteeping(
+            selectedTea.name,
+            duration: formatIntentDuration(selectedTea.steepSeconds)
+        )))
     }
 }
 
 struct PauseTeaTimerIntent: AppIntent {
     static var title: LocalizedStringResource = "Pause Tea Timer"
-    static var description = IntentDescription("Pauses the active steepr timer.")
+    static var description = IntentDescription("Pauses the active Steepr timer.")
     static var openAppWhenRun = false
 
     @MainActor
@@ -41,17 +44,17 @@ struct PauseTeaTimerIntent: AppIntent {
         coordinator.restoreIfNeeded(preferences: store.preferences)
 
         guard coordinator.state == .running, let tea = coordinator.activeTea else {
-            return .result(dialog: "No tea timer is running.")
+            return .result(dialog: IntentDialog(stringLiteral: L10n.noRunningTimer))
         }
 
         coordinator.pause()
-        return .result(dialog: "Paused \(tea.name).")
+        return .result(dialog: IntentDialog(stringLiteral: L10n.pausedTea(tea.name)))
     }
 }
 
 struct StopTeaTimerIntent: AppIntent {
     static var title: LocalizedStringResource = "Stop Tea Timer"
-    static var description = IntentDescription("Cancels the active steepr timer.")
+    static var description = IntentDescription("Cancels the active Steepr timer.")
     static var openAppWhenRun = false
 
     @MainActor
@@ -61,17 +64,17 @@ struct StopTeaTimerIntent: AppIntent {
         coordinator.restoreIfNeeded(preferences: store.preferences)
 
         guard let tea = coordinator.activeTea else {
-            return .result(dialog: "No tea timer is active.")
+            return .result(dialog: IntentDialog(stringLiteral: L10n.noActiveTimer))
         }
 
         coordinator.cancel()
-        return .result(dialog: "Stopped \(tea.name).")
+        return .result(dialog: IntentDialog(stringLiteral: L10n.stoppedTea(tea.name)))
     }
 }
 
 struct BrewQuickIntent: AppIntent {
     static var title: LocalizedStringResource = "Brew Quick"
-    static var description = IntentDescription("Starts a steepr timer for a favorite tea.")
+    static var description = IntentDescription("Starts a Steepr timer for a favorite tea.")
     static var openAppWhenRun = false
 
     @Parameter(title: "Tea")

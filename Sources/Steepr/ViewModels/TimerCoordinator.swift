@@ -25,7 +25,6 @@ final class TimerCoordinator: ObservableObject {
     private var completionHapticStyle: HapticStyle = .standard
     private var completionSoundEnabled = true
     private var hasRestoredPersistedTimer = false
-    private let persistedTimerKey = "steepr.activeTimer"
     private let notificationIdentifier = "steepr.brew.complete"
     private let preAlertIdentifier = "steepr.brew.pre-alert"
 
@@ -55,8 +54,8 @@ final class TimerCoordinator: ObservableObject {
         hasRestoredPersistedTimer = true
 
         guard
-            let data = UserDefaults.standard.data(forKey: persistedTimerKey),
-            let snapshot = try? JSONDecoder().decode(PersistedTimer.self, from: data)
+            let data = AppGroup.userDefaults.data(forKey: ActiveTimerSnapshot.storageKey),
+            let snapshot = try? JSONDecoder().decode(ActiveTimerSnapshot.self, from: data)
         else {
             return
         }
@@ -113,6 +112,7 @@ final class TimerCoordinator: ObservableObject {
     }
 
     func cancel(scheduleNotification: Bool = true) {
+        let sessionID = activeTea == nil ? nil : currentSessionID
         timer?.cancel()
         if scheduleNotification {
             removeNotifications()
@@ -127,6 +127,7 @@ final class TimerCoordinator: ObservableObject {
         completionHapticStyle = .standard
         completionSoundEnabled = true
         clearPersistedTimer()
+        LiveActivityService.end(sessionID: sessionID)
     }
 
     func brewAgain(preferences: UserPreferences) {
@@ -180,8 +181,8 @@ final class TimerCoordinator: ObservableObject {
         guard Self.notificationsEnabled, Bundle.main.bundleIdentifier != nil, secondsRemaining > 0 else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = "Your \(tea.name) is ready"
-        content.body = "Steeped for \(formattedDuration(tea.steepSeconds)). Tap to brew again."
+        content.title = L10n.teaReady(tea.name)
+        content.body = L10n.steepedForTapToBrewAgain(formattedDuration(tea.steepSeconds))
         content.sound = preferences.soundEnabled ? .default : nil
         content.categoryIdentifier = NotificationService.brewCompleteCategory
         content.threadIdentifier = "brew-timer"
@@ -192,8 +193,8 @@ final class TimerCoordinator: ObservableObject {
 
         if let preAlertSeconds = preferences.preAlertSeconds, secondsRemaining > preAlertSeconds {
             let preContent = UNMutableNotificationContent()
-            preContent.title = "\(preAlertSeconds) seconds left"
-            preContent.body = "\(preAlertSeconds) seconds left on your \(tea.name)."
+            preContent.title = L10n.secondsLeft(preAlertSeconds)
+            preContent.body = L10n.secondsLeftOnTea(preAlertSeconds, teaName: tea.name)
             preContent.threadIdentifier = "brew-timer"
 
             let preTrigger = UNTimeIntervalNotificationTrigger(
@@ -232,7 +233,7 @@ final class TimerCoordinator: ObservableObject {
             return
         }
 
-        let snapshot = PersistedTimer(
+        let snapshot = ActiveTimerSnapshot(
             sessionID: currentSessionID,
             tea: activeTea,
             state: state,
@@ -246,23 +247,15 @@ final class TimerCoordinator: ObservableObject {
         )
 
         guard let data = try? JSONEncoder().encode(snapshot) else { return }
-        UserDefaults.standard.set(data, forKey: persistedTimerKey)
+        AppGroup.userDefaults.set(data, forKey: ActiveTimerSnapshot.storageKey)
+        if state == .running, snapshot.secondsRemaining == snapshot.durationSeconds {
+            LiveActivityService.start(snapshot: snapshot)
+        } else {
+            LiveActivityService.update(snapshot: snapshot)
+        }
     }
 
     private func clearPersistedTimer() {
-        UserDefaults.standard.removeObject(forKey: persistedTimerKey)
+        AppGroup.userDefaults.removeObject(forKey: ActiveTimerSnapshot.storageKey)
     }
-}
-
-private struct PersistedTimer: Codable {
-    var sessionID: UUID
-    var tea: Tea
-    var state: ActiveTimerState
-    var startedAt: Date
-    var hapticStyle: HapticStyle
-    var soundEnabled: Bool
-    var durationSeconds: Int
-    var secondsRemaining: Int
-    var endDate: Date?
-    var pausedRemainingSeconds: Int
 }

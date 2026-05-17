@@ -4,7 +4,10 @@ import Combine
 final class TeaStore: ObservableObject {
     @Published private(set) var teas: [Tea] = []
     @Published var preferences: UserPreferences = .defaults {
-        didSet { savePreferences() }
+        didSet {
+            savePreferences()
+            publishSharedState()
+        }
     }
 
     private let fileManager = FileManager.default
@@ -16,6 +19,7 @@ final class TeaStore: ObservableObject {
         loadPreferences()
         seedBuiltInsIfNeeded()
         normalizeFavoriteRanks()
+        publishSharedState()
     }
 
     var favoriteTeas: [Tea] {
@@ -49,6 +53,7 @@ final class TeaStore: ObservableObject {
         newTea.updatedAt = Date()
         teas.append(newTea)
         saveTeas()
+        publishSharedState()
     }
 
     func updateTea(_ tea: Tea) {
@@ -57,6 +62,7 @@ final class TeaStore: ObservableObject {
         updatedTea.updatedAt = Date()
         teas[index] = updatedTea
         saveTeas()
+        publishSharedState()
     }
 
     func deleteTea(_ tea: Tea) {
@@ -64,6 +70,7 @@ final class TeaStore: ObservableObject {
         teas.removeAll { $0.id == tea.id }
         normalizeFavoriteRanks()
         saveTeas()
+        publishSharedState()
     }
 
     func duplicateBuiltIn(_ tea: Tea) -> Tea {
@@ -91,6 +98,7 @@ final class TeaStore: ObservableObject {
         }
         normalizeFavoriteRanks()
         saveTeas()
+        publishSharedState()
     }
 
     func moveFavorite(from offsets: IndexSet, to destination: Int) {
@@ -101,6 +109,7 @@ final class TeaStore: ObservableObject {
             teas[index].favoriteRank = rank
         }
         saveTeas()
+        publishSharedState()
     }
 
     func setOnboardingComplete(_ complete: Bool) {
@@ -110,6 +119,7 @@ final class TeaStore: ObservableObject {
     func save() {
         saveTeas()
         savePreferences()
+        publishSharedState()
     }
 
     private func seedBuiltInsIfNeeded() {
@@ -133,6 +143,22 @@ final class TeaStore: ObservableObject {
             guard let index = teas.firstIndex(where: { $0.id == tea.id }) else { continue }
             teas[index].favoriteRank = rank
         }
+    }
+
+    private func publishSharedState() {
+        let generatedAt = Date()
+        let favoritesSnapshot = FavoriteTeasSnapshot(generatedAt: generatedAt, teas: favoriteTeas)
+        let preferencesSnapshot = UserPreferencesSnapshot(generatedAt: generatedAt, preferences: preferences)
+
+        if let favoritesData = try? JSONEncoder().encode(favoritesSnapshot) {
+            AppGroup.userDefaults.set(favoritesData, forKey: FavoriteTeasSnapshot.storageKey)
+        }
+
+        if let preferencesData = try? JSONEncoder().encode(preferencesSnapshot) {
+            AppGroup.userDefaults.set(preferencesData, forKey: UserPreferencesSnapshot.storageKey)
+        }
+
+        WatchSyncService.sync(favorites: favoritesSnapshot, preferences: preferencesSnapshot)
     }
 
     private func nextFavoriteRank() -> Int {

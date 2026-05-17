@@ -38,7 +38,7 @@ struct OnboardingView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
 
             VStack(spacing: 8) {
-                Text("steepr")
+                Text("Steepr")
                     .font(.largeTitle.bold())
                 Text("The perfect cup, every time.")
                     .font(.title3)
@@ -109,7 +109,7 @@ struct OnboardingView: View {
                 Text("Notifications & Watch")
                     .font(.largeTitle.bold())
                     .multilineTextAlignment(.center)
-                Text("steepr alerts you when tea is ready, even if your screen is locked.")
+                Text("Steepr alerts you when tea is ready, even if your screen is locked.")
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }

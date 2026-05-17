@@ -15,6 +15,7 @@ struct SteeprApp: App {
     @StateObject private var purchaseCoordinator = PurchaseCoordinator()
     
     init() {
+        WatchSyncService.configure()
         NotificationService.configure()
         #if os(macOS)
         setupActivationPolicy()

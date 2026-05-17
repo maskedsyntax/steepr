@@ -1,28 +1,33 @@
 import SwiftUI
 import UserNotifications
 
+#if os(iOS)
+import UIKit
+#endif
+
 struct SettingsView: View {
     @EnvironmentObject private var teaStore: TeaStore
     @EnvironmentObject private var purchaseCoordinator: PurchaseCoordinator
+    @Environment(\.openURL) private var openURL
     @State private var showingPaywall = false
-    @State private var notificationStatus = "Not requested"
+    @State private var notificationStatus: NotificationPermissionStatus = .notRequested
 
     var body: some View {
         NavigationStack {
             Form {
-                Section("Steep Pro") {
+                Section("Steepr Pro") {
                     if teaStore.preferences.proPurchased {
                         LabeledContent {
                             Text("Active")
                                 .foregroundStyle(TeaColorSlot.green.color)
                         } label: {
-                            Label("Steep Pro", systemImage: "checkmark.seal.fill")
+                            Label("Steepr Pro", systemImage: "checkmark.seal.fill")
                         }
                     } else {
                         Button {
                             showingPaywall = true
                         } label: {
-                            Label("Unlock Steep Pro", systemImage: "sparkles")
+                            Label("Unlock Steepr Pro", systemImage: "sparkles")
                         }
                     }
                 }
@@ -59,9 +64,9 @@ struct SettingsView: View {
 
                 Section("Notifications & Haptics") {
                     Button {
-                        requestNotifications()
+                        handleNotificationPermissionTap()
                     } label: {
-                        LabeledContent("Notification permission", value: notificationStatus)
+                        LabeledContent("Notification permission", value: notificationStatus.label)
                     }
 
                     Picker("Completion haptic", selection: $teaStore.preferences.hapticStyle) {
@@ -112,9 +117,8 @@ struct SettingsView: View {
                 Section("About") {
                     LabeledContent("Version", value: "1.0")
                     Link("Privacy policy", destination: URL(string: "https://steepr.maskedsyntax.com/privacy")!)
+                    Link("Support", destination: URL(string: "https://steepr.maskedsyntax.com/support")!)
                     Link("Contact support", destination: URL(string: "mailto:support@maskedsyntax.com")!)
-                    Text("Made by Aftaab Siddiqui")
-                        .foregroundStyle(.secondary)
                 }
             }
             .navigationTitle("Settings")
@@ -130,13 +134,34 @@ struct SettingsView: View {
         }
     }
 
+    private func handleNotificationPermissionTap() {
+        switch notificationStatus {
+        case .notRequested:
+            requestNotifications()
+        case .denied:
+            openSystemSettings()
+        case .allowed, .unknown:
+            Task {
+                await refreshNotificationStatus()
+            }
+        }
+    }
+
     private func requestNotifications() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, _ in
             DispatchQueue.main.async {
                 teaStore.preferences.notificationsAuthorized = granted
-                notificationStatus = granted ? "Allowed" : "Denied"
+                notificationStatus = granted ? .allowed : .denied
             }
         }
+    }
+
+    private func openSystemSettings() {
+        #if os(iOS)
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            openURL(url)
+        }
+        #endif
     }
 
     private func refreshNotificationStatus() async {
@@ -144,17 +169,33 @@ struct SettingsView: View {
         await MainActor.run {
             switch settings.authorizationStatus {
             case .authorized, .provisional, .ephemeral:
-                notificationStatus = "Allowed"
+                notificationStatus = .allowed
                 teaStore.preferences.notificationsAuthorized = true
             case .denied:
-                notificationStatus = "Denied"
+                notificationStatus = .denied
                 teaStore.preferences.notificationsAuthorized = false
             case .notDetermined:
-                notificationStatus = "Not requested"
+                notificationStatus = .notRequested
                 teaStore.preferences.notificationsAuthorized = false
             @unknown default:
-                notificationStatus = "Unknown"
+                notificationStatus = .unknown
             }
+        }
+    }
+}
+
+private enum NotificationPermissionStatus {
+    case notRequested
+    case allowed
+    case denied
+    case unknown
+
+    var label: String {
+        switch self {
+        case .notRequested: return "Not requested"
+        case .allowed: return "Allowed"
+        case .denied: return "Denied"
+        case .unknown: return "Unknown"
         }
     }
 }

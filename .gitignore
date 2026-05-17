@@ -74,6 +74,7 @@ fastlane/test_output
 
 # Local build artifacts (non-portable)
 Steepr.app/
+Steepr/build/
 Steepr.zip
 native-icon.png
 icon_gen.swift

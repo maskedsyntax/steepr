@@ -1,6 +1,6 @@
-# steepr — Implementation Spec
+# Steepr — Implementation Spec
 
-**App name:** steepr
+**App name:** Steepr
 **Tagline:** The perfect cup, every time.
 **Platforms:** iPhone (iOS 17+), Apple Watch (watchOS 10+)
 **Language:** Swift 5.9+, SwiftUI-first
@@ -159,7 +159,7 @@ Each row has a leading star toggle that promotes the tea to the Watch favorites 
 
 `Form` with these sections, in order:
 
-**Steep Pro** (top, only shown if not yet purchased)
+**Steepr Pro** (top, only shown if not yet purchased)
 - Marketing row with sparkle icon → opens `PaywallView` sheet.
 
 **Brewing**
@@ -182,10 +182,8 @@ Each row has a leading star toggle that promotes the tea to the Watch favorites 
 
 **About**
 - Version + build.
-- Acknowledgments (third-party licenses, even though there should be none — placeholder).
 - Privacy policy (linked URL).
 - Contact support (`mailto:`).
-- "Made by Aftaab Siddiqui" footer.
 
 ### 4.4 Modal sheets
 
@@ -506,7 +504,7 @@ All four intents are visible in Shortcuts with editable parameters, enabling aut
 
 ### 13.1 Permissions
 
-Requested at end of onboarding, with rationale: "steepr uses notifications to alert you when your tea is done — even if your screen is locked." Skippable. If denied, in-app banner on Brew tab points users to Settings.
+Requested at end of onboarding, with rationale: "Steepr uses notifications to alert you when your tea is done — even if your screen is locked." Skippable. If denied, in-app banner on Brew tab points users to Settings.
 
 ### 13.2 Notification content
 
@@ -745,7 +743,7 @@ No events for: which tea was added (privacy), what notes the user wrote, brew hi
 
 ---
 
-## 22. Steep Pro
+## 22. Steepr Pro
 
 ### 22.1 What's behind the paywall
 
@@ -766,7 +764,7 @@ No events for: which tea was added (privacy), what notes the user wrote, brew hi
 
 1. User triggers paywall (Settings → Pro, or 4th custom tea, or Strong haptic).
 2. `PaywallView` sheet appears.
-3. "Buy Steep Pro — $4.99" button calls `Product.purchase()`.
+3. "Buy Steepr Pro — $4.99" button calls `Product.purchase()`.
 4. On success, `Transaction.finish()` and update `UserPreferences.proPurchased`.
 5. On any in-flight pending transaction or family-shared entitlement detected at launch, app silently unlocks Pro. Family Sharing means a Pro purchase by any family organizer or member unlocks the app for everyone in the Family group — handled transparently by `Transaction.currentEntitlements`.
 
@@ -780,7 +778,7 @@ Settings → "Restore purchases" calls `AppStore.sync()`. Also implicitly resolv
 
 ### 23.1 Listing
 
-- **Name:** steepr
+- **Name:** Steepr
 - **Subtitle:** The perfect cup, every time
 - **Seller:** Aftaab Siddiqui
 - **Primary category:** Food & Drink
@@ -793,7 +791,7 @@ Settings → "Restore purchases" calls `AppStore.sync()`. Also implicitly resolv
 
 ### 23.2 Description (draft)
 
-> steepr is a calm, fast tea timer built for Apple Watch and iPhone.
+> Steepr is a calm, fast tea timer built for Apple Watch and iPhone.
 >
 > Pick a tea. Tap once. Brew the perfect cup — every time.
 >
@@ -803,7 +801,7 @@ Settings → "Restore purchases" calls `AppStore.sync()`. Also implicitly resolv
 > ◦ Quick-brew widgets and Lock Screen shortcuts
 > ◦ Siri support: "Hey Siri, start my green tea"
 >
-> Upgrade to Steep Pro for unlimited custom teas, iCloud sync across devices, and advanced haptics.
+> Upgrade to Steepr Pro for unlimited custom teas, iCloud sync across devices, and advanced haptics.
 >
 > No accounts. No ads. No tracking. Just tea.
 
@@ -815,7 +813,7 @@ Watch (5 required): root favorites list, active timer ring, complication on watc
 
 ### 23.4 What's New (v1.0)
 
-> Welcome to steepr — a wrist-first tea timer designed for the Apple ecosystem. We can't wait to brew with you.
+> Welcome to Steepr — a wrist-first tea timer designed for the Apple ecosystem. We can't wait to brew with you.
 
 ### 23.5 Brand assets
 
@@ -840,10 +838,10 @@ A single-page marketing site is required for the App Store submission (privacy a
 
 ### 23A.2 Landing page sections (top to bottom)
 
-1. **Hero** — App icon, "steepr — The perfect cup, every time.", "Available on the App Store" badge, one-line tagline.
+1. **Hero** — App icon, "Steepr — The perfect cup, every time.", "Available on the App Store" badge, one-line tagline.
 2. **The wrist-first promise** — single sentence + Watch screenshot.
 3. **Feature grid** — 6 cards: presets, Live Activities, complications, Siri, widgets, Pro sync. SF Symbol illustrations matching the in-app palette.
-4. **Steep Pro** — price ($4.99 one-time), Family Sharing badge, bullet list of Pro benefits, second App Store CTA.
+4. **Steepr Pro** — price ($4.99 one-time), Family Sharing badge, bullet list of Pro benefits, second App Store CTA.
 5. **Privacy first** — "No accounts. No ads. No tracking." paragraph + link to /privacy.
 6. **Footer** — © 2026 Aftaab Siddiqui · Privacy · Support · Press.
 

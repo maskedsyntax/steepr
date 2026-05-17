@@ -5,10 +5,12 @@ let package = Package(
     name: "Steepr",
     platforms: [
         .macOS(.v14),
-        .iOS(.v17)
+        .iOS(.v17),
+        .watchOS(.v10)
     ],
     products: [
-        .executable(name: "Steepr", targets: ["Steepr"])
+        .executable(name: "Steepr", targets: ["Steepr"]),
+        .executable(name: "SteeprWatch", targets: ["SteeprWatch"])
     ],
     dependencies: [],
     targets: [
@@ -16,9 +18,17 @@ let package = Package(
             name: "Steepr",
             dependencies: [],
             path: "Sources/Steepr",
+            exclude: ["Steepr.entitlements"],
             resources: [
-                .process("Assets.xcassets")
+                .process("Assets.xcassets"),
+                .process("Resources")
             ]
+        ),
+        .executableTarget(
+            name: "SteeprWatch",
+            dependencies: [],
+            path: "Sources/SteeprWatch",
+            exclude: ["SteeprWatch.entitlements"]
         ),
         .testTarget(
             name: "SteeprTests",
