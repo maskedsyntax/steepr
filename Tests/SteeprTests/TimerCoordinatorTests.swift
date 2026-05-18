@@ -89,6 +89,21 @@ final class TimerCoordinatorTests: XCTestCase {
         XCTAssertGreaterThan(snapshot.currentSecondsRemaining, 0)
     }
 
+    func testReSteepStartsNextInfusion() {
+        let tea = testTea(seconds: 75)
+        let coordinator = TimerCoordinator()
+
+        coordinator.start(tea, preferences: .defaults)
+        let firstSessionID = coordinator.currentSessionID
+        coordinator.reSteep(preferences: .defaults)
+
+        XCTAssertEqual(coordinator.activeTea, tea)
+        XCTAssertEqual(coordinator.state, .running)
+        XCTAssertEqual(coordinator.infusionNumber, 2)
+        XCTAssertNotEqual(coordinator.currentSessionID, firstSessionID)
+        XCTAssertEqual(coordinator.durationSeconds, 75)
+    }
+
     private func testTea(seconds: Int = 60) -> Tea {
         Tea(
             name: "Test Tea",

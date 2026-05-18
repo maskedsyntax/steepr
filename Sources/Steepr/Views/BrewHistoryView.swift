@@ -52,6 +52,8 @@ private struct BrewSessionRow: View {
             }
 
             HStack(spacing: 8) {
+                Text("Infusion \(session.infusionNumber)")
+                Text("•")
                 Label(formatDuration(session.actualSteepSeconds), systemImage: "clock")
                 Text("•")
                 Text(session.startedAt, style: .date)

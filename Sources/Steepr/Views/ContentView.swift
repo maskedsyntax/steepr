@@ -77,7 +77,8 @@ struct ContentView: View {
             sessionID: timerCoordinator.currentSessionID,
             tea: tea,
             startedAt: startedAt,
-            durationSeconds: timerCoordinator.durationSeconds
+            durationSeconds: timerCoordinator.durationSeconds,
+            infusionNumber: timerCoordinator.infusionNumber
         )
     }
 }
@@ -96,10 +97,13 @@ private struct TimerCompleteSheet: View {
                     .multilineTextAlignment(.center)
                 Text("Steeped for \(formatDuration(timerCoordinator.durationSeconds)).")
                     .foregroundStyle(.secondary)
+                Text("Infusion \(timerCoordinator.infusionNumber) complete")
+                    .font(.footnote.weight(.medium))
+                    .foregroundStyle(.secondary)
 
                 HStack(spacing: 12) {
-                    Button("Brew again") {
-                        timerCoordinator.brewAgain(preferences: teaStore.preferences)
+                    Button("Re-steep") {
+                        timerCoordinator.reSteep(preferences: teaStore.preferences)
                         dismiss()
                     }
                     .buttonStyle(.borderedProminent)

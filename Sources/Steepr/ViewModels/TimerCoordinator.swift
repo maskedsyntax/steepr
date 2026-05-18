@@ -18,6 +18,7 @@ final class TimerCoordinator: ObservableObject {
     @Published private(set) var durationSeconds = 0
     @Published private(set) var currentSessionID = UUID()
     @Published private(set) var startedAt: Date?
+    @Published private(set) var infusionNumber = 1
 
     private var timer: AnyCancellable?
     private var endDate: Date?
@@ -34,10 +35,15 @@ final class TimerCoordinator: ObservableObject {
     }
 
     func start(_ tea: Tea, preferences: UserPreferences) {
+        start(tea, preferences: preferences, infusionNumber: 1)
+    }
+
+    private func start(_ tea: Tea, preferences: UserPreferences, infusionNumber: Int) {
         cancel()
         activeTea = tea
         currentSessionID = UUID()
         startedAt = Date()
+        self.infusionNumber = max(1, infusionNumber)
         completionHapticStyle = preferences.hapticStyle
         completionSoundEnabled = preferences.soundEnabled
         durationSeconds = tea.steepSeconds
@@ -68,6 +74,7 @@ final class TimerCoordinator: ObservableObject {
         durationSeconds = snapshot.durationSeconds
         endDate = snapshot.endDate
         pausedRemainingSeconds = snapshot.pausedRemainingSeconds
+        infusionNumber = snapshot.infusionNumber
         state = snapshot.state
 
         switch snapshot.state {
@@ -124,6 +131,7 @@ final class TimerCoordinator: ObservableObject {
         startedAt = nil
         endDate = nil
         pausedRemainingSeconds = 0
+        infusionNumber = 1
         completionHapticStyle = .standard
         completionSoundEnabled = true
         clearPersistedTimer()
@@ -132,7 +140,12 @@ final class TimerCoordinator: ObservableObject {
 
     func brewAgain(preferences: UserPreferences) {
         guard let tea = activeTea else { return }
-        start(tea, preferences: preferences)
+        start(tea, preferences: preferences, infusionNumber: 1)
+    }
+
+    func reSteep(preferences: UserPreferences) {
+        guard let tea = activeTea else { return }
+        start(tea, preferences: preferences, infusionNumber: infusionNumber + 1)
     }
 
     func done() {
@@ -182,7 +195,7 @@ final class TimerCoordinator: ObservableObject {
 
         let content = UNMutableNotificationContent()
         content.title = L10n.teaReady(tea.name)
-        content.body = L10n.steepedForTapToBrewAgain(formattedDuration(tea.steepSeconds))
+        content.body = L10n.steepedForTapToReSteep(formattedDuration(tea.steepSeconds))
         content.sound = preferences.soundEnabled ? .default : nil
         content.categoryIdentifier = NotificationService.brewCompleteCategory
         content.threadIdentifier = "brew-timer"
@@ -243,7 +256,8 @@ final class TimerCoordinator: ObservableObject {
             durationSeconds: durationSeconds,
             secondsRemaining: secondsRemaining,
             endDate: endDate,
-            pausedRemainingSeconds: pausedRemainingSeconds
+            pausedRemainingSeconds: pausedRemainingSeconds,
+            infusionNumber: infusionNumber
         )
 
         guard let data = try? JSONEncoder().encode(snapshot) else { return }

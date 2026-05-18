@@ -5,8 +5,8 @@ enum L10n {
         String(format: localized("Your %@ is ready"), teaName)
     }
 
-    static func steepedForTapToBrewAgain(_ duration: String) -> String {
-        String(format: localized("Steeped for %@. Tap to brew again."), duration)
+    static func steepedForTapToReSteep(_ duration: String) -> String {
+        String(format: localized("Steeped for %@. Tap to re-steep."), duration)
     }
 
     static func secondsLeft(_ seconds: Int) -> String {

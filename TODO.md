@@ -76,7 +76,7 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 
 ## Deferred After V1
 
-- [ ] Re-steep support.
+- [x] Re-steep support.
 - [ ] Caffeine estimates.
 - [ ] Brew journal notes and ratings.
 - [ ] Tea packaging scanner.

@@ -150,6 +150,9 @@ struct BrewView: View {
                     Text(formatTemperature(tea.temperatureCelsius, useCelsius: teaStore.preferences.useCelsius))
                         .font(.headline)
                         .foregroundStyle(.secondary)
+                    Text("Infusion \(timerCoordinator.infusionNumber)")
+                        .font(.footnote.weight(.medium))
+                        .foregroundStyle(.secondary)
                 }
 
                 HStack(spacing: 12) {
@@ -189,10 +192,13 @@ struct BrewView: View {
                 Text("Your \(tea.name) is ready.")
                     .font(.title3)
                     .foregroundStyle(.secondary)
+                Text("Infusion \(timerCoordinator.infusionNumber) complete")
+                    .font(.footnote.weight(.medium))
+                    .foregroundStyle(.secondary)
 
                 HStack(spacing: 12) {
-                    Button("Brew again") {
-                        timerCoordinator.brewAgain(preferences: teaStore.preferences)
+                    Button("Re-steep") {
+                        timerCoordinator.reSteep(preferences: teaStore.preferences)
                     }
                     .buttonStyle(.borderedProminent)
 
@@ -220,7 +226,8 @@ struct BrewView: View {
             sessionID: timerCoordinator.currentSessionID,
             tea: tea,
             startedAt: startedAt,
-            elapsedSeconds: elapsedSeconds
+            elapsedSeconds: elapsedSeconds,
+            infusionNumber: timerCoordinator.infusionNumber
         )
     }
 

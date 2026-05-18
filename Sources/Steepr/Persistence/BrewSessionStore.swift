@@ -27,7 +27,13 @@ final class BrewSessionStore: ObservableObject {
         sessions.sorted { $0.startedAt > $1.startedAt }
     }
 
-    func recordCompletion(sessionID: UUID, tea: Tea, startedAt: Date, durationSeconds: Int) {
+    func recordCompletion(
+        sessionID: UUID,
+        tea: Tea,
+        startedAt: Date,
+        durationSeconds: Int,
+        infusionNumber: Int = 1
+    ) {
         guard !sessions.contains(where: { $0.id == sessionID }) else { return }
         sessions.append(
             BrewSession(
@@ -36,13 +42,20 @@ final class BrewSessionStore: ObservableObject {
                 teaSnapshotName: tea.name,
                 startedAt: startedAt,
                 completedAt: Date(),
-                actualSteepSeconds: durationSeconds
+                actualSteepSeconds: durationSeconds,
+                infusionNumber: max(1, infusionNumber)
             )
         )
         saveSessions()
     }
 
-    func recordCancellation(sessionID: UUID, tea: Tea, startedAt: Date, elapsedSeconds: Int) {
+    func recordCancellation(
+        sessionID: UUID,
+        tea: Tea,
+        startedAt: Date,
+        elapsedSeconds: Int,
+        infusionNumber: Int = 1
+    ) {
         guard !sessions.contains(where: { $0.id == sessionID }) else { return }
         sessions.append(
             BrewSession(
@@ -51,7 +64,8 @@ final class BrewSessionStore: ObservableObject {
                 teaSnapshotName: tea.name,
                 startedAt: startedAt,
                 cancelledAt: Date(),
-                actualSteepSeconds: elapsedSeconds
+                actualSteepSeconds: elapsedSeconds,
+                infusionNumber: max(1, infusionNumber)
             )
         )
         saveSessions()

@@ -28,6 +28,22 @@ final class BrewSessionStoreTests: XCTestCase {
         XCTAssertEqual(restoredStore.sessions.filter { $0.id == sessionID }.count, 1)
     }
 
+    func testRecordsInfusionNumber() {
+        let store = BrewSessionStore(modelContainer: SteeprModelContainer.make(inMemory: true))
+        let tea = testTea()
+        let sessionID = UUID()
+
+        store.recordCompletion(
+            sessionID: sessionID,
+            tea: tea,
+            startedAt: Date(),
+            durationSeconds: 150,
+            infusionNumber: 2
+        )
+
+        XCTAssertEqual(store.sessions.first?.infusionNumber, 2)
+    }
+
     private func testTea() -> Tea {
         Tea(
             name: "Test Tea",
