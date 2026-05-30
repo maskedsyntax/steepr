@@ -340,7 +340,7 @@ const faqs = [
         </article>
         <article class="document-section">
           <h2>Contact</h2>
-          <p>For privacy questions, contact <a href="mailto:support@maskedsyntax.com">Aftaab Siddiqui</a>.</p>
+          <p>For privacy questions, contact <a href="mailto:aftaab@aftaab.dev">Aftaab Siddiqui</a>.</p>
         </article>
       </section>
     </main>
@@ -351,7 +351,7 @@ const faqs = [
         <h1>Support</h1>
         <p>
           For help with Steepr, contact
-          <a href="mailto:support@maskedsyntax.com">Aftaab Siddiqui</a>.
+          <a href="mailto:aftaab@aftaab.dev">Aftaab Siddiqui</a>.
         </p>
       </section>
 
@@ -364,7 +364,7 @@ const faqs = [
         <article class="document-section">
           <h3>How do I contact support?</h3>
           <p>
-            Email <a href="mailto:support@maskedsyntax.com">Aftaab Siddiqui</a>
+            Email <a href="mailto:aftaab@aftaab.dev">Aftaab Siddiqui</a>
             with your device model, iOS or watchOS version, and a short description of the issue.
           </p>
         </article>

@@ -51,4 +51,4 @@ You can delete custom teas and brew history in the app. Deleting the app removes
 
 For privacy questions, contact:
 
-support@maskedsyntax.com
+aftaab@aftaab.dev

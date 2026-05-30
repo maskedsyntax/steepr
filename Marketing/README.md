@@ -11,6 +11,6 @@ Routes:
 Before launch:
 
 - Replace App Store placeholders with the final App Store URL.
-- Confirm support email routing for `support@maskedsyntax.com`.
+- Confirm support email routing for `aftaab@aftaab.dev`.
 - Re-check the privacy policy against the final shipped capabilities in App Store Connect.
 - Capture final App Store screenshots on real devices or release simulators.
