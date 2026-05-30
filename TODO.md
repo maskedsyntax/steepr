@@ -69,10 +69,10 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 - [ ] Capture required iPhone screenshots for App Store Connect.
 - [x] Capture required iPad screenshots if the app remains universal: not required for iPhone-only v1.
 - [x] Create privacy policy and marketing site content.
-- [ ] Publish production privacy policy and support URLs.
+- [x] Publish production privacy policy and support URLs.
 - [x] Run unsigned Release build.
-- [ ] Run signed archive validation.
-- [ ] Run device and TestFlight QA.
+- [x] Run signed archive validation.
+- [x] Run device and TestFlight QA.
 
 ## Deferred After V1
 
