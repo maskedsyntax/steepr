@@ -78,6 +78,6 @@ final class PurchaseCoordinator: ObservableObject {
     }
 
     var priceText: String {
-        proProduct?.displayPrice ?? "$4.99"
+        proProduct?.displayPrice ?? "$5.99"
     }
 }

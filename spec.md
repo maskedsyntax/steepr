@@ -5,7 +5,7 @@
 **Platforms:** iPhone (iOS 17+), Apple Watch (watchOS 10+)
 **Language:** Swift 5.9+, SwiftUI-first
 **Distribution:** App Store (US/global)
-**Monetization:** Free download + one-time Pro unlock (non-consumable IAP, $4.99, Family Sharing enabled)
+**Monetization:** Free download + one-time Pro unlock (non-consumable IAP, $5.99, Family Sharing enabled)
 **Developer:** Aftaab Siddiqui (individual App Store account)
 **Bundle ID:** `com.steepr.app` (suggested)
 **Marketing site:** https://steepr.maskedsyntax.com
@@ -63,7 +63,7 @@ It's a good app idea with a 70% well-shaped feature list. v1 should ruthlessly c
 | Visual language | SF Symbols + tinted color per tea | Scales to Watch, Live Activity, Dynamic Island, complications without an asset pipeline. |
 | Custom teas (free) | 3 maximum | Pushes power users to Pro without blocking casual use. |
 | Custom teas (Pro) | Unlimited | Core Pro benefit. |
-| Monetization | Free + one-time Pro unlock, $4.99 USD, Family Sharing on | Low-friction price for a utility; Family Sharing turns a single purchase into household goodwill at negligible revenue impact. |
+| Monetization | Free + one-time Pro unlock, $5.99 USD, Family Sharing on | Low-friction price for a utility; Family Sharing turns a single purchase into household goodwill at negligible revenue impact. |
 | Multi-timer | Not supported in v1 | Complexity vs. value mismatch. |
 | Caffeine tracking | Pro feature, v1.1 | Out of v1 scope per critique above. |
 | Brew Journal, Scanner, Strength Profiles | Roadmap, not v1 | Out of v1. |
@@ -189,7 +189,7 @@ Each row has a leading star toggle that promotes the tea to the Watch favorites 
 
 | Sheet | Trigger | Notes |
 |---|---|---|
-| `PaywallView` | Tap Pro row, attempt 4th custom tea, attempt Strong haptic | Single-screen, hero illustration (SF Symbol composition), feature bullets, $4.99 buy button, "Restore" small text link below. |
+| `PaywallView` | Tap Pro row, attempt 4th custom tea, attempt Strong haptic | Single-screen, hero illustration (SF Symbol composition), feature bullets, $5.99 buy button, "Restore" small text link below. |
 | `AddTeaSheet` | "+" in Library | See 4.2. |
 | `TimerCompleteSheet` | Timer completes while Brew tab is not foreground | Optional — modal that says "Your [tea] is ready" with Brew Again / Done. |
 | `OnboardingView` | First launch | 3 pages: welcome, pick 3 starter teas, notification permission prompt. |
@@ -755,7 +755,7 @@ No events for: which tea was added (privacy), what notes the user wrote, brew hi
 
 ### 22.2 Pricing
 
-- US: $4.99 one-time, non-consumable
+- US: $5.99 one-time, non-consumable
 - Tier 5 in App Store Connect
 - Localized via App Store automatic pricing
 - **Family Sharing: enabled** in App Store Connect product config
@@ -764,7 +764,7 @@ No events for: which tea was added (privacy), what notes the user wrote, brew hi
 
 1. User triggers paywall (Settings → Pro, or 4th custom tea, or Strong haptic).
 2. `PaywallView` sheet appears.
-3. "Buy Steepr Pro — $4.99" button calls `Product.purchase()`.
+3. "Buy Steepr Pro — $5.99" button calls `Product.purchase()`.
 4. On success, `Transaction.finish()` and update `UserPreferences.proPurchased`.
 5. On any in-flight pending transaction or family-shared entitlement detected at launch, app silently unlocks Pro. Family Sharing means a Pro purchase by any family organizer or member unlocks the app for everyone in the Family group — handled transparently by `Transaction.currentEntitlements`.
 
@@ -841,7 +841,7 @@ A single-page marketing site is required for the App Store submission (privacy a
 1. **Hero** — App icon, "Steepr — The perfect cup, every time.", "Available on the App Store" badge, one-line tagline.
 2. **The wrist-first promise** — single sentence + Watch screenshot.
 3. **Feature grid** — 6 cards: presets, Live Activities, complications, Siri, widgets, Pro sync. SF Symbol illustrations matching the in-app palette.
-4. **Steepr Pro** — price ($4.99 one-time), Family Sharing badge, bullet list of Pro benefits, second App Store CTA.
+4. **Steepr Pro** — price ($5.99 one-time), Family Sharing badge, bullet list of Pro benefits, second App Store CTA.
 5. **Privacy first** — "No accounts. No ads. No tracking." paragraph + link to /privacy.
 6. **Footer** — © 2026 Aftaab Siddiqui · Privacy · Support · Press.
 
@@ -901,7 +901,7 @@ All founder-level decisions are now locked.
 2. **App Icon:** Founder-provided. Drop the 1024×1024 master into the `AppIcon` slot of `Assets.xcassets`; supply a monochrome variant for iOS 18 Tinted mode.
 3. **Marketing site:** steepr.maskedsyntax.com. Routes and content defined in §23A. Must be live before App Store submission (privacy + support URLs are mandatory).
 4. **Developer account:** Individual — Aftaab Siddiqui. Apple Developer Program enrollment required ($99/yr). Seller name will display as "Aftaab Siddiqui" on the App Store listing.
-5. **Pricing:** $4.99 one-time, Tier 5. Family Sharing enabled at the IAP product level.
+5. **Pricing:** $5.99 one-time, Tier 5. Family Sharing enabled at the IAP product level.
 
 ---
 
