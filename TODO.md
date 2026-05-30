@@ -54,9 +54,9 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 ## App Store Readiness
 
 - [x] Add StoreKit configuration for local purchase testing.
-- [ ] Verify product ID `com.steepr.app.pro` in App Store Connect.
-- [ ] Add production App Group, iCloud, notification, and in-app purchase capabilities.
-- [ ] Add Apple Developer team signing settings for the iOS app and widget targets.
+- [x] Verify product ID `com.steepr.app.pro` in App Store Connect.
+- [x] Add production App Group, iCloud, notification, and in-app purchase capabilities.
+- [x] Add Apple Developer team signing settings for the iOS app and widget targets.
 - [x] Add privacy manifest files for the app and widget targets.
 - [x] Declare required-reason API usage for App Group `UserDefaults` access.
 - [x] Enable Live Activities in the iOS app Info.plist with `NSSupportsLiveActivities`.
