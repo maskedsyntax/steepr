@@ -27,6 +27,7 @@ final class PurchaseCoordinator: ObservableObject {
 
     func loadProducts() async {
         guard proProduct == nil else { return }
+        errorMessage = nil
         isLoading = true
         defer { isLoading = false }
 
@@ -38,6 +39,7 @@ final class PurchaseCoordinator: ObservableObject {
     }
 
     func purchasePro(store: TeaStore, brewSessionStore: BrewSessionStore? = nil) async {
+        errorMessage = nil
         await loadProducts()
         guard let proProduct else {
             errorMessage = "Steepr Pro is not available right now."

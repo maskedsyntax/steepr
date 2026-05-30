@@ -68,16 +68,6 @@ struct PaywallView: View {
                 }
                 .frame(maxWidth: .infinity)
 
-                #if DEBUG
-                Button("Unlock for Debug") {
-                    teaStore.preferences.proPurchased = true
-                    dismiss()
-                }
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity)
-                #endif
-
                 if let errorMessage = purchaseCoordinator.errorMessage {
                     Text(errorMessage)
                         .font(.footnote)
