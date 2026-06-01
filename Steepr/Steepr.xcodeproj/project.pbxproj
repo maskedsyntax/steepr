@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		52B000012FB8C00000A2D8F5 /* SteeprWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 52B000022FB8C00000A2D8F5 /* SteeprWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52C000012FB8D00000A2D8F5 /* SteeprComplications.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 52C000022FB8D00000A2D8F5 /* SteeprComplications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		52D000012FB8E00000A2D8F5 /* SteeprWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 52A000012FB8A00000A2D8F5 /* SteeprWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +26,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 52C000092FB8D00000A2D8F5;
 			remoteInfo = SteeprComplications;
+		};
+		52D0000C2FB8E00000A2D8F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51E9FA322FB83F1E00A2D8F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52A000082FB8A00000A2D8F5;
+			remoteInfo = SteeprWatch;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -49,6 +57,17 @@
 				52C000012FB8D00000A2D8F5 /* SteeprComplications.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52D000042FB8E00000A2D8F5 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				52D000012FB8E00000A2D8F5 /* SteeprWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -173,11 +192,13 @@
 				51E9FA372FB83F1E00A2D8F5 /* Frameworks */,
 				51E9FA382FB83F1E00A2D8F5 /* Resources */,
 				52B000042FB8C00000A2D8F5 /* Embed App Extensions */,
+				52D000042FB8E00000A2D8F5 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				52B0000D2FB8C00000A2D8F5 /* PBXTargetDependency */,
+				52D0000D2FB8E00000A2D8F5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				51E9FA3C2FB83F1E00A2D8F5 /* ../Sources/Steepr */,
@@ -375,6 +396,11 @@
 			isa = PBXTargetDependency;
 			target = 52C000092FB8D00000A2D8F5 /* SteeprComplications */;
 			targetProxy = 52C0000C2FB8D00000A2D8F5 /* PBXContainerItemProxy */;
+		};
+		52D0000D2FB8E00000A2D8F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52A000082FB8A00000A2D8F5 /* SteeprWatch */;
+			targetProxy = 52D0000C2FB8E00000A2D8F5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -589,7 +615,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -623,7 +649,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
