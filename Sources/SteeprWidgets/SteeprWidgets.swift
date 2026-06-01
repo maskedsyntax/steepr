@@ -461,7 +461,7 @@ private struct WidgetActiveTimerSnapshot: Codable, Equatable {
 
     static func load() -> WidgetActiveTimerSnapshot? {
         guard
-            let data = UserDefaults(suiteName: "group.com.steepr.app")?.data(forKey: storageKey),
+            let data = UserDefaults(suiteName: "group.com.maskedsyntax.Steepr")?.data(forKey: storageKey),
             let snapshot = try? JSONDecoder().decode(WidgetActiveTimerSnapshot.self, from: data)
         else {
             return nil
@@ -482,7 +482,7 @@ private struct WidgetActiveTimerSnapshot: Codable, Equatable {
     }
 
     static func cancel() {
-        UserDefaults(suiteName: "group.com.steepr.app")?.removeObject(forKey: storageKey)
+        UserDefaults(suiteName: "group.com.maskedsyntax.Steepr")?.removeObject(forKey: storageKey)
     }
 
     static func start(tea: WidgetTea) {
@@ -506,7 +506,7 @@ private struct WidgetActiveTimerSnapshot: Codable, Equatable {
 
     private static func save(_ snapshot: WidgetActiveTimerSnapshot) {
         guard let data = try? JSONEncoder().encode(snapshot) else { return }
-        UserDefaults(suiteName: "group.com.steepr.app")?.set(data, forKey: storageKey)
+        UserDefaults(suiteName: "group.com.maskedsyntax.Steepr")?.set(data, forKey: storageKey)
     }
 }
 
@@ -545,7 +545,7 @@ private struct WidgetFavoriteTeasSnapshot: Codable, Equatable {
 
     static func loadFavorites() -> [WidgetTea] {
         guard
-            let data = UserDefaults(suiteName: "group.com.steepr.app")?.data(forKey: storageKey),
+            let data = UserDefaults(suiteName: "group.com.maskedsyntax.Steepr")?.data(forKey: storageKey),
             let snapshot = try? JSONDecoder().decode(WidgetFavoriteTeasSnapshot.self, from: data),
             !snapshot.teas.isEmpty
         else {
@@ -564,7 +564,7 @@ private struct WidgetUserPreferencesSnapshot: Codable, Equatable {
 
     static func load() -> WidgetUserPreferencesSnapshot? {
         guard
-            let data = UserDefaults(suiteName: "group.com.steepr.app")?.data(forKey: storageKey),
+            let data = UserDefaults(suiteName: "group.com.maskedsyntax.Steepr")?.data(forKey: storageKey),
             let snapshot = try? JSONDecoder().decode(WidgetUserPreferencesSnapshot.self, from: data)
         else {
             return nil
