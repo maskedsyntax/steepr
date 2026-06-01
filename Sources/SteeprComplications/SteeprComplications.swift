@@ -151,7 +151,7 @@ private struct WatchActiveTimerSnapshot: Codable, Equatable {
 
     static func load() -> WatchActiveTimerSnapshot? {
         guard
-            let data = UserDefaults(suiteName: "group.com.maskedsyntax.Steepr")?.data(forKey: storageKey),
+            let data = UserDefaults(suiteName: "group.com.maskedsyntax.steepr")?.data(forKey: storageKey),
             let snapshot = try? JSONDecoder().decode(WatchActiveTimerSnapshot.self, from: data)
         else {
             return nil

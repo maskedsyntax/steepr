@@ -23,7 +23,7 @@ final class WatchTimerCoordinator: ObservableObject {
     private var endDate: Date?
     private var pausedRemainingSeconds = 0
     private var preferences: UserPreferences = .defaults
-    private let sharedDefaults = UserDefaults(suiteName: "group.com.maskedsyntax.Steepr") ?? .standard
+    private let sharedDefaults = UserDefaults(suiteName: "group.com.maskedsyntax.steepr") ?? .standard
 
     private let completionNotificationIdentifier = "steepr.watch.brew.complete"
     private let preAlertNotificationIdentifier = "steepr.watch.brew.pre-alert"

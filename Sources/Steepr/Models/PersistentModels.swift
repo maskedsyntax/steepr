@@ -169,7 +169,7 @@ final class PersistentBrewSession {
 }
 
 enum SteeprModelContainer {
-    static let cloudKitContainerIdentifier = "iCloud.com.maskedsyntax.Steepr"
+    static let cloudKitContainerIdentifier = "iCloud.com.maskedsyntax.steepr"
     static let shared = make()
 
     static func make(inMemory: Bool = false, cloudKitEnabled: Bool = false) -> ModelContainer {
