@@ -16,6 +16,7 @@ const navItems = [
 
 const currentPage = ref(props.page)
 const appStoreUrl = 'https://apps.apple.com/us/app/steepr/id6775478425'
+const koFiUrl = 'https://ko-fi.com/aftaabsiddiqui'
 
 const setPageFromPath = () => {
   const path = window.location.pathname
@@ -390,6 +391,21 @@ const faqs = [
         <ul class="check-list">
           <li v-for="item in proItems" :key="item">{{ item }}</li>
         </ul>
+      </section>
+
+      <section class="support-band" aria-labelledby="support-title">
+        <div class="support-mark" aria-hidden="true">
+          <span></span>
+        </div>
+        <div>
+          <p class="eyebrow">Support independent apps</p>
+          <h2 id="support-title">Enjoying Steepr?</h2>
+          <p>
+            Steepr is built and maintained independently. If it makes your tea routine
+            calmer, you can support future updates with a small coffee.
+          </p>
+        </div>
+        <a class="button support-button" :href="koFiUrl" target="_blank" rel="noopener">Buy me a coffee</a>
       </section>
 
       <section id="notify" class="final-cta" aria-labelledby="launch-title">

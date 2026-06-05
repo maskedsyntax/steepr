@@ -547,6 +547,7 @@ p {
 .feature-band,
 .screenshot-band,
 .apple-panel,
+.support-band,
 .final-cta {
   margin: 0 clamp(1rem, 4vw, 4rem);
 }
@@ -779,6 +780,82 @@ p {
   color: #ffffff;
   content: "✓";
   font-size: 0.8rem;
+}
+
+.support-band {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 1px solid rgba(49, 89, 54, 0.1);
+  border-radius: 2rem;
+  background:
+    radial-gradient(circle at 88% 20%, rgba(184, 115, 47, 0.12), transparent 14rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(247, 250, 244, 0.86));
+  box-shadow: 0 18px 46px rgba(49, 89, 54, 0.09);
+}
+
+.support-mark {
+  width: clamp(4rem, 8vw, 5.4rem);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 1.35rem;
+  background: var(--cream);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 115, 47, 0.12),
+    0 16px 34px rgba(49, 89, 54, 0.1);
+}
+
+.support-mark span {
+  position: relative;
+  width: 2.3rem;
+  height: 1.55rem;
+  border-radius: 0.35rem 0.35rem 0.7rem 0.7rem;
+  background: var(--green);
+}
+
+.support-mark span::before {
+  position: absolute;
+  top: 0.25rem;
+  right: -0.65rem;
+  width: 0.82rem;
+  height: 0.82rem;
+  border: 0.28rem solid var(--green);
+  border-left: 0;
+  border-radius: 0 999px 999px 0;
+  content: "";
+}
+
+.support-mark span::after {
+  position: absolute;
+  left: 0.18rem;
+  right: 0.18rem;
+  bottom: -0.48rem;
+  height: 0.22rem;
+  border-radius: 999px;
+  background: var(--green);
+  content: "";
+}
+
+.support-band h2 {
+  margin-bottom: 0.45rem;
+  font-size: clamp(1.55rem, 3vw, 2.4rem);
+}
+
+.support-band p:not(.eyebrow) {
+  max-width: 46rem;
+  margin-bottom: 0;
+}
+
+.support-button {
+  flex: 0 0 auto;
+  background: #ffffff;
+  color: var(--green-strong);
+  box-shadow:
+    inset 0 0 0 1px rgba(49, 89, 54, 0.12),
+    0 14px 30px rgba(49, 89, 54, 0.08);
 }
 
 .final-cta {
@@ -1037,9 +1114,18 @@ p {
   }
 
   .final-cta,
+  .support-band,
   .site-footer {
     align-items: flex-start;
+  }
+
+  .final-cta,
+  .site-footer {
     flex-direction: column;
+  }
+
+  .support-band {
+    grid-template-columns: 1fr;
   }
 
   .final-cta .cta-button {
