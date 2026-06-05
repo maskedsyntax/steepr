@@ -76,6 +76,7 @@ fastlane/test_output
 Steepr.app/
 Steepr/build/
 Steepr.zip
+*.xcarchive/
 native-icon.png
 icon_gen.swift
 AppIcon.iconset/
@@ -83,3 +84,7 @@ AppIcon.iconset/
 # Website
 Website/node_modules/
 Website/dist/
+
+# App Store listing metadata (kept local, not tracked)
+appmeta*.txt
+upwork_portfolio.txt

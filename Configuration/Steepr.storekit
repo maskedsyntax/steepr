@@ -15,7 +15,7 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "com.steepr.app.pro",
+      "productID" : "com.maskedsyntax.steepr.pro",
       "referenceName" : "Steepr Pro",
       "type" : "NonConsumable"
     }

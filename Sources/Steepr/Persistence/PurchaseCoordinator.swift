@@ -4,7 +4,7 @@ import StoreKit
 
 @MainActor
 final class PurchaseCoordinator: ObservableObject {
-    static let proProductID = "com.steepr.app.pro"
+    static let proProductID = "com.maskedsyntax.steepr.pro"
 
     @Published private(set) var proProduct: Product?
     @Published private(set) var isLoading = false
