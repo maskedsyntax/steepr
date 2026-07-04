@@ -8,6 +8,7 @@ struct LibraryView: View {
 
     @State private var showingAddTea = false
     @State private var showingPaywall = false
+    @State private var showingFavoriteLimit = false
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -18,7 +19,9 @@ struct LibraryView: View {
                             .foregroundStyle(.secondary)
                     } else {
                         ForEach(teaStore.customTeas) { tea in
-                            TeaRow(tea: tea)
+                            TeaRow(tea: tea) {
+                                showingFavoriteLimit = true
+                            }
                         }
                         .onDelete { offsets in
                             for index in offsets {
@@ -45,7 +48,9 @@ struct LibraryView: View {
 
                 Section("Built-in") {
                     ForEach(teaStore.builtInTeas) { tea in
-                        TeaRow(tea: tea)
+                        TeaRow(tea: tea) {
+                            showingFavoriteLimit = true
+                        }
                     }
                 }
             }
@@ -66,6 +71,11 @@ struct LibraryView: View {
             .sheet(isPresented: $showingPaywall) {
                 PaywallView(trigger: "Custom teas")
             }
+            .alert("Favorite limit reached", isPresented: $showingFavoriteLimit) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Keep up to six favorites for quick brewing.")
+            }
         }
     }
 }
@@ -73,10 +83,15 @@ struct LibraryView: View {
 private struct TeaRow: View {
     @EnvironmentObject private var teaStore: TeaStore
     let tea: Tea
+    let onFavoriteLimitReached: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
             Button {
+                if !tea.isFavorite && teaStore.favoriteTeas.count >= 6 {
+                    onFavoriteLimitReached()
+                    return
+                }
                 teaStore.toggleFavorite(tea)
             } label: {
                 Image(systemName: tea.isFavorite ? "star.fill" : "star")

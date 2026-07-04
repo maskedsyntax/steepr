@@ -37,13 +37,6 @@ struct ContentView: View {
                 .tag(2)
         }
         .tint(TeaColorSlot.green.color)
-        .sheet(isPresented: Binding(
-            get: { !teaStore.preferences.onboardingComplete },
-            set: { if !$0 { teaStore.setOnboardingComplete(true) } }
-        )) {
-            OnboardingView()
-                .interactiveDismissDisabled()
-        }
         .task {
             timerCoordinator.restoreIfNeeded(preferences: teaStore.preferences)
         }

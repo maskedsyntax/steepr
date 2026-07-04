@@ -81,9 +81,14 @@ struct BrewView: View {
 
     private var idleContent: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("What are you brewing?")
-                .font(.largeTitle.bold())
-                .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 6) {
+                Text("What are you brewing?")
+                    .font(.largeTitle.bold())
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("Start a favorite tea or browse the full library.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
 
             if teaStore.favoriteTeas.isEmpty {
                 VStack(spacing: 10) {
@@ -103,6 +108,7 @@ struct BrewView: View {
                     selectedTab = 1
                 }
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
             } else {
                 LazyVGrid(columns: gridColumns, spacing: 12) {
                     ForEach(teaStore.favoriteTeas) { tea in
@@ -120,8 +126,10 @@ struct BrewView: View {
                     selectedTab = 1
                 } label: {
                     Label("Browse all teas", systemImage: "books.vertical")
+                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
+                .controlSize(.large)
             }
         }
     }
@@ -147,6 +155,7 @@ struct BrewView: View {
                 VStack(spacing: 8) {
                     Text(tea.name)
                         .font(.title.bold())
+                        .multilineTextAlignment(.center)
                     Text(formatTemperature(tea.temperatureCelsius, useCelsius: teaStore.preferences.useCelsius))
                         .font(.headline)
                         .foregroundStyle(.secondary)
@@ -164,6 +173,7 @@ struct BrewView: View {
                         }
                     } label: {
                         Label(timerCoordinator.state == .running ? "Pause" : "Resume", systemImage: timerCoordinator.state == .running ? "pause.fill" : "play.fill")
+                            .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
 
@@ -172,9 +182,11 @@ struct BrewView: View {
                         timerCoordinator.cancel()
                     } label: {
                         Label("Cancel", systemImage: "xmark")
+                            .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
                 }
+                .frame(maxWidth: 420)
             }
         }
         .frame(maxWidth: .infinity)
@@ -192,21 +204,29 @@ struct BrewView: View {
                 Text("Your \(tea.name) is ready.")
                     .font(.title3)
                     .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
                 Text("Infusion \(timerCoordinator.infusionNumber) complete")
                     .font(.footnote.weight(.medium))
                     .foregroundStyle(.secondary)
 
                 HStack(spacing: 12) {
-                    Button("Re-steep") {
+                    Button {
                         timerCoordinator.reSteep(preferences: teaStore.preferences)
+                    } label: {
+                        Label("Re-steep", systemImage: "arrow.clockwise")
+                            .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
 
-                    Button("Done") {
+                    Button {
                         timerCoordinator.done()
+                    } label: {
+                        Label("Done", systemImage: "checkmark")
+                            .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
                 }
+                .frame(maxWidth: 420)
             }
         }
         .frame(maxWidth: .infinity)

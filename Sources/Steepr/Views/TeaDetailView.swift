@@ -10,6 +10,7 @@ struct TeaDetailView: View {
 
     @State private var showingEdit = false
     @State private var showingPaywall = false
+    @State private var showingFavoriteLimit = false
     @State private var teaToEdit: Tea?
 
     private var currentTea: Tea {
@@ -49,9 +50,13 @@ struct TeaDetailView: View {
                     .controlSize(.large)
 
                     Button {
+                        if !currentTea.isFavorite && teaStore.favoriteTeas.count >= 6 {
+                            showingFavoriteLimit = true
+                            return
+                        }
                         teaStore.toggleFavorite(currentTea)
                     } label: {
-                        Label(currentTea.isFavorite ? "Remove from Watch favorites" : "Add to Watch favorites", systemImage: currentTea.isFavorite ? "star.slash" : "star")
+                        Label(currentTea.isFavorite ? "Remove from Favorites" : "Add to Favorites", systemImage: currentTea.isFavorite ? "star.slash" : "star")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
@@ -105,6 +110,11 @@ struct TeaDetailView: View {
         }
         .sheet(isPresented: $showingPaywall) {
             PaywallView(trigger: "Custom teas")
+        }
+        .alert("Favorite limit reached", isPresented: $showingFavoriteLimit) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Keep up to six favorites for quick brewing.")
         }
     }
 }

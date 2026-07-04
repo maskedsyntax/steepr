@@ -113,14 +113,14 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
 
 extension Tea {
     static let builtIns: [Tea] = [
-        Tea(name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, caffeineMilligrams: 30, notes: "Lower heat keeps green tea smooth.", isBuiltIn: true, isFavorite: true, favoriteRank: 0),
-        Tea(name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, caffeineMilligrams: 45, notes: "A full, strong steep works best near boiling.", isBuiltIn: true, isFavorite: true, favoriteRank: 1),
-        Tea(name: "Oolong", symbolName: "flame.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, caffeineMilligrams: 35, notes: "Balanced heat opens darker and lighter oolongs.", isBuiltIn: true, isFavorite: true, favoriteRank: 2),
-        Tea(name: "White", symbolName: "cloud.fill", colorSlot: .white, steepSeconds: 180, temperatureCelsius: 75, caffeineMilligrams: 25, notes: "Delicate leaves prefer a cooler cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
+        Tea(name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, notes: "Lower heat keeps green tea smooth.", isBuiltIn: true, isFavorite: true, favoriteRank: 0),
+        Tea(name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "A full, strong steep works best near boiling.", isBuiltIn: true, isFavorite: true, favoriteRank: 1),
+        Tea(name: "Oolong", symbolName: "flame.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "Balanced heat opens darker and lighter oolongs.", isBuiltIn: true, isFavorite: true, favoriteRank: 2),
+        Tea(name: "White", symbolName: "cloud.fill", colorSlot: .white, steepSeconds: 180, temperatureCelsius: 75, notes: "Delicate leaves prefer a cooler cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
         Tea(name: "Herbal", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, caffeineMilligrams: nil, notes: "Most herbal blends want a longer infusion.", isBuiltIn: true, isFavorite: true, favoriteRank: 3),
-        Tea(name: "Chai", symbolName: "sparkles", colorSlot: .chai, steepSeconds: 300, temperatureCelsius: 100, caffeineMilligrams: 45, notes: "Spices need time and heat to bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 4),
-        Tea(name: "Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 95, caffeineMilligrams: 40, notes: "Rinse first if you prefer a cleaner cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
-        Tea(name: "Matcha", symbolName: "circle.hexagongrid.fill", colorSlot: .matcha, steepSeconds: 30, temperatureCelsius: 75, caffeineMilligrams: 65, notes: "Whisk briskly after a short bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 5)
+        Tea(name: "Chai", symbolName: "sparkles", colorSlot: .chai, steepSeconds: 300, temperatureCelsius: 100, notes: "Spices need time and heat to bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 4),
+        Tea(name: "Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 95, notes: "Rinse first if you prefer a cleaner cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
+        Tea(name: "Matcha", symbolName: "circle.hexagongrid.fill", colorSlot: .matcha, steepSeconds: 30, temperatureCelsius: 75, notes: "Whisk briskly after a short bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 5)
     ]
 }
 

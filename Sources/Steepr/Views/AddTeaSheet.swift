@@ -11,15 +11,24 @@ struct AddTeaSheet: View {
     @State private var colorSlot: TeaColorSlot
     @State private var steepSeconds: Int
     @State private var temperatureCelsius: Int
-    @State private var caffeineMilligrams: Int
-    @State private var includesCaffeine: Bool
     @State private var notes: String
 
-    private let symbols = [
-        "leaf.fill", "cup.and.saucer.fill", "flame.fill", "cloud.fill",
-        "camera.macro", "sparkles", "mountain.2.fill", "circle.hexagongrid.fill",
-        "drop.fill", "sun.max.fill", "moon.fill", "heart.fill",
-        "seal.fill", "mug.fill", "thermometer.medium", "timer"
+    private let symbolOptions = [
+        TeaSymbolOption(name: "Leaf", symbolName: "leaf.fill"),
+        TeaSymbolOption(name: "Cup", symbolName: "cup.and.saucer.fill"),
+        TeaSymbolOption(name: "Heat", symbolName: "flame.fill"),
+        TeaSymbolOption(name: "Steam", symbolName: "cloud.fill"),
+        TeaSymbolOption(name: "Herbal", symbolName: "camera.macro"),
+        TeaSymbolOption(name: "Aromatic", symbolName: "sparkles"),
+        TeaSymbolOption(name: "Mountain", symbolName: "mountain.2.fill"),
+        TeaSymbolOption(name: "Matcha", symbolName: "circle.hexagongrid.fill"),
+        TeaSymbolOption(name: "Water", symbolName: "drop.fill"),
+        TeaSymbolOption(name: "Morning", symbolName: "sun.max.fill"),
+        TeaSymbolOption(name: "Evening", symbolName: "moon.fill"),
+        TeaSymbolOption(name: "Favorite", symbolName: "heart.fill"),
+        TeaSymbolOption(name: "Classic", symbolName: "seal.fill"),
+        TeaSymbolOption(name: "Temperature", symbolName: "thermometer.medium"),
+        TeaSymbolOption(name: "Timer", symbolName: "timer")
     ]
 
     init(editingTea: Tea? = nil) {
@@ -29,8 +38,6 @@ struct AddTeaSheet: View {
         _colorSlot = State(initialValue: editingTea?.colorSlot ?? .customA)
         _steepSeconds = State(initialValue: editingTea?.steepSeconds ?? 180)
         _temperatureCelsius = State(initialValue: editingTea?.temperatureCelsius ?? 85)
-        _caffeineMilligrams = State(initialValue: editingTea?.caffeineMilligrams ?? 0)
-        _includesCaffeine = State(initialValue: editingTea?.caffeineMilligrams != nil)
         _notes = State(initialValue: editingTea?.notes ?? "")
     }
 
@@ -44,8 +51,9 @@ struct AddTeaSheet: View {
                         #endif
 
                     Picker("Symbol", selection: $symbolName) {
-                        ForEach(symbols, id: \.self) { symbol in
-                            Label(symbol, systemImage: symbol).tag(symbol)
+                        ForEach(symbolOptions) { option in
+                            Label(option.name, systemImage: option.symbolName)
+                                .tag(option.symbolName)
                         }
                     }
 
@@ -69,14 +77,6 @@ struct AddTeaSheet: View {
 
                     Stepper(value: $temperatureCelsius, in: 60...100, step: 1) {
                         LabeledContent("Temperature", value: formatTemperature(temperatureCelsius, useCelsius: teaStore.preferences.useCelsius))
-                    }
-
-                    Toggle("Caffeine estimate", isOn: $includesCaffeine)
-
-                    if includesCaffeine {
-                        Stepper(value: $caffeineMilligrams, in: 0...150, step: 5) {
-                            LabeledContent("Caffeine", value: "\(caffeineMilligrams) mg")
-                        }
                     }
                 }
 
@@ -121,7 +121,6 @@ struct AddTeaSheet: View {
         tea.colorSlot = colorSlot
         tea.steepSeconds = steepSeconds
         tea.temperatureCelsius = temperatureCelsius
-        tea.caffeineMilligrams = includesCaffeine ? caffeineMilligrams : nil
         tea.notes = notes
 
         if editingTea == nil {
@@ -131,4 +130,11 @@ struct AddTeaSheet: View {
         }
         dismiss()
     }
+}
+
+private struct TeaSymbolOption: Identifiable {
+    let name: String
+    let symbolName: String
+
+    var id: String { symbolName }
 }

@@ -98,7 +98,7 @@ struct SettingsView: View {
                 }
 
                 Section("Watch") {
-                    NavigationLink("Manage Watch favorites") {
+                    NavigationLink("Manage Favorites") {
                         ManageWatchFavoritesView()
                     }
                     Toggle("Auto-start same tea on complication tap", isOn: $teaStore.preferences.autoStartSameTea)
@@ -217,11 +217,11 @@ private struct ManageWatchFavoritesView: View {
             }
 
             Section {
-                Text("The first six favorites appear on Apple Watch.")
+                Text("The first six favorites appear on Brew and Apple Watch.")
                     .foregroundStyle(.secondary)
             }
         }
-        .navigationTitle("Watch Favorites")
+        .navigationTitle("Favorites")
         #if os(iOS)
         .toolbar {
             EditButton()
