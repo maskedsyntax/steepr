@@ -19,7 +19,7 @@ struct OnboardingView: View {
                 notificationsPage.tag(2)
             }
             #if os(iOS)
-            .tabViewStyle(.page)
+            .tabViewStyle(.page(indexDisplayMode: .never))
             #endif
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -29,112 +29,162 @@ struct OnboardingView: View {
         }
     }
 
-    private var welcomePage: some View {
-        VStack(spacing: 22) {
-            Image("SteeprLogo")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 112, height: 112)
-                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+    // MARK: - Pages
 
-            VStack(spacing: 8) {
-                Text("Steepr")
-                    .font(.largeTitle.bold())
-                Text("The perfect cup, every time.")
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
+    private var welcomePage: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            VStack(spacing: 16) {
+                ZStack {
+                    Circle()
+                        .fill(TeaColorSlot.green.color.opacity(0.12))
+                        .frame(width: 128, height: 128)
+                    Image("SteeprLogo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 84, height: 84)
+                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                }
+
+                VStack(spacing: 6) {
+                    Text("Steepr")
+                        .font(.largeTitle.bold())
+                    Text("The perfect steep, every time.")
+                        .foregroundStyle(.secondary)
+                }
             }
+            .frame(maxWidth: .infinity)
+
+            Spacer()
+
+            VStack(alignment: .leading, spacing: 20) {
+                OnboardingPoint(
+                    symbol: "timer",
+                    title: "Right time, right temperature",
+                    detail: "Every tea type gets its own steep time and temperature."
+                )
+                OnboardingPoint(
+                    symbol: "applewatch",
+                    title: "Brews on your wrist",
+                    detail: "Start and monitor timers directly from Apple Watch."
+                )
+                OnboardingPoint(
+                    symbol: "arrow.clockwise",
+                    title: "Guided re-steeps",
+                    detail: "Timing adjusts automatically for each infusion."
+                )
+            }
+            .padding(.horizontal)
+
+            Spacer()
 
             Button("Get started") {
                 page = 1
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
+            .frame(maxWidth: .infinity)
+            .padding()
         }
-        .padding()
     }
 
     private var favoritesPage: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Pick 3 teas to start.")
-                        .font(.largeTitle.bold())
-                    Text("Choose up to six favorites for quick brewing and Apple Watch.")
-                        .foregroundStyle(.secondary)
-                }
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Pick your teas.")
+                            .font(.largeTitle.bold())
+                        Text("Selected teas appear on your Brew screen and Apple Watch. You can change this any time in Library.")
+                            .foregroundStyle(.secondary)
+                    }
 
-                LazyVGrid(columns: columns, spacing: 12) {
-                    ForEach(teaStore.builtInTeas) { tea in
-                        Button {
-                            teaStore.toggleFavorite(tea)
-                        } label: {
-                            HStack {
-                                TeaIconView(tea: tea, size: 40)
-                                Text(tea.name)
-                                    .font(.headline)
-                                Spacer()
-                                Image(systemName: tea.isFavorite ? "checkmark.circle.fill" : "circle")
-                                    .foregroundStyle(tea.isFavorite ? TeaColorSlot.green.color : .secondary)
+                    LazyVGrid(columns: columns, spacing: 12) {
+                        ForEach(teaStore.builtInTeas) { tea in
+                            Button {
+                                teaStore.toggleFavorite(tea)
+                            } label: {
+                                HStack {
+                                    TeaIconView(tea: tea, size: 40)
+                                    Text(tea.name)
+                                        .font(.headline)
+                                    Spacer()
+                                    Image(systemName: tea.isFavorite ? "checkmark.circle.fill" : "circle")
+                                        .foregroundStyle(tea.isFavorite ? TeaColorSlot.green.color : .secondary)
+                                }
+                                .padding(12)
+                                .background(.background)
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                        .stroke(.quaternary, lineWidth: 1)
+                                }
                             }
-                            .padding(12)
-                            .background(.background)
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .stroke(.quaternary, lineWidth: 1)
-                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
-
-                Button("Continue") {
-                    page = 2
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(teaStore.favoriteTeas.isEmpty)
+                .padding()
             }
+
+            Button("Continue") {
+                page = 2
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .disabled(teaStore.favoriteTeas.isEmpty)
+            .frame(maxWidth: .infinity)
             .padding()
         }
     }
 
     private var notificationsPage: some View {
-        VStack(spacing: 18) {
-            Image(systemName: "applewatch.radiowaves.left.and.right")
-                .font(.system(size: 64, weight: .medium))
-                .foregroundStyle(TeaColorSlot.green.color)
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: 24) {
+                    Image(systemName: "bell.badge.fill")
+                        .font(.system(size: 64, weight: .medium))
+                        .foregroundStyle(TeaColorSlot.green.color)
+                        .padding(.top, 24)
+                        .frame(maxWidth: .infinity)
 
-            VStack(spacing: 8) {
-                Text("Notifications & Watch")
-                    .font(.largeTitle.bold())
-                    .multilineTextAlignment(.center)
-                Text("Steepr alerts you when tea is ready, even if your screen is locked.")
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
+                    VStack(spacing: 8) {
+                        Text("Know the moment it's ready.")
+                            .font(.largeTitle.bold())
+                            .multilineTextAlignment(.center)
+                        Text("Steepr alerts you when your steep is done — even with your screen locked.")
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+                }
+                .padding()
             }
 
-            Button("Allow notifications") {
-                requestNotifications()
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            VStack(spacing: 12) {
+                Button("Allow notifications") {
+                    requestNotifications()
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .frame(maxWidth: .infinity)
 
-            Link("Set up on Watch", destination: URL(string: "https://steepr.maskedsyntax.com/support")!)
-                .buttonStyle(.bordered)
-
-            Button("Done") {
-                finish()
+                Button("Done") {
+                    finish()
+                }
+                .frame(maxWidth: .infinity)
             }
-            .padding(.top, 8)
+            .padding()
         }
-        .padding()
     }
+
+    // MARK: - Actions
 
     private func requestNotifications() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, _ in
             DispatchQueue.main.async {
                 teaStore.preferences.notificationsAuthorized = granted
+                finish()
             }
         }
     }
@@ -142,5 +192,28 @@ struct OnboardingView: View {
     private func finish() {
         teaStore.setOnboardingComplete(true)
         dismiss()
+    }
+}
+
+private struct OnboardingPoint: View {
+    let symbol: String
+    let title: String
+    let detail: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: symbol)
+                .font(.title3)
+                .foregroundStyle(TeaColorSlot.green.color)
+                .frame(width: 28)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.headline)
+                Text(detail)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
     }
 }

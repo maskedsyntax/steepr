@@ -54,6 +54,13 @@ struct ContentView: View {
             TimerCompleteSheet(timerCoordinator: timerCoordinator)
                 .environmentObject(teaStore)
         }
+        .fullScreenCover(isPresented: Binding(
+            get: { !teaStore.preferences.onboardingComplete },
+            set: { _ in }
+        )) {
+            OnboardingView()
+                .environmentObject(teaStore)
+        }
     }
 
     private func recordCompletionIfNeeded() {

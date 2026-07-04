@@ -82,6 +82,8 @@ struct WatchRootView: View {
     private var completedTimer: some View {
         VStack(spacing: 10) {
             if let tea = timerCoordinator.activeTea {
+                let guidedActive = store.preferences.proPurchased && tea.supportsGuidedReSteep
+
                 TeaIcon(tea: tea, size: 48)
                 Text("Done")
                     .font(.title3.bold())
@@ -89,13 +91,28 @@ struct WatchRootView: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
 
+                if guidedActive {
+                    VStack(spacing: 2) {
+                        Text("Infusion \(timerCoordinator.infusionNumber)")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text("Next: \(formatDuration(tea.steepSeconds(forInfusion: timerCoordinator.infusionNumber + 1, proPurchased: true)))")
+                            .font(.caption2.weight(.medium))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
                 HStack(spacing: 8) {
                     Button {
-                        timerCoordinator.brewAgain()
+                        if guidedActive {
+                            timerCoordinator.reSteep(preferences: store.preferences)
+                        } else {
+                            timerCoordinator.brewAgain()
+                        }
                     } label: {
                         Image(systemName: "arrow.clockwise")
                     }
-                    .accessibilityLabel("Brew again")
+                    .accessibilityLabel(guidedActive ? "Start infusion \(timerCoordinator.infusionNumber + 1)" : "Brew again")
 
                     Button {
                         timerCoordinator.done()

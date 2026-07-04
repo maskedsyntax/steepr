@@ -49,12 +49,12 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
 
 extension Tea {
     static let builtIns: [Tea] = [
-        Tea(id: UUID(), name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, caffeineMilligrams: 30, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 0, createdAt: Date(), updatedAt: Date()),
-        Tea(id: UUID(), name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, caffeineMilligrams: 45, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 1, createdAt: Date(), updatedAt: Date()),
-        Tea(id: UUID(), name: "Oolong", symbolName: "flame.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, caffeineMilligrams: 35, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 2, createdAt: Date(), updatedAt: Date()),
+        Tea(id: UUID(), name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, caffeineMilligrams: nil, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 0, createdAt: Date(), updatedAt: Date()),
+        Tea(id: UUID(), name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, caffeineMilligrams: nil, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 1, createdAt: Date(), updatedAt: Date()),
+        Tea(id: UUID(), name: "Oolong", symbolName: "flame.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, caffeineMilligrams: nil, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 2, createdAt: Date(), updatedAt: Date()),
         Tea(id: UUID(), name: "Herbal", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, caffeineMilligrams: nil, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 3, createdAt: Date(), updatedAt: Date()),
-        Tea(id: UUID(), name: "Chai", symbolName: "sparkles", colorSlot: .chai, steepSeconds: 300, temperatureCelsius: 100, caffeineMilligrams: 45, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 4, createdAt: Date(), updatedAt: Date()),
-        Tea(id: UUID(), name: "Matcha", symbolName: "circle.hexagongrid.fill", colorSlot: .matcha, steepSeconds: 30, temperatureCelsius: 75, caffeineMilligrams: 65, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 5, createdAt: Date(), updatedAt: Date())
+        Tea(id: UUID(), name: "Chai", symbolName: "sparkles", colorSlot: .chai, steepSeconds: 300, temperatureCelsius: 100, caffeineMilligrams: nil, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 4, createdAt: Date(), updatedAt: Date()),
+        Tea(id: UUID(), name: "Matcha", symbolName: "circle.hexagongrid.fill", colorSlot: .matcha, steepSeconds: 30, temperatureCelsius: 75, caffeineMilligrams: nil, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 5, createdAt: Date(), updatedAt: Date())
     ]
 }
 
@@ -76,6 +76,9 @@ struct UserPreferences: Codable, Equatable {
     var notificationsAuthorized: Bool
     var onboardingComplete: Bool
     var proPurchased: Bool
+    var hasSeenBrewMilestoneProPrompt: Bool
+    var firstOpenedAt: Date
+    var hasSeenSettingsProPrompt: Bool
 
     static let defaults = UserPreferences(
         useCelsius: true,
@@ -86,8 +89,95 @@ struct UserPreferences: Codable, Equatable {
         autoStartSameTea: false,
         notificationsAuthorized: false,
         onboardingComplete: true,
-        proPurchased: false
+        proPurchased: false,
+        hasSeenBrewMilestoneProPrompt: false,
+        firstOpenedAt: Date(),
+        hasSeenSettingsProPrompt: false
     )
+
+    private enum CodingKeys: String, CodingKey {
+        case useCelsius
+        case preAlertSeconds
+        case hapticStyle
+        case soundEnabled
+        case soundName
+        case autoStartSameTea
+        case notificationsAuthorized
+        case onboardingComplete
+        case proPurchased
+        case hasSeenBrewMilestoneProPrompt
+        case firstOpenedAt
+        case hasSeenSettingsProPrompt
+    }
+
+    init(
+        useCelsius: Bool,
+        preAlertSeconds: Int?,
+        hapticStyle: HapticStyle,
+        soundEnabled: Bool,
+        soundName: String,
+        autoStartSameTea: Bool,
+        notificationsAuthorized: Bool,
+        onboardingComplete: Bool,
+        proPurchased: Bool,
+        hasSeenBrewMilestoneProPrompt: Bool = false,
+        firstOpenedAt: Date = Date(),
+        hasSeenSettingsProPrompt: Bool = false
+    ) {
+        self.useCelsius = useCelsius
+        self.preAlertSeconds = preAlertSeconds
+        self.hapticStyle = hapticStyle
+        self.soundEnabled = soundEnabled
+        self.soundName = soundName
+        self.autoStartSameTea = autoStartSameTea
+        self.notificationsAuthorized = notificationsAuthorized
+        self.onboardingComplete = onboardingComplete
+        self.proPurchased = proPurchased
+        self.hasSeenBrewMilestoneProPrompt = hasSeenBrewMilestoneProPrompt
+        self.firstOpenedAt = firstOpenedAt
+        self.hasSeenSettingsProPrompt = hasSeenSettingsProPrompt
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        useCelsius = try container.decode(Bool.self, forKey: .useCelsius)
+        preAlertSeconds = try container.decodeIfPresent(Int.self, forKey: .preAlertSeconds)
+        hapticStyle = try container.decode(HapticStyle.self, forKey: .hapticStyle)
+        soundEnabled = try container.decode(Bool.self, forKey: .soundEnabled)
+        soundName = try container.decode(String.self, forKey: .soundName)
+        autoStartSameTea = try container.decode(Bool.self, forKey: .autoStartSameTea)
+        notificationsAuthorized = try container.decode(Bool.self, forKey: .notificationsAuthorized)
+        onboardingComplete = try container.decode(Bool.self, forKey: .onboardingComplete)
+        proPurchased = try container.decode(Bool.self, forKey: .proPurchased)
+        hasSeenBrewMilestoneProPrompt = try container.decodeIfPresent(Bool.self, forKey: .hasSeenBrewMilestoneProPrompt) ?? false
+        firstOpenedAt = try container.decodeIfPresent(Date.self, forKey: .firstOpenedAt) ?? Date()
+        hasSeenSettingsProPrompt = try container.decodeIfPresent(Bool.self, forKey: .hasSeenSettingsProPrompt) ?? false
+    }
+}
+
+extension Tea {
+    var guidedReSteepIncrementSeconds: Int {
+        switch colorSlot {
+        case .green, .white: return 15
+        case .oolong, .puerh: return 30
+        case .black, .chai: return 20
+        case .herbal: return 45
+        case .matcha, .customA, .customB: return 0
+        }
+    }
+
+    var supportsGuidedReSteep: Bool {
+        guidedReSteepIncrementSeconds > 0
+    }
+
+    func steepSeconds(forInfusion infusionNumber: Int, proPurchased: Bool) -> Int {
+        let infusion = max(1, infusionNumber)
+        guard proPurchased, infusion > 1, supportsGuidedReSteep else {
+            return steepSeconds
+        }
+        let addedSeconds = guidedReSteepIncrementSeconds * (infusion - 1)
+        return min(steepSeconds + addedSeconds, steepSeconds + 180)
+    }
 }
 
 struct FavoriteTeasSnapshot: Codable, Equatable {

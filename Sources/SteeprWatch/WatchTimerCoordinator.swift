@@ -18,6 +18,7 @@ final class WatchTimerCoordinator: ObservableObject {
     @Published private(set) var state: WatchTimerState = .idle
     @Published private(set) var secondsRemaining = 0
     @Published private(set) var durationSeconds = 0
+    @Published private(set) var infusionNumber = 1
 
     private var timer: AnyCancellable?
     private var endDate: Date?
@@ -34,12 +35,23 @@ final class WatchTimerCoordinator: ObservableObject {
     }
 
     func start(_ tea: Tea, preferences: UserPreferences) {
+        startInternal(tea, preferences: preferences, infusionNumber: 1)
+    }
+
+    func reSteep(preferences: UserPreferences) {
+        guard let tea = activeTea else { return }
+        startInternal(tea, preferences: preferences, infusionNumber: infusionNumber + 1)
+    }
+
+    private func startInternal(_ tea: Tea, preferences: UserPreferences, infusionNumber: Int) {
         cancel()
         self.preferences = preferences
+        self.infusionNumber = infusionNumber
         activeTea = tea
-        durationSeconds = tea.steepSeconds
-        secondsRemaining = tea.steepSeconds
-        endDate = Date().addingTimeInterval(TimeInterval(tea.steepSeconds))
+        let duration = tea.steepSeconds(forInfusion: infusionNumber, proPurchased: preferences.proPurchased)
+        durationSeconds = duration
+        secondsRemaining = duration
+        endDate = Date().addingTimeInterval(TimeInterval(duration))
         state = .running
         scheduleNotifications(for: tea)
         persistTimer()
@@ -76,6 +88,7 @@ final class WatchTimerCoordinator: ObservableObject {
         durationSeconds = 0
         endDate = nil
         pausedRemainingSeconds = 0
+        infusionNumber = 1
         sharedDefaults.removeObject(forKey: WatchActiveTimerSnapshot.storageKey)
     }
 
@@ -135,7 +148,8 @@ final class WatchTimerCoordinator: ObservableObject {
             durationSeconds: durationSeconds,
             secondsRemaining: secondsRemaining,
             endDate: endDate,
-            pausedRemainingSeconds: pausedRemainingSeconds
+            pausedRemainingSeconds: pausedRemainingSeconds,
+            infusionNumber: infusionNumber
         )
 
         guard let data = try? JSONEncoder().encode(snapshot) else { return }
@@ -201,6 +215,7 @@ private struct WatchActiveTimerSnapshot: Codable {
     var secondsRemaining: Int
     var endDate: Date?
     var pausedRemainingSeconds: Int
+    var infusionNumber: Int
 }
 
 private extension WatchTimerState {
