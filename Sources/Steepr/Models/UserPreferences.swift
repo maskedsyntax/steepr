@@ -27,6 +27,8 @@ struct UserPreferences: Codable, Equatable {
     var onboardingComplete: Bool
     var proPurchased: Bool
     var hasSeenBrewMilestoneProPrompt: Bool
+    var firstOpenedAt: Date
+    var hasSeenSettingsProPrompt: Bool
 
     init(
         useCelsius: Bool,
@@ -38,7 +40,9 @@ struct UserPreferences: Codable, Equatable {
         notificationsAuthorized: Bool,
         onboardingComplete: Bool,
         proPurchased: Bool,
-        hasSeenBrewMilestoneProPrompt: Bool = false
+        hasSeenBrewMilestoneProPrompt: Bool = false,
+        firstOpenedAt: Date = Date(),
+        hasSeenSettingsProPrompt: Bool = false
     ) {
         self.useCelsius = useCelsius
         self.preAlertSeconds = preAlertSeconds
@@ -50,6 +54,8 @@ struct UserPreferences: Codable, Equatable {
         self.onboardingComplete = onboardingComplete
         self.proPurchased = proPurchased
         self.hasSeenBrewMilestoneProPrompt = hasSeenBrewMilestoneProPrompt
+        self.firstOpenedAt = firstOpenedAt
+        self.hasSeenSettingsProPrompt = hasSeenSettingsProPrompt
     }
 
     static let defaults = UserPreferences(
@@ -75,6 +81,8 @@ struct UserPreferences: Codable, Equatable {
         case onboardingComplete
         case proPurchased
         case hasSeenBrewMilestoneProPrompt
+        case firstOpenedAt
+        case hasSeenSettingsProPrompt
     }
 
     init(from decoder: Decoder) throws {
@@ -89,5 +97,7 @@ struct UserPreferences: Codable, Equatable {
         onboardingComplete = try container.decode(Bool.self, forKey: .onboardingComplete)
         proPurchased = try container.decode(Bool.self, forKey: .proPurchased)
         hasSeenBrewMilestoneProPrompt = try container.decodeIfPresent(Bool.self, forKey: .hasSeenBrewMilestoneProPrompt) ?? false
+        firstOpenedAt = try container.decodeIfPresent(Date.self, forKey: .firstOpenedAt) ?? Date()
+        hasSeenSettingsProPrompt = try container.decodeIfPresent(Bool.self, forKey: .hasSeenSettingsProPrompt) ?? false
     }
 }

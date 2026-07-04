@@ -127,6 +127,10 @@ final class TeaStore: ObservableObject {
         preferences.hasSeenBrewMilestoneProPrompt = true
     }
 
+    func markSettingsProPromptSeen() {
+        preferences.hasSeenSettingsProPrompt = true
+    }
+
     func save() {
         saveTeas()
         savePreferences()

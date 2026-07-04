@@ -87,7 +87,11 @@ final class BrewSessionStore: ObservableObject {
     func deleteSessions(at offsets: IndexSet) {
         let sortedSessions = recentSessions
         let idsToDelete = offsets.map { sortedSessions[$0].id }
-        sessions.removeAll { idsToDelete.contains($0.id) }
+        deleteSessions(ids: idsToDelete)
+    }
+
+    func deleteSessions(ids: [BrewSession.ID]) {
+        sessions.removeAll { ids.contains($0.id) }
         saveSessions()
     }
 

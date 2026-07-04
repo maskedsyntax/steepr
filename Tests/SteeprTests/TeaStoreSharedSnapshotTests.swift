@@ -33,6 +33,16 @@ final class TeaStoreSharedSnapshotTests: XCTestCase {
         XCTAssertEqual(snapshot.preferences, store.preferences)
     }
 
+    func testPersistsSettingsProPromptState() {
+        let container = SteeprModelContainer.make(inMemory: true)
+        let firstStore = TeaStore(modelContainer: container)
+
+        firstStore.markSettingsProPromptSeen()
+
+        let restoredStore = TeaStore(modelContainer: container)
+        XCTAssertTrue(restoredStore.preferences.hasSeenSettingsProPrompt)
+    }
+
     func testPersistsCustomTeaInSwiftData() {
         let container = SteeprModelContainer.make(inMemory: true)
         let firstStore = TeaStore(modelContainer: container)

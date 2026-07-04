@@ -117,6 +117,14 @@ struct SettingsView: View {
 
                 Section("About") {
                     LabeledContent("Version", value: "1.0")
+                    if shouldShowSettingsProPrompt {
+                        Button {
+                            teaStore.markSettingsProPromptSeen()
+                            showingPaywall = true
+                        } label: {
+                            Label("Keep your full tea journal", systemImage: "sparkles")
+                        }
+                    }
                     Link("Privacy policy", destination: URL(string: "https://steepr.maskedsyntax.com/privacy")!)
                     Link("Support", destination: URL(string: "https://steepr.maskedsyntax.com/support")!)
                     Link("Contact support", destination: URL(string: "mailto:support@maskedsyntax.com")!)
@@ -133,6 +141,17 @@ struct SettingsView: View {
                 await refreshNotificationStatus()
             }
         }
+    }
+
+    private var shouldShowSettingsProPrompt: Bool {
+        guard
+            !teaStore.preferences.proPurchased,
+            !teaStore.preferences.hasSeenSettingsProPrompt
+        else {
+            return false
+        }
+
+        return Date().timeIntervalSince(teaStore.preferences.firstOpenedAt) >= 14 * 24 * 60 * 60
     }
 
     private func handleNotificationPermissionTap() {

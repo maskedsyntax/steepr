@@ -5,12 +5,24 @@ struct BrewHistoryView: View {
     @EnvironmentObject private var teaStore: TeaStore
     @State private var showingPaywall = false
     @State private var journalSession: BrewSession?
+    @State private var searchText = ""
 
     private var visibleSessions: [BrewSession] {
+        let baseSessions: [BrewSession]
         if teaStore.preferences.proPurchased {
-            return brewSessionStore.recentSessions
+            baseSessions = brewSessionStore.recentSessions
+        } else {
+            baseSessions = Array(brewSessionStore.recentSessions.prefix(5))
         }
-        return Array(brewSessionStore.recentSessions.prefix(5))
+
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else { return baseSessions }
+
+        return baseSessions.filter { session in
+            session.teaSnapshotName.localizedCaseInsensitiveContains(query)
+                || session.note.localizedCaseInsensitiveContains(query)
+                || (session.outcome?.label.localizedCaseInsensitiveContains(query) ?? false)
+        }
     }
 
     var body: some View {
@@ -33,12 +45,17 @@ struct BrewHistoryView: View {
                 }
             } else {
                 Section("Recent Brews") {
+                    if visibleSessions.isEmpty {
+                        Text("No matching brews.")
+                            .foregroundStyle(.secondary)
+                    }
+
                     ForEach(visibleSessions) { session in
                         BrewSessionRow(session: session) {
                             journalSession = session
                         }
                     }
-                    .onDelete(perform: brewSessionStore.deleteSessions)
+                    .onDelete(perform: deleteVisibleSessions)
                 }
 
                 if !teaStore.preferences.proPurchased && brewSessionStore.recentSessions.count > visibleSessions.count {
@@ -59,6 +76,7 @@ struct BrewHistoryView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+        .searchable(text: $searchText, prompt: "Search brews")
         .sheet(isPresented: $showingPaywall) {
             PaywallView(trigger: "Brew journal")
         }
@@ -74,6 +92,11 @@ struct BrewHistoryView: View {
             }
             .presentationDetents([.medium, .large])
         }
+    }
+
+    private func deleteVisibleSessions(at offsets: IndexSet) {
+        let idsToDelete = offsets.map { visibleSessions[$0].id }
+        brewSessionStore.deleteSessions(ids: idsToDelete)
     }
 }
 

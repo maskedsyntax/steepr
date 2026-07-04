@@ -81,6 +81,8 @@ final class PersistentUserPreferences {
     var onboardingComplete: Bool = false
     var proPurchased: Bool = false
     var hasSeenBrewMilestoneProPrompt: Bool = false
+    var firstOpenedAt: Date = Date()
+    var hasSeenSettingsProPrompt: Bool = false
 
     init(preferences: UserPreferences, id: String = "default") {
         self.id = id
@@ -94,6 +96,8 @@ final class PersistentUserPreferences {
         self.onboardingComplete = preferences.onboardingComplete
         self.proPurchased = preferences.proPurchased
         self.hasSeenBrewMilestoneProPrompt = preferences.hasSeenBrewMilestoneProPrompt
+        self.firstOpenedAt = preferences.firstOpenedAt
+        self.hasSeenSettingsProPrompt = preferences.hasSeenSettingsProPrompt
     }
 
     func apply(_ preferences: UserPreferences) {
@@ -107,6 +111,8 @@ final class PersistentUserPreferences {
         onboardingComplete = preferences.onboardingComplete
         proPurchased = preferences.proPurchased
         hasSeenBrewMilestoneProPrompt = preferences.hasSeenBrewMilestoneProPrompt
+        firstOpenedAt = preferences.firstOpenedAt
+        hasSeenSettingsProPrompt = preferences.hasSeenSettingsProPrompt
     }
 
     var preferences: UserPreferences {
@@ -120,7 +126,9 @@ final class PersistentUserPreferences {
             notificationsAuthorized: notificationsAuthorized,
             onboardingComplete: onboardingComplete,
             proPurchased: proPurchased,
-            hasSeenBrewMilestoneProPrompt: hasSeenBrewMilestoneProPrompt
+            hasSeenBrewMilestoneProPrompt: hasSeenBrewMilestoneProPrompt,
+            firstOpenedAt: firstOpenedAt,
+            hasSeenSettingsProPrompt: hasSeenSettingsProPrompt
         )
     }
 }

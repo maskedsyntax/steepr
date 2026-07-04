@@ -83,6 +83,20 @@ final class BrewSessionStoreTests: XCTestCase {
         XCTAssertEqual(store.sessions.first?.rating, 5)
     }
 
+    func testDeletesSessionsByID() {
+        let store = BrewSessionStore(modelContainer: SteeprModelContainer.make(inMemory: true))
+        let tea = testTea()
+        let firstID = UUID()
+        let secondID = UUID()
+
+        store.recordCompletion(sessionID: firstID, tea: tea, startedAt: Date(), durationSeconds: 150)
+        store.recordCompletion(sessionID: secondID, tea: tea, startedAt: Date(), durationSeconds: 150)
+        store.deleteSessions(ids: [firstID])
+
+        XCTAssertNil(store.session(with: firstID))
+        XCTAssertNotNil(store.session(with: secondID))
+    }
+
     private func testTea() -> Tea {
         Tea(
             name: "Test Tea",
