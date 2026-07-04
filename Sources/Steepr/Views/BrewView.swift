@@ -12,6 +12,7 @@ struct BrewView: View {
     @ObservedObject var timerCoordinator: TimerCoordinator
     @Binding var selectedTab: Int
     @State private var notificationsDenied = false
+    @State private var showingPaywall = false
 
     private let gridColumns = [
         GridItem(.flexible(), spacing: 12),
@@ -45,6 +46,9 @@ struct BrewView: View {
             #endif
             .task {
                 await refreshNotificationStatus()
+            }
+            .sheet(isPresented: $showingPaywall) {
+                PaywallView(trigger: "Guided infusions")
             }
         }
     }
@@ -209,11 +213,25 @@ struct BrewView: View {
                     .font(.footnote.weight(.medium))
                     .foregroundStyle(.secondary)
 
+                reSteepSequenceHint(for: tea)
+
+                if shouldShowMilestonePrompt {
+                    Button {
+                        teaStore.markBrewMilestoneProPromptSeen()
+                        showingPaywall = true
+                    } label: {
+                        Label("Unlock full tea journal", systemImage: "sparkles")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .frame(maxWidth: 420)
+                }
+
                 HStack(spacing: 12) {
                     Button {
                         timerCoordinator.reSteep(preferences: teaStore.preferences)
                     } label: {
-                        Label("Re-steep", systemImage: "arrow.clockwise")
+                        Label(nextInfusionTitle(for: tea), systemImage: "arrow.clockwise")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
@@ -231,6 +249,50 @@ struct BrewView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 60)
+    }
+
+    @ViewBuilder
+    private func reSteepSequenceHint(for tea: Tea) -> some View {
+        if tea.supportsGuidedReSteep {
+            if teaStore.preferences.proPurchased {
+                Text("Next guided steep: \(formatDuration(nextInfusionSeconds(for: tea))).")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            } else {
+                Button {
+                    showingPaywall = true
+                } label: {
+                    Label("Unlock guided infusion timing", systemImage: "sparkles")
+                }
+                .buttonStyle(.bordered)
+            }
+        }
+    }
+
+    private func nextInfusionTitle(for tea: Tea) -> String {
+        if teaStore.preferences.proPurchased, tea.supportsGuidedReSteep {
+            return "Start infusion \(timerCoordinator.infusionNumber + 1)"
+        }
+        return "Re-steep"
+    }
+
+    private func nextInfusionSeconds(for tea: Tea) -> Int {
+        tea.steepSeconds(
+            forInfusion: timerCoordinator.infusionNumber + 1,
+            proPurchased: teaStore.preferences.proPurchased
+        )
+    }
+
+    private var shouldShowMilestonePrompt: Bool {
+        guard
+            !teaStore.preferences.proPurchased,
+            !teaStore.preferences.hasSeenBrewMilestoneProPrompt
+        else {
+            return false
+        }
+
+        let completedBrews = brewSessionStore.sessions.filter { $0.completedAt != nil }.count
+        return completedBrews >= 7
     }
 
     private func recordCancellationIfNeeded() {

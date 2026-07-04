@@ -112,6 +112,35 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
 }
 
 extension Tea {
+    var guidedReSteepIncrementSeconds: Int {
+        switch colorSlot {
+        case .green, .white:
+            return 15
+        case .oolong, .puerh:
+            return 30
+        case .black, .chai:
+            return 20
+        case .herbal:
+            return 45
+        case .matcha, .customA, .customB:
+            return 0
+        }
+    }
+
+    var supportsGuidedReSteep: Bool {
+        guidedReSteepIncrementSeconds > 0
+    }
+
+    func steepSeconds(forInfusion infusionNumber: Int, proPurchased: Bool) -> Int {
+        let infusion = max(1, infusionNumber)
+        guard proPurchased, infusion > 1, supportsGuidedReSteep else {
+            return steepSeconds
+        }
+
+        let addedSeconds = guidedReSteepIncrementSeconds * (infusion - 1)
+        return min(steepSeconds + addedSeconds, steepSeconds + 180)
+    }
+
     static let builtIns: [Tea] = [
         Tea(name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, notes: "Lower heat keeps green tea smooth.", isBuiltIn: true, isFavorite: true, favoriteRank: 0),
         Tea(name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "A full, strong steep works best near boiling.", isBuiltIn: true, isFavorite: true, favoriteRank: 1),

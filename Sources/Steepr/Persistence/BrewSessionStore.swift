@@ -27,6 +27,10 @@ final class BrewSessionStore: ObservableObject {
         sessions.sorted { $0.startedAt > $1.startedAt }
     }
 
+    func session(with id: BrewSession.ID) -> BrewSession? {
+        sessions.first { $0.id == id }
+    }
+
     func recordCompletion(
         sessionID: UUID,
         tea: Tea,
@@ -68,6 +72,15 @@ final class BrewSessionStore: ObservableObject {
                 infusionNumber: max(1, infusionNumber)
             )
         )
+        saveSessions()
+    }
+
+    func updateJournal(sessionID: UUID, rating: Int?, note: String, outcome: BrewOutcome? = nil) {
+        guard let index = sessions.firstIndex(where: { $0.id == sessionID }) else { return }
+        let cleanedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        sessions[index].rating = rating.map { min(5, max(1, $0)) }
+        sessions[index].note = cleanedNote
+        sessions[index].outcome = outcome
         saveSessions()
     }
 

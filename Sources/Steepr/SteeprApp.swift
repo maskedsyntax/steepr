@@ -29,6 +29,7 @@ struct SteeprApp: App {
                 .environmentObject(brewSessionStore)
                 .environmentObject(purchaseCoordinator)
                 .task {
+                    purchaseCoordinator.startTransactionUpdatesListener(store: teaStore, brewSessionStore: brewSessionStore)
                     await purchaseCoordinator.refreshEntitlements(store: teaStore, brewSessionStore: brewSessionStore)
                     await purchaseCoordinator.loadProducts()
                 }

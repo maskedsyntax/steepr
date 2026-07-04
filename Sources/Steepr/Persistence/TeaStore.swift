@@ -123,6 +123,10 @@ final class TeaStore: ObservableObject {
         preferences.onboardingComplete = complete
     }
 
+    func markBrewMilestoneProPromptSeen() {
+        preferences.hasSeenBrewMilestoneProPrompt = true
+    }
+
     func save() {
         saveTeas()
         savePreferences()

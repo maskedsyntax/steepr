@@ -2,6 +2,16 @@ import SwiftUI
 
 struct BrewHistoryView: View {
     @EnvironmentObject private var brewSessionStore: BrewSessionStore
+    @EnvironmentObject private var teaStore: TeaStore
+    @State private var showingPaywall = false
+    @State private var journalSession: BrewSession?
+
+    private var visibleSessions: [BrewSession] {
+        if teaStore.preferences.proPurchased {
+            return brewSessionStore.recentSessions
+        }
+        return Array(brewSessionStore.recentSessions.prefix(5))
+    }
 
     var body: some View {
         List {
@@ -23,10 +33,25 @@ struct BrewHistoryView: View {
                 }
             } else {
                 Section("Recent Brews") {
-                    ForEach(brewSessionStore.recentSessions) { session in
-                        BrewSessionRow(session: session)
+                    ForEach(visibleSessions) { session in
+                        BrewSessionRow(session: session) {
+                            journalSession = session
+                        }
                     }
                     .onDelete(perform: brewSessionStore.deleteSessions)
+                }
+
+                if !teaStore.preferences.proPurchased && brewSessionStore.recentSessions.count > visibleSessions.count {
+                    Section {
+                        Button {
+                            showingPaywall = true
+                        } label: {
+                            Label("Unlock full brew history", systemImage: "sparkles")
+                        }
+                        Text("Free shows the five most recent brews. Pro keeps your full journal.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
         }
@@ -34,11 +59,27 @@ struct BrewHistoryView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+        .sheet(isPresented: $showingPaywall) {
+            PaywallView(trigger: "Brew journal")
+        }
+        .sheet(item: $journalSession) { session in
+            NavigationStack {
+                BrewJournalPrompt(sessionID: session.id)
+                    .environmentObject(brewSessionStore)
+                    .padding()
+                    .navigationTitle("Brew Journal")
+                    #if os(iOS)
+                    .navigationBarTitleDisplayMode(.inline)
+                    #endif
+            }
+            .presentationDetents([.medium, .large])
+        }
     }
 }
 
 private struct BrewSessionRow: View {
     let session: BrewSession
+    let onJournal: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -61,6 +102,40 @@ private struct BrewSessionRow: View {
             }
             .font(.footnote)
             .foregroundStyle(.secondary)
+
+            if let rating = session.rating {
+                HStack(spacing: 2) {
+                    ForEach(1...5, id: \.self) { value in
+                        Image(systemName: value <= rating ? "star.fill" : "star")
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(.yellow)
+                .accessibilityLabel("\(rating) star\(rating == 1 ? "" : "s")")
+            }
+
+            if let outcome = session.outcome {
+                Text(outcome.label)
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
+            }
+
+            if !session.note.isEmpty {
+                Text(session.note)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+
+            if session.completedAt != nil {
+                Button {
+                    onJournal()
+                } label: {
+                    Label(hasJournalEntry ? "Edit tasting notes" : "Add tasting notes", systemImage: "square.and.pencil")
+                }
+                .font(.footnote.weight(.medium))
+                .buttonStyle(.bordered)
+            }
         }
         .padding(.vertical, 4)
     }
@@ -71,5 +146,9 @@ private struct BrewSessionRow: View {
 
     private var statusColor: Color {
         session.completedAt == nil ? .secondary : TeaColorSlot.green.color
+    }
+
+    private var hasJournalEntry: Bool {
+        session.rating != nil || session.outcome != nil || !session.note.isEmpty
     }
 }

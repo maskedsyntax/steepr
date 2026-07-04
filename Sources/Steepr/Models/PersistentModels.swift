@@ -80,6 +80,7 @@ final class PersistentUserPreferences {
     var notificationsAuthorized: Bool = false
     var onboardingComplete: Bool = false
     var proPurchased: Bool = false
+    var hasSeenBrewMilestoneProPrompt: Bool = false
 
     init(preferences: UserPreferences, id: String = "default") {
         self.id = id
@@ -92,6 +93,7 @@ final class PersistentUserPreferences {
         self.notificationsAuthorized = preferences.notificationsAuthorized
         self.onboardingComplete = preferences.onboardingComplete
         self.proPurchased = preferences.proPurchased
+        self.hasSeenBrewMilestoneProPrompt = preferences.hasSeenBrewMilestoneProPrompt
     }
 
     func apply(_ preferences: UserPreferences) {
@@ -104,6 +106,7 @@ final class PersistentUserPreferences {
         notificationsAuthorized = preferences.notificationsAuthorized
         onboardingComplete = preferences.onboardingComplete
         proPurchased = preferences.proPurchased
+        hasSeenBrewMilestoneProPrompt = preferences.hasSeenBrewMilestoneProPrompt
     }
 
     var preferences: UserPreferences {
@@ -116,7 +119,8 @@ final class PersistentUserPreferences {
             autoStartSameTea: autoStartSameTea,
             notificationsAuthorized: notificationsAuthorized,
             onboardingComplete: onboardingComplete,
-            proPurchased: proPurchased
+            proPurchased: proPurchased,
+            hasSeenBrewMilestoneProPrompt: hasSeenBrewMilestoneProPrompt
         )
     }
 }
@@ -131,6 +135,9 @@ final class PersistentBrewSession {
     var cancelledAt: Date?
     var actualSteepSeconds: Int = 0
     var infusionNumber: Int = 1
+    var rating: Int?
+    var note: String = ""
+    var outcomeRawValue: String?
 
     init(session: BrewSession) {
         self.id = session.id
@@ -141,6 +148,9 @@ final class PersistentBrewSession {
         self.cancelledAt = session.cancelledAt
         self.actualSteepSeconds = session.actualSteepSeconds
         self.infusionNumber = session.infusionNumber
+        self.rating = session.rating
+        self.note = session.note
+        self.outcomeRawValue = session.outcome?.rawValue
     }
 
     func apply(_ session: BrewSession) {
@@ -152,6 +162,9 @@ final class PersistentBrewSession {
         cancelledAt = session.cancelledAt
         actualSteepSeconds = session.actualSteepSeconds
         infusionNumber = session.infusionNumber
+        rating = session.rating
+        note = session.note
+        outcomeRawValue = session.outcome?.rawValue
     }
 
     var session: BrewSession {
@@ -163,7 +176,10 @@ final class PersistentBrewSession {
             completedAt: completedAt,
             cancelledAt: cancelledAt,
             actualSteepSeconds: actualSteepSeconds,
-            infusionNumber: infusionNumber
+            infusionNumber: infusionNumber,
+            rating: rating,
+            note: note,
+            outcome: outcomeRawValue.flatMap(BrewOutcome.init(rawValue:))
         )
     }
 }

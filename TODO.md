@@ -78,6 +78,37 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 
 - [x] Re-steep support.
 - [ ] Caffeine estimates.
-- [ ] Brew journal notes and ratings.
+- [x] Brew journal notes and ratings.
 - [ ] Tea packaging scanner.
 - [ ] Advanced import/export.
+
+## Growth Improvements
+
+Build these in order after the current screen refresh. Keep the app tea-only and keep onboarding deferred until the core flows below are ready.
+
+1. [x] Improve re-steep into a real workflow.
+   - Free: manual re-steep repeats the same tea duration.
+   - Pro: guided multi-infusion timing that increases duration by tea type.
+   - Completion screen should clearly offer the next infusion.
+2. [x] Add brew journal notes and ratings.
+   - Prompt after completion with a small rating and optional note.
+   - Free: recent limited journal.
+   - Pro: full history with notes and ratings.
+3. [x] Improve completion feedback.
+   - Add simple outcomes: too weak, good, too strong.
+   - Use the answer to suggest a small next-time duration adjustment.
+4. [x] Improve paywall triggers.
+   - Trigger around guided infusions, journal limits, and meaningful usage milestones.
+   - Keep prompts calm and infrequent.
+5. [ ] Add 7-day Pro trial support.
+   - Keep one-time purchase positioning.
+   - Update paywall copy around trial and no subscription.
+6. [ ] Improve Brew tab retention.
+   - Add quiet summaries like today's brew count and recent tea.
+   - Avoid habit-app clutter.
+7. [ ] Make favorites more useful.
+   - Improve reorder access.
+   - Show recent brew context where useful.
+8. [ ] Re-enable and refresh onboarding in the next update.
+   - Starter favorites, unit choice, notification prompt, Watch mention.
+   - No coffee and no caffeine feature unless explicitly revived later.

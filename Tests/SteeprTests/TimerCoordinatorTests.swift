@@ -104,11 +104,35 @@ final class TimerCoordinatorTests: XCTestCase {
         XCTAssertEqual(coordinator.durationSeconds, 75)
     }
 
-    private func testTea(seconds: Int = 60) -> Tea {
+    func testFreeReSteepRepeatsSameDuration() {
+        let tea = testTea(seconds: 150, colorSlot: .oolong)
+        let coordinator = TimerCoordinator()
+
+        coordinator.start(tea, preferences: .defaults)
+        coordinator.reSteep(preferences: .defaults)
+
+        XCTAssertEqual(coordinator.infusionNumber, 2)
+        XCTAssertEqual(coordinator.durationSeconds, 150)
+    }
+
+    func testProReSteepUsesGuidedInfusionDuration() {
+        let tea = testTea(seconds: 150, colorSlot: .oolong)
+        var preferences = UserPreferences.defaults
+        preferences.proPurchased = true
+        let coordinator = TimerCoordinator()
+
+        coordinator.start(tea, preferences: preferences)
+        coordinator.reSteep(preferences: preferences)
+
+        XCTAssertEqual(coordinator.infusionNumber, 2)
+        XCTAssertEqual(coordinator.durationSeconds, 180)
+    }
+
+    private func testTea(seconds: Int = 60, colorSlot: TeaColorSlot = .green) -> Tea {
         Tea(
             name: "Test Tea",
             symbolName: "leaf.fill",
-            colorSlot: .green,
+            colorSlot: colorSlot,
             steepSeconds: seconds,
             temperatureCelsius: 80
         )

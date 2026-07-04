@@ -40,17 +40,18 @@ final class TimerCoordinator: ObservableObject {
 
     private func start(_ tea: Tea, preferences: UserPreferences, infusionNumber: Int) {
         cancel()
+        let duration = tea.steepSeconds(forInfusion: infusionNumber, proPurchased: preferences.proPurchased)
         activeTea = tea
         currentSessionID = UUID()
         startedAt = Date()
         self.infusionNumber = max(1, infusionNumber)
         completionHapticStyle = preferences.hapticStyle
         completionSoundEnabled = preferences.soundEnabled
-        durationSeconds = tea.steepSeconds
-        secondsRemaining = tea.steepSeconds
-        endDate = Date().addingTimeInterval(TimeInterval(tea.steepSeconds))
+        durationSeconds = duration
+        secondsRemaining = duration
+        endDate = Date().addingTimeInterval(TimeInterval(duration))
         state = .running
-        scheduleNotifications(for: tea, preferences: preferences)
+        scheduleNotifications(for: tea, preferences: preferences, durationSeconds: duration)
         persistTimer()
         startTicker()
     }
@@ -87,7 +88,7 @@ final class TimerCoordinator: ObservableObject {
             if secondsRemaining <= 0 {
                 complete(playFeedback: false)
             } else {
-                scheduleNotifications(for: snapshot.tea, preferences: preferences)
+                scheduleNotifications(for: snapshot.tea, preferences: preferences, durationSeconds: snapshot.durationSeconds)
                 startTicker()
             }
         case .completed:
@@ -113,7 +114,7 @@ final class TimerCoordinator: ObservableObject {
         completionSoundEnabled = preferences.soundEnabled
         endDate = Date().addingTimeInterval(TimeInterval(pausedRemainingSeconds))
         state = .running
-        scheduleNotifications(for: tea, preferences: preferences)
+        scheduleNotifications(for: tea, preferences: preferences, durationSeconds: durationSeconds)
         persistTimer()
         startTicker()
     }
@@ -189,13 +190,13 @@ final class TimerCoordinator: ObservableObject {
         }
     }
 
-    private func scheduleNotifications(for tea: Tea, preferences: UserPreferences) {
+    private func scheduleNotifications(for tea: Tea, preferences: UserPreferences, durationSeconds: Int) {
         removeNotifications()
         guard Self.notificationsEnabled, Bundle.main.bundleIdentifier != nil, secondsRemaining > 0 else { return }
 
         let content = UNMutableNotificationContent()
         content.title = L10n.teaReady(tea.name)
-        content.body = L10n.steepedForTapToReSteep(formattedDuration(tea.steepSeconds))
+        content.body = L10n.steepedForTapToReSteep(formattedDuration(durationSeconds))
         content.sound = preferences.soundEnabled ? .default : nil
         content.categoryIdentifier = NotificationService.brewCompleteCategory
         content.threadIdentifier = "brew-timer"

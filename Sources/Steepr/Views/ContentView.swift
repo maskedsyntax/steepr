@@ -78,6 +78,7 @@ struct ContentView: View {
 
 private struct TimerCompleteSheet: View {
     @EnvironmentObject private var teaStore: TeaStore
+    @EnvironmentObject private var brewSessionStore: BrewSessionStore
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var timerCoordinator: TimerCoordinator
 
@@ -94,8 +95,14 @@ private struct TimerCompleteSheet: View {
                     .font(.footnote.weight(.medium))
                     .foregroundStyle(.secondary)
 
+                if tea.supportsGuidedReSteep, teaStore.preferences.proPurchased {
+                    Text("Next guided steep: \(formatDuration(tea.steepSeconds(forInfusion: timerCoordinator.infusionNumber + 1, proPurchased: true))).")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+
                 HStack(spacing: 12) {
-                    Button("Re-steep") {
+                    Button(teaStore.preferences.proPurchased && tea.supportsGuidedReSteep ? "Start infusion \(timerCoordinator.infusionNumber + 1)" : "Re-steep") {
                         timerCoordinator.reSteep(preferences: teaStore.preferences)
                         dismiss()
                     }

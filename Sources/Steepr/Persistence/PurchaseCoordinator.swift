@@ -10,6 +10,23 @@ final class PurchaseCoordinator: ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
 
+    private var transactionUpdatesTask: Task<Void, Never>?
+
+    deinit {
+        transactionUpdatesTask?.cancel()
+    }
+
+    func startTransactionUpdatesListener(store: TeaStore, brewSessionStore: BrewSessionStore? = nil) {
+        guard transactionUpdatesTask == nil else { return }
+
+        transactionUpdatesTask = Task { [weak self, weak store, weak brewSessionStore] in
+            for await result in Transaction.updates {
+                guard !Task.isCancelled else { return }
+                await self?.handle(transactionResult: result, store: store, brewSessionStore: brewSessionStore)
+            }
+        }
+    }
+
     func refreshEntitlements(store: TeaStore, brewSessionStore: BrewSessionStore? = nil) async {
         var hasPro = false
         for await result in Transaction.currentEntitlements {
@@ -54,10 +71,7 @@ final class PurchaseCoordinator: ObservableObject {
                     errorMessage = "The purchase could not be verified."
                     return
                 }
-                store.preferences.proPurchased = true
-                store.enableCloudSyncIfNeeded()
-                brewSessionStore?.enableCloudSyncIfNeeded()
-                await transaction.finish()
+                await unlockPro(for: transaction, store: store, brewSessionStore: brewSessionStore)
             case .pending:
                 errorMessage = "The purchase is pending approval."
             case .userCancelled:
@@ -81,5 +95,35 @@ final class PurchaseCoordinator: ObservableObject {
 
     var priceText: String {
         proProduct?.displayPrice ?? "$5.99"
+    }
+
+    private func handle(
+        transactionResult result: VerificationResult<Transaction>,
+        store: TeaStore?,
+        brewSessionStore: BrewSessionStore?
+    ) async {
+        guard let store else { return }
+
+        switch result {
+        case .verified(let transaction):
+            guard transaction.productID == Self.proProductID else {
+                await transaction.finish()
+                return
+            }
+            await unlockPro(for: transaction, store: store, brewSessionStore: brewSessionStore)
+        case .unverified:
+            errorMessage = "A purchase update could not be verified."
+        }
+    }
+
+    private func unlockPro(
+        for transaction: Transaction,
+        store: TeaStore,
+        brewSessionStore: BrewSessionStore?
+    ) async {
+        store.preferences.proPurchased = true
+        store.enableCloudSyncIfNeeded()
+        brewSessionStore?.enableCloudSyncIfNeeded()
+        await transaction.finish()
     }
 }
