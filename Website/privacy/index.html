@@ -6,7 +6,20 @@
     <title>Privacy Policy - Steepr</title>
     <meta name="description" content="Steepr stores tea data locally by default, does not collect analytics, advertising identifiers, location, contacts, or health data, and uses notifications only for timer alerts." />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#f7faf4" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7faf4" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111410" />
+    <script>
+      (() => {
+        let storedTheme
+        try {
+          storedTheme = localStorage.getItem('steepr-theme')
+        } catch {}
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        const theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : prefersDark ? 'dark' : 'light'
+        document.documentElement.dataset.theme = theme
+        document.documentElement.style.colorScheme = theme
+      })()
+    </script>
     <meta name="apple-itunes-app" content="app-id=6775478425" />
     <link rel="canonical" href="https://steepr.maskedsyntax.com/privacy/" />
     <link rel="icon" href="/assets/steepr-logo-rounded.png" />
@@ -14,7 +27,7 @@
     <meta property="og:title" content="Privacy Policy - Steepr" />
     <meta property="og:description" content="Steepr collects as little information as possible and keeps tea data local unless you enable iCloud sync." />
     <meta property="og:url" content="https://steepr.maskedsyntax.com/privacy/" />
-    <meta property="og:image" content="https://steepr.maskedsyntax.com/assets/steepr-app-store-frame-1.jpg" />
+    <meta property="og:image" content="https://steepr.maskedsyntax.com/assets/steepr-mockup-calm-way.svg" />
   </head>
   <body data-page="privacy">
     <noscript>

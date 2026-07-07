@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const props = defineProps({
   page: {
@@ -17,6 +17,61 @@ const navItems = [
 const currentPage = ref(props.page)
 const appStoreUrl = 'https://apps.apple.com/us/app/steepr/id6775478425'
 const koFiUrl = 'https://ko-fi.com/aftaabsiddiqui'
+const themeStorageKey = 'steepr-theme'
+const themeModes = [
+  { value: 'light', label: 'Light' },
+  { value: 'dark', label: 'Dark' },
+  { value: 'system', label: 'System' }
+]
+const selectedTheme = ref('system')
+const systemTheme = ref('light')
+let systemThemeQuery
+
+const resolvedTheme = computed(() => {
+  return selectedTheme.value === 'system' ? systemTheme.value : selectedTheme.value
+})
+
+const getStoredTheme = () => {
+  try {
+    return localStorage.getItem(themeStorageKey)
+  } catch {
+    return null
+  }
+}
+
+const persistTheme = (theme) => {
+  try {
+    if (theme === 'system') localStorage.removeItem(themeStorageKey)
+    else localStorage.setItem(themeStorageKey, theme)
+  } catch {
+    // The selected theme still applies for the current page view.
+  }
+}
+
+const updateThemeColor = () => {
+  const themeColor = resolvedTheme.value === 'dark' ? '#111410' : '#f7faf4'
+  document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+    meta.setAttribute('content', themeColor)
+  })
+}
+
+const applyTheme = () => {
+  document.documentElement.dataset.theme = resolvedTheme.value
+  document.documentElement.style.colorScheme = resolvedTheme.value
+  updateThemeColor()
+}
+
+const setTheme = (theme) => {
+  if (!themeModes.some((mode) => mode.value === theme)) return
+  selectedTheme.value = theme
+  persistTheme(theme)
+  applyTheme()
+}
+
+const updateSystemTheme = () => {
+  systemTheme.value = systemThemeQuery?.matches ? 'dark' : 'light'
+  if (selectedTheme.value === 'system') applyTheme()
+}
 
 const setPageFromPath = () => {
   const path = window.location.pathname
@@ -44,63 +99,81 @@ const navigate = (event, item) => {
 }
 
 onMounted(() => {
+  const savedTheme = getStoredTheme()
+  if (themeModes.some((mode) => mode.value === savedTheme)) selectedTheme.value = savedTheme
+  systemThemeQuery = window.matchMedia('(prefers-color-scheme: dark)')
+  updateSystemTheme()
+  systemThemeQuery.addEventListener('change', updateSystemTheme)
+  applyTheme()
+
   updateTitle()
   window.addEventListener('popstate', setPageFromPath)
 })
 
 onBeforeUnmount(() => {
+  systemThemeQuery?.removeEventListener('change', updateSystemTheme)
   window.removeEventListener('popstate', setPageFromPath)
 })
 
 const features = [
   {
+    icon: '􀐫',
     title: 'Built for real tea routines',
-    text: 'Choose a tea preset, save favorites, start a brew quickly, and let each steep run with a clear countdown.'
+    text: 'Choose a preset, save favorites, and start the next brew with a clear countdown.',
+    detail: 'Presets, custom teas, pause, resume'
   },
   {
-    title: 'Apple Watch first',
-    text: 'Start favorites from your wrist, control the active timer, and feel gentle haptic alerts.'
+    icon: '􀋃',
+    title: 'Favorites stay close',
+    text: 'Keep regular teas on the Brew tab, with the full library ready when you want something different.',
+    detail: 'One-tap starts for daily cups'
   },
   {
+    icon: '􀐭',
     title: 'Visible without noise',
-    text: 'Lock Screen widgets, Live Activities, and complications keep the timer nearby without opening the app.'
+    text: 'Live Activities, widgets, notifications, and clear in-app states keep timing easy to follow.',
+    detail: 'Useful on the Lock Screen and Home Screen'
   },
   {
+    icon: '􀎡',
     title: 'Private by design',
-    text: 'No accounts, no ads, no tracking. Your tea data stays local unless you choose iCloud sync with Pro.'
+    text: 'No accounts, ads, or tracking. Your tea data stays local unless you choose iCloud sync with Pro.',
+    detail: 'Local-first, optional private sync'
   }
+]
+
+const featureProof = [
+  'Built-in tea presets',
+  'Custom profiles',
+  'Brew history',
+  'Live Activities'
 ]
 
 const screenshots = [
   {
-    src: '/assets/steepr-app-store-frame-1.jpg',
-    alt: 'Steepr tea timer showing built-in green, black, oolong, herbal, chai, and matcha presets.',
-    caption: 'Tea presets'
+    src: '/assets/steepr-mockup-calm-way.svg',
+    alt: 'Steepr onboarding screen introducing a calmer way to make tea with Heat, Steep, Sip, and Repeat steps.',
+    caption: 'Calm onboarding'
   },
   {
-    src: '/assets/steepr-app-store-frame-2.jpg',
-    alt: 'Steepr brew screen with a one tap oolong countdown timer, pause control, and cancel control.',
-    caption: 'One tap timer'
+    src: '/assets/steepr-mockup-favorite-tea.svg',
+    alt: 'Steepr Brew screen showing favorite tea presets with steep times and temperatures.',
+    caption: 'Favorite teas'
   },
   {
-    src: '/assets/steepr-app-store-frame-3.jpg',
-    alt: 'Steepr tea library with favorite teas, steeping times, and brewing temperatures.',
+    src: '/assets/steepr-mockup-perfect-timing.svg',
+    alt: 'Steepr active Matcha timer with countdown ring, temperature, infusion number, pause control, and cancel control.',
+    caption: 'Perfect timing'
+  },
+  {
+    src: '/assets/steepr-mockup-gentle-alert.svg',
+    alt: 'Steepr completion screen showing Matcha is ready with re-steep and done actions.',
+    caption: 'Gentle alerts'
+  },
+  {
+    src: '/assets/steepr-mockup-tea-library.svg',
+    alt: 'Steepr Library screen showing a custom tea and built-in teas with favorites, steep times, and temperatures.',
     caption: 'Tea library'
-  },
-  {
-    src: '/assets/steepr-app-store-frame-4.jpg',
-    alt: 'Steepr settings for brew history, temperature units, pre-completion alerts, sounds, and haptics.',
-    caption: 'Personal settings'
-  },
-  {
-    src: '/assets/steepr-app-store-frame-5.jpg',
-    alt: 'Steepr Pro screen showing iCloud sync, unlimited custom teas, advanced haptics, and more sounds.',
-    caption: 'Steepr Pro'
-  },
-  {
-    src: '/assets/steepr-app-store-frame-6.jpg',
-    alt: 'Steepr Apple Watch screens for starting favorite tea timers and controlling an active brew.',
-    caption: 'Apple Watch'
   }
 ]
 
@@ -113,7 +186,9 @@ const steps = [
 const proItems = [
   'Unlimited custom teas',
   'iCloud sync for teas, preferences, and brew history',
-  'Advanced haptics and additional calm alert sounds',
+  'Full brew journal with tasting notes',
+  'Guided re-steeps for later infusions',
+  'Stronger completion haptic option',
   'Family Sharing support'
 ]
 
@@ -121,12 +196,12 @@ const ecosystemItems = [
   {
     marker: '01',
     title: 'Start from the device in reach',
-    text: 'Use Steepr on iPhone, or start favorite teas directly from Apple Watch.'
+    text: 'Open Steepr on iPhone, then start a favorite tea or browse the full library.'
   },
   {
     marker: '02',
     title: 'Keep the timer visible',
-    text: 'Home Screen widgets, Lock Screen widgets, Live Activities, and Watch complications keep the active brew nearby.'
+    text: 'Home Screen widgets, Lock Screen widgets, and Live Activities keep the active brew nearby.'
   },
   {
     marker: '03',
@@ -192,10 +267,6 @@ const faqs = [
     answer: 'The free version includes a small number of custom teas. Steepr Pro unlocks unlimited custom teas.'
   },
   {
-    question: 'How do I use Steepr on Apple Watch?',
-    answer: 'Favorite teas on iPhone appear on Apple Watch. Open Steepr on Apple Watch to start a favorite tea, control the timer, and receive haptic alerts.'
-  },
-  {
     question: 'Do widgets and Live Activities sync with the active timer?',
     answer: 'Yes. Widgets and Live Activities use a local shared timer snapshot so they can show the current brew state.'
   },
@@ -229,6 +300,17 @@ const faqs = [
           {{ item.label }}
         </a>
       </nav>
+      <div class="theme-switcher" aria-label="Color theme">
+        <button
+          v-for="mode in themeModes"
+          :key="mode.value"
+          type="button"
+          :aria-pressed="selectedTheme === mode.value"
+          @click="setTheme(mode.value)"
+        >
+          {{ mode.label }}
+        </button>
+      </div>
     </header>
 
     <Transition name="page-swap" mode="out-in">
@@ -238,7 +320,7 @@ const faqs = [
           <p class="eyebrow">Now available on the App Store</p>
           <h1>The perfect cup, every time.</h1>
           <p class="hero-text">
-            Steepr is a calm tea timer for iPhone and Apple Watch. Start a preset,
+            Steepr is a calm tea timer for iPhone. Start a preset,
             follow a clear countdown, and get gentle alerts when your tea is ready.
           </p>
           <div class="hero-actions" aria-label="Primary actions">
@@ -247,7 +329,7 @@ const faqs = [
           </div>
         </div>
 
-        <div class="device-stage" aria-label="Steepr iPhone and Apple Watch preview">
+        <div class="device-stage" aria-label="Steepr iPhone preview">
           <div class="phone-mockup" aria-hidden="true">
             <div class="dynamic-island"></div>
             <div class="phone-screen">
@@ -274,37 +356,6 @@ const faqs = [
               </div>
             </div>
           </div>
-          <div class="watch-mockup" aria-hidden="true">
-            <div class="watch-screen">
-              <div class="watch-top">
-                <span>Steepr</span>
-                <strong>3:27</strong>
-              </div>
-              <div class="watch-tea-list">
-                <div class="watch-tea-row watch-green">
-                  <span class="watch-tea-icon"></span>
-                  <div>
-                    <strong>Green</strong>
-                    <small>2m 30s</small>
-                  </div>
-                </div>
-                <div class="watch-tea-row watch-black">
-                  <span class="watch-tea-icon"></span>
-                  <div>
-                    <strong>Black</strong>
-                    <small>4m</small>
-                  </div>
-                </div>
-                <div class="watch-tea-row watch-oolong">
-                  <span class="watch-tea-icon"></span>
-                  <div>
-                    <strong>Oolong</strong>
-                    <small>3m 30s</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -314,7 +365,7 @@ const faqs = [
           <h2 id="screenshots-title">A quiet workflow from tea choice to final alert.</h2>
           <p>
             The app keeps the important details close: steeping time, temperature,
-            favorites, Watch controls, notifications, and simple settings.
+            favorites, notifications, and simple settings.
           </p>
         </div>
         <div class="screenshot-strip" aria-label="Steepr app screenshots">
@@ -332,16 +383,27 @@ const faqs = [
       </section>
 
       <section class="feature-band" aria-labelledby="features-title">
-        <div class="section-heading">
-          <p class="eyebrow">Quietly capable</p>
-          <h2 id="features-title">Everything needed for a better brew.</h2>
+        <div class="feature-intro">
+          <div class="section-heading">
+            <p class="eyebrow">Quietly capable</p>
+            <h2 id="features-title">Everything needed for a better brew.</h2>
+          </div>
+          <p>
+            Steepr keeps the core workflow close: pick the tea, follow the time,
+            get the alert, and come back to your usual cups without extra setup.
+          </p>
         </div>
         <div class="feature-grid">
           <article v-for="feature in features" :key="feature.title" class="feature-card">
+            <span class="feature-icon" aria-hidden="true">{{ feature.icon }}</span>
             <h3>{{ feature.title }}</h3>
             <p>{{ feature.text }}</p>
+            <small>{{ feature.detail }}</small>
           </article>
         </div>
+        <ul class="feature-proof" aria-label="Steepr capabilities">
+          <li v-for="item in featureProof" :key="item">{{ item }}</li>
+        </ul>
       </section>
 
       <section class="workflow section-grid" aria-labelledby="workflow-title">
@@ -362,9 +424,9 @@ const faqs = [
           <p class="eyebrow">Apple ecosystem</p>
           <h2 id="ecosystem-title">Native surfaces, familiar behavior.</h2>
           <p>
-            Steepr is built for the places Apple users expect tea timers to appear:
-            iPhone, Apple Watch, Home Screen widgets, Lock Screen widgets, Live Activities,
-            Watch complications, notifications, and haptics. Pro adds private iCloud sync
+            Steepr is built for the places iPhone users expect tea timers to appear:
+            the app, Home Screen widgets, Lock Screen widgets, Live Activities,
+            notifications, and haptics. Pro adds private iCloud sync
             for teas, preferences, and brew history.
           </p>
         </div>
@@ -384,7 +446,8 @@ const faqs = [
           <p class="eyebrow">Steepr Pro</p>
           <h2 id="pro-title">A one-time unlock for people who brew often.</h2>
           <p>
-            The free app covers the core timer. Pro adds room for a larger tea library
+            The free app covers the core timer and a small custom tea library. Pro adds
+            unlimited custom teas, a full brew journal, guided re-steeps, stronger haptics,
             and private sync across your Apple devices.
           </p>
         </div>
@@ -414,7 +477,7 @@ const faqs = [
           <p class="eyebrow">Available now</p>
           <h2 id="launch-title">Download Steepr from the App Store.</h2>
           <p>
-            Use Steepr on iPhone and Apple Watch for simple tea presets,
+            Use Steepr on iPhone for simple tea presets,
             clear brew timers, favorite teas, and completion alerts.
           </p>
         </div>
@@ -440,7 +503,7 @@ const faqs = [
         </article>
         <article class="document-section">
           <h2>Contact</h2>
-          <p>For privacy questions, contact <a href="mailto:aftaab@aftaab.dev">Aftaab Siddiqui</a>.</p>
+          <p>For privacy questions, contact <a href="mailto:support@maskedsyntax.com">support@maskedsyntax.com</a>.</p>
         </article>
       </section>
     </main>
@@ -451,7 +514,7 @@ const faqs = [
         <h1>Support</h1>
         <p>
           For help with Steepr, contact
-          <a href="mailto:aftaab@aftaab.dev">Aftaab Siddiqui</a>.
+          <a href="mailto:support@maskedsyntax.com">support@maskedsyntax.com</a>.
         </p>
         <div class="document-actions">
           <a class="button primary" :href="appStoreUrl" target="_blank" rel="noopener">Download on the App Store</a>
@@ -467,8 +530,8 @@ const faqs = [
         <article class="document-section">
           <h3>How do I contact support?</h3>
           <p>
-            Email <a href="mailto:aftaab@aftaab.dev">Aftaab Siddiqui</a>
-            with your device model, iOS or watchOS version, and a short description of the issue.
+            Email <a href="mailto:support@maskedsyntax.com">support@maskedsyntax.com</a>
+            with your device model, iOS version, and a short description of the issue.
           </p>
         </article>
       </section>
@@ -476,7 +539,7 @@ const faqs = [
     </Transition>
 
     <footer class="site-footer">
-      <p>© 2026 Aftaab Siddiqui. Steepr is built for iPhone and Apple Watch.</p>
+      <p>© 2026 Aftaab Siddiqui. Steepr is built for iPhone.</p>
       <div>
         <a href="/privacy/" @click="navigate($event, navItems[1])">Privacy</a>
         <a href="/support/" @click="navigate($event, navItems[2])">Support</a>
