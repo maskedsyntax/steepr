@@ -10,73 +10,111 @@ struct PaywallView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading, spacing: 24) {
-                ZStack {
-                    Circle()
-                        .fill(TeaColorSlot.green.color.opacity(0.16))
-                        .frame(width: 112, height: 112)
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 46, weight: .medium))
-                        .foregroundStyle(TeaColorSlot.green.color)
-                }
-                .frame(maxWidth: .infinity)
+            GeometryReader { proxy in
+                let compact = proxy.size.height < 720
+                let columns = [
+                    GridItem(.flexible(), spacing: compact ? 10 : 12),
+                    GridItem(.flexible(), spacing: compact ? 10 : 12)
+                ]
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Steepr Pro")
-                        .font(.largeTitle.bold())
-                    Text("Unlock the extra room and polish for daily brewing.")
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
-                }
+                VStack(spacing: compact ? 12 : 18) {
+                    Spacer(minLength: 0)
 
-                VStack(alignment: .leading, spacing: 14) {
-                    PaywallFeature(symbol: "icloud.fill", title: "iCloud sync", detail: "Keep teas, sessions, and preferences in sync.")
-                    PaywallFeature(symbol: "plus.circle.fill", title: "Unlimited custom teas", detail: "Free includes three custom teas.")
-                    PaywallFeature(symbol: "hand.tap.fill", title: "Advanced haptics", detail: "Use stronger completion feedback.")
-                    PaywallFeature(symbol: "speaker.wave.2.fill", title: "More sounds", detail: "Choose from a wider set of calm alerts.")
-                }
+                    VStack(spacing: compact ? 10 : 14) {
+                        ZStack {
+                            Circle()
+                                .fill(TeaColorSlot.green.color.opacity(0.13))
+                                .frame(width: compact ? 70 : 88, height: compact ? 70 : 88)
+                            Image(systemName: "sparkles")
+                                .font(.system(size: compact ? 30 : 38, weight: .semibold))
+                                .foregroundStyle(TeaColorSlot.green.color)
+                        }
 
-                Spacer()
-
-                Button {
-                    Task {
-                        await purchaseCoordinator.purchasePro(store: teaStore, brewSessionStore: brewSessionStore)
-                        if teaStore.preferences.proPurchased {
-                            dismiss()
+                        VStack(spacing: 6) {
+                            Text("Steepr Pro")
+                                .font((compact ? Font.title : .largeTitle).bold())
+                                .multilineTextAlignment(.center)
+                            Text("Save, sync, and repeat your best tea routines.")
+                                .font(compact ? .subheadline : .title3)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
-                } label: {
-                    if purchaseCoordinator.isLoading {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                    } else {
-                        Text("Buy Steepr Pro - \(purchaseCoordinator.priceText)")
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-                .disabled(purchaseCoordinator.isLoading)
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
 
-                Button("Restore") {
-                    Task {
-                        await purchaseCoordinator.restorePurchases(store: teaStore, brewSessionStore: brewSessionStore)
-                        if teaStore.preferences.proPurchased {
-                            dismiss()
+                    LazyVGrid(columns: columns, spacing: compact ? 10 : 12) {
+                        PaywallFeatureCard(symbol: "plus.circle.fill", title: "Unlimited teas", detail: "Save every loose leaf and recipe.")
+                        PaywallFeatureCard(symbol: "clock.arrow.circlepath", title: "Brew journal", detail: "Keep tasting notes and history.")
+                        PaywallFeatureCard(symbol: "arrow.clockwise", title: "Guided re-steeps", detail: "Later infusions adjust for you.")
+                        PaywallFeatureCard(symbol: "icloud.fill", title: "iCloud sync", detail: "Carry your shelf across devices.")
+                    }
+
+                    Spacer(minLength: 0)
+
+                    VStack(spacing: compact ? 9 : 12) {
+                        HStack(alignment: .firstTextBaseline) {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text("One-time purchase")
+                                    .font(compact ? .headline : .title3.bold())
+                                Text("No subscription. Family Sharing supported.")
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            Spacer()
+
+                            Text(purchaseCoordinator.priceText)
+                                .font((compact ? Font.title3 : .title).bold())
+                                .foregroundStyle(TeaColorSlot.green.color)
                         }
-                    }
-                }
-                .frame(maxWidth: .infinity)
 
-                if let errorMessage = purchaseCoordinator.errorMessage {
-                    Text(errorMessage)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        Button {
+                            Task {
+                                await purchaseCoordinator.purchasePro(store: teaStore, brewSessionStore: brewSessionStore)
+                                if teaStore.preferences.proPurchased {
+                                    dismiss()
+                                }
+                            }
+                        } label: {
+                            if purchaseCoordinator.isLoading {
+                                ProgressView()
+                                    .frame(maxWidth: .infinity)
+                            } else {
+                                Text("Unlock forever - \(purchaseCoordinator.priceText)")
+                                    .frame(maxWidth: .infinity)
+                            }
+                        }
+                        .disabled(purchaseCoordinator.isLoading)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+
+                        Button("Restore purchase") {
+                            Task {
+                                await purchaseCoordinator.restorePurchases(store: teaStore, brewSessionStore: brewSessionStore)
+                                if teaStore.preferences.proPurchased {
+                                    dismiss()
+                                }
+                            }
+                        }
+                        .font(.subheadline.weight(.medium))
                         .frame(maxWidth: .infinity)
-                        .multilineTextAlignment(.center)
+
+                        if let errorMessage = purchaseCoordinator.errorMessage {
+                            Text(errorMessage)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity)
+                                .multilineTextAlignment(.center)
+                        }
+                    }
+                    .padding(compact ? 14 : 16)
+                    .background(.thinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    .padding(.horizontal, compact ? 20 : 28)
+                    .padding(.bottom, compact ? 10 : 16)
                 }
+                .padding(.horizontal, compact ? 16 : 24)
             }
-            .padding()
             .navigationTitle(trigger)
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -93,24 +131,41 @@ struct PaywallView: View {
     }
 }
 
-private struct PaywallFeature: View {
+private struct PaywallFeatureCard: View {
     let symbol: String
     let title: String
     let detail: String
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
+        VStack(spacing: 8) {
             Image(systemName: symbol)
-                .font(.title3)
+                .font(.system(size: 23, weight: .semibold))
                 .foregroundStyle(TeaColorSlot.green.color)
-                .frame(width: 28)
+                .frame(width: 42, height: 42)
+                .background(TeaColorSlot.green.color.opacity(0.12))
+                .clipShape(Circle())
 
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(spacing: 4) {
                 Text(title)
                     .font(.headline)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.78)
                 Text(detail)
+                    .font(.subheadline)
                     .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.82)
+                    .multilineTextAlignment(.center)
             }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity)
+        .frame(height: 126)
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(Color.secondary.opacity(0.14), lineWidth: 1)
         }
     }
 }
