@@ -3,6 +3,7 @@ import ActivityKit
 import Foundation
 import SwiftUI
 import UIKit
+import UserNotifications
 import WidgetKit
 
 @main
@@ -23,6 +24,7 @@ struct QuickBrewWidget: Widget {
         .configurationDisplayName("Quick Brew")
         .description("Start a favorite tea timer from the Home Screen.")
         .supportedFamilies([.systemSmall, .systemMedium])
+        .contentMarginsDisabled()
     }
 }
 
@@ -35,6 +37,7 @@ struct CurrentBrewWidget: Widget {
         .configurationDisplayName("Current Brew")
         .description("See the active tea timer at a glance.")
         .supportedFamilies([.systemSmall, .systemMedium, .accessoryCircular, .accessoryRectangular])
+        .contentMarginsDisabled()
     }
 }
 
@@ -128,46 +131,27 @@ private struct QuickBrewWidgetView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 6) {
-                Image(systemName: "leaf.fill")
-                Text("Quick Brew")
-                    .font(.caption.weight(.semibold))
-                Spacer(minLength: 0)
-            }
-            .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 7) {
+            WidgetHeader(title: "Quick Brew", subtitle: "Tap to start")
 
             if visibleTeas.isEmpty {
-                Spacer(minLength: 0)
-                Image(systemName: "star")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-                Text("Pick favorites")
-                    .font(.headline)
-                    .lineLimit(2)
-                Text("Open Steepr")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                EmptyWidgetState(
+                    imageName: "star",
+                    title: "Pick favorites",
+                    subtitle: "Then start them here"
+                )
             } else {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
-                    ForEach(visibleTeas) { tea in
-                        Button(intent: StartQuickBrewIntent(teaID: tea.id.uuidString)) {
-                            VStack(alignment: .leading, spacing: 5) {
-                                Image(systemName: tea.symbolName)
-                                    .font(.headline)
-                                Text(tea.name)
-                                    .font(.caption.weight(.semibold))
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.76)
-                                Text(tea.compactDuration)
-                                    .font(.caption2.monospacedDigit())
-                                    .foregroundStyle(.secondary)
-                            }
-                            .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
-                            .padding(8)
-                        }
-                        .buttonStyle(.bordered)
-                    }
+                quickBrewGrid
+            }
+        }
+        .padding(14)
+    }
+
+    private var quickBrewGrid: some View {
+        LazyVGrid(columns: [GridItem(.flexible(), spacing: 7), GridItem(.flexible(), spacing: 7)], spacing: 7) {
+            ForEach(visibleTeas) { tea in
+                Link(destination: tea.quickBrewURL) {
+                    QuickBrewCard(tea: tea, isCompact: family == .systemSmall)
                 }
             }
         }
@@ -212,50 +196,61 @@ private struct CurrentBrewWidgetView: View {
     }
 
     private var standardContent: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            header
+        VStack(alignment: .leading, spacing: 9) {
+            WidgetHeader(title: "Current Brew", subtitle: entry.snapshot?.statusText ?? "Idle")
 
             if let snapshot = entry.snapshot, snapshot.isActive {
-                Spacer(minLength: 0)
-                Text(snapshot.tea.name)
-                    .font(.headline)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-                timerText(for: snapshot)
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .monospacedDigit()
-                    .contentTransition(.numericText())
-                Text(snapshot.statusText)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
+                activeBrewContent(snapshot)
                 if snapshot.state == .running || snapshot.state == .paused {
-                    HStack(spacing: 8) {
+                    HStack(spacing: 7) {
                         Button(intent: PauseBrewTimerIntent()) {
-                            Image(systemName: "pause.fill")
-                                .frame(maxWidth: .infinity)
+                            Label(snapshot.state == .running ? "Pause" : "Paused", systemImage: snapshot.state == .running ? "pause.fill" : "pause")
+                                .font(.caption.weight(.semibold))
+                                .frame(maxWidth: .infinity, minHeight: 30)
+                                .background(.thinMaterial, in: Capsule())
                         }
                         .disabled(snapshot.state != .running)
+                        .buttonStyle(.plain)
 
                         Button(intent: CancelBrewTimerIntent()) {
-                            Image(systemName: "xmark")
-                                .frame(maxWidth: .infinity)
+                            Label("Stop", systemImage: "xmark")
+                                .font(.caption.weight(.semibold))
+                                .frame(maxWidth: .infinity, minHeight: 30)
+                                .background(Color.red.opacity(0.18), in: Capsule())
                         }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.bordered)
                 }
             } else {
-                Spacer(minLength: 0)
-                Image(systemName: "cup.and.saucer.fill")
-                    .font(.title)
-                    .foregroundStyle(.secondary)
-                Text("No active brew")
-                    .font(.headline)
-                    .lineLimit(2)
-                Text("Start one in Steepr")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                EmptyWidgetState(
+                    imageName: "cup.and.saucer.fill",
+                    title: "No active brew",
+                    subtitle: "Use Quick Brew to start"
+                )
             }
+        }
+        .padding(14)
+    }
+
+    private func activeBrewContent(_ snapshot: WidgetActiveTimerSnapshot) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .firstTextBaseline) {
+                Label(snapshot.tea.name, systemImage: snapshot.tea.symbolName)
+                    .font(.headline.weight(.semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.78)
+
+                Spacer(minLength: 4)
+            }
+
+            timerText(for: snapshot)
+                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .monospacedDigit()
+                .contentTransition(.numericText())
+                .minimumScaleFactor(0.72)
+
+            ProgressView(value: snapshot.progress)
+                .tint(snapshot.tea.tintColor)
         }
     }
 
@@ -291,16 +286,6 @@ private struct CurrentBrewWidgetView: View {
         }
     }
 
-    private var header: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "leaf.fill")
-            Text("Steepr")
-                .font(.caption.weight(.semibold))
-            Spacer(minLength: 0)
-        }
-        .foregroundStyle(.secondary)
-    }
-
     @ViewBuilder
     private func timerText(for snapshot: WidgetActiveTimerSnapshot) -> some View {
         if snapshot.state == .running, let interval = snapshot.timerInterval {
@@ -308,6 +293,90 @@ private struct CurrentBrewWidgetView: View {
         } else {
             Text(snapshot.compactTimeText)
         }
+    }
+}
+
+private struct WidgetHeader: View {
+    let title: String
+    let subtitle: String
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+            Image(systemName: "leaf.fill")
+                .font(.caption.weight(.bold))
+            Text(title)
+                .font(.caption.weight(.bold))
+                .lineLimit(1)
+            Spacer(minLength: 4)
+            Text(subtitle)
+                .font(.caption2.weight(.medium))
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .foregroundStyle(.secondary)
+    }
+}
+
+private struct EmptyWidgetState: View {
+    let imageName: String
+    let title: String
+    let subtitle: String
+
+    var body: some View {
+        Spacer(minLength: 0)
+        VStack(alignment: .leading, spacing: 6) {
+            Image(systemName: imageName)
+                .font(.title2.weight(.semibold))
+                .foregroundStyle(.secondary)
+            Text(title)
+                .font(.headline.weight(.semibold))
+                .lineLimit(2)
+                .minimumScaleFactor(0.82)
+            Text(subtitle)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        Spacer(minLength: 0)
+    }
+}
+
+private struct QuickBrewCard: View {
+    let tea: WidgetTea
+    let isCompact: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 6) {
+                Image(systemName: tea.symbolName)
+                    .font(.caption.weight(.bold))
+                Spacer(minLength: 0)
+                Text(tea.compactDuration)
+                    .font(.caption2.monospacedDigit().weight(.semibold))
+                    .lineLimit(1)
+            }
+
+            Text(tea.name)
+                .font(.caption.weight(.bold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.72)
+        }
+        .foregroundStyle(tea.tintColor)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 6)
+        .frame(maxWidth: .infinity, minHeight: isCompact ? 42 : 46, alignment: .leading)
+        .background(
+            LinearGradient(
+                colors: [tea.tintColor.opacity(0.22), tea.tintColor.opacity(0.09)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            in: RoundedRectangle(cornerRadius: 18, style: .continuous)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(tea.tintColor.opacity(0.28), lineWidth: 1)
+        )
     }
 }
 
@@ -387,6 +456,7 @@ private func liveActivityTimeText(state: String, endDate: Date?, secondsRemainin
 
 private struct WidgetActiveTimerSnapshot: Codable, Equatable {
     static let storageKey = "steepr.activeTimer"
+    private static let sharedTimerDidChangeNotification = "com.maskedsyntax.steepr.sharedTimerDidChange"
 
     var sessionID: UUID
     var tea: WidgetTea
@@ -483,6 +553,7 @@ private struct WidgetActiveTimerSnapshot: Codable, Equatable {
 
     static func cancel() {
         UserDefaults(suiteName: "group.com.maskedsyntax.steepr")?.removeObject(forKey: storageKey)
+        notifySharedTimerDidChange()
     }
 
     static func start(tea: WidgetTea) {
@@ -507,6 +578,17 @@ private struct WidgetActiveTimerSnapshot: Codable, Equatable {
     private static func save(_ snapshot: WidgetActiveTimerSnapshot) {
         guard let data = try? JSONEncoder().encode(snapshot) else { return }
         UserDefaults(suiteName: "group.com.maskedsyntax.steepr")?.set(data, forKey: storageKey)
+        notifySharedTimerDidChange()
+    }
+
+    private static func notifySharedTimerDidChange() {
+        CFNotificationCenterPostNotification(
+            CFNotificationCenterGetDarwinNotifyCenter(),
+            CFNotificationName(sharedTimerDidChangeNotification as CFString),
+            nil,
+            nil,
+            true
+        )
     }
 }
 
@@ -636,6 +718,35 @@ private struct WidgetTea: Codable, Equatable, Hashable, Identifiable {
         return seconds == 0 ? "\(minutes)m" : "\(minutes)m \(seconds)s"
     }
 
+    var tintColor: Color {
+        switch colorSlot {
+        case .green:
+            return Color(red: 0.25, green: 0.62, blue: 0.36)
+        case .black:
+            return Color(red: 0.60, green: 0.42, blue: 0.25)
+        case .oolong:
+            return Color(red: 0.85, green: 0.45, blue: 0.18)
+        case .white:
+            return Color(red: 0.72, green: 0.62, blue: 0.42)
+        case .herbal:
+            return Color(red: 0.66, green: 0.35, blue: 0.68)
+        case .chai:
+            return Color(red: 0.78, green: 0.31, blue: 0.18)
+        case .puerh:
+            return Color(red: 0.45, green: 0.25, blue: 0.16)
+        case .matcha:
+            return Color(red: 0.47, green: 0.70, blue: 0.22)
+        case .customA:
+            return Color(red: 0.24, green: 0.50, blue: 0.84)
+        case .customB:
+            return Color(red: 0.75, green: 0.38, blue: 0.50)
+        }
+    }
+
+    var quickBrewURL: URL {
+        URL(string: "steepr://quick-brew/\(id.uuidString)")!
+    }
+
     static let builtIns: [WidgetTea] = {
         let now = Date(timeIntervalSince1970: 0)
         return [
@@ -647,38 +758,7 @@ private struct WidgetTea: Codable, Equatable, Hashable, Identifiable {
     }()
 }
 
-private struct StartQuickBrewIntent: AppIntent {
-    static var title: LocalizedStringResource = "Start Quick Brew"
-    static var description = IntentDescription("Starts a Steepr timer for a favorite tea.")
-    static var openAppWhenRun = false
-
-    @Parameter(title: "Tea ID")
-    var teaID: String
-
-    init() {
-        teaID = ""
-    }
-
-    init(teaID: String) {
-        self.teaID = teaID
-    }
-
-    @MainActor
-    func perform() async throws -> some IntentResult & ProvidesDialog {
-        let tea = WidgetFavoriteTeasSnapshot.loadFavorites().first { $0.id.uuidString == teaID }
-
-        guard let tea else {
-            return .result(dialog: "Tea not found.")
-        }
-
-        WidgetActiveTimerSnapshot.start(tea: tea)
-        WidgetCenter.shared.reloadAllTimelines()
-
-        return .result(dialog: "\(tea.name) is brewing.")
-    }
-}
-
-private struct PauseBrewTimerIntent: AppIntent {
+struct PauseBrewTimerIntent: AppIntent {
     static var title: LocalizedStringResource = "Pause Brew Timer"
     static var description = IntentDescription("Pauses the active Steepr timer.")
     static var openAppWhenRun = false
@@ -689,13 +769,14 @@ private struct PauseBrewTimerIntent: AppIntent {
             return .result(dialog: "No running tea timer.")
         }
 
+        removePendingTimerNotifications()
         await updateLiveActivity(snapshot: snapshot)
         WidgetCenter.shared.reloadAllTimelines()
         return .result(dialog: "\(snapshot.tea.name) paused.")
     }
 }
 
-private struct CancelBrewTimerIntent: AppIntent {
+struct CancelBrewTimerIntent: AppIntent {
     static var title: LocalizedStringResource = "Cancel Brew Timer"
     static var description = IntentDescription("Cancels the active Steepr timer.")
     static var openAppWhenRun = false
@@ -704,6 +785,7 @@ private struct CancelBrewTimerIntent: AppIntent {
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let teaName = WidgetActiveTimerSnapshot.load()?.tea.name
         WidgetActiveTimerSnapshot.cancel()
+        removePendingTimerNotifications()
         await endLiveActivities()
         WidgetCenter.shared.reloadAllTimelines()
 
@@ -712,6 +794,13 @@ private struct CancelBrewTimerIntent: AppIntent {
         }
         return .result(dialog: "No active tea timer.")
     }
+}
+
+private func removePendingTimerNotifications() {
+    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [
+        "steepr.brew.complete",
+        "steepr.brew.pre-alert"
+    ])
 }
 
 private func updateLiveActivity(snapshot: WidgetActiveTimerSnapshot) async {

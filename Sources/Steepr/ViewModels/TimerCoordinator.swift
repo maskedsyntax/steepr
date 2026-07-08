@@ -2,6 +2,10 @@ import Combine
 import Foundation
 import UserNotifications
 
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
+
 enum ActiveTimerState: String, Codable, Equatable {
     case idle
     case running
@@ -11,6 +15,7 @@ enum ActiveTimerState: String, Codable, Equatable {
 
 final class TimerCoordinator: ObservableObject {
     static var notificationsEnabled = true
+    private static let sharedTimerDidChangeNotification = "com.maskedsyntax.steepr.sharedTimerDidChange"
 
     @Published private(set) var activeTea: Tea?
     @Published private(set) var state: ActiveTimerState = .idle
@@ -28,6 +33,32 @@ final class TimerCoordinator: ObservableObject {
     private var hasRestoredPersistedTimer = false
     private let notificationIdentifier = "steepr.brew.complete"
     private let preAlertIdentifier = "steepr.brew.pre-alert"
+
+    init() {
+        CFNotificationCenterAddObserver(
+            CFNotificationCenterGetDarwinNotifyCenter(),
+            Unmanaged.passUnretained(self).toOpaque(),
+            { _, observer, _, _, _ in
+                guard let observer else { return }
+                let coordinator = Unmanaged<TimerCoordinator>.fromOpaque(observer).takeUnretainedValue()
+                Task { @MainActor in
+                    coordinator.reloadFromSharedTimer(preferences: TimerCoordinator.loadSharedPreferences())
+                }
+            },
+            Self.sharedTimerDidChangeNotification as CFString,
+            nil,
+            .deliverImmediately
+        )
+    }
+
+    deinit {
+        CFNotificationCenterRemoveObserver(
+            CFNotificationCenterGetDarwinNotifyCenter(),
+            Unmanaged.passUnretained(self).toOpaque(),
+            CFNotificationName(Self.sharedTimerDidChangeNotification as CFString),
+            nil
+        )
+    }
 
     var progress: Double {
         guard durationSeconds > 0 else { return 0 }
@@ -60,13 +91,26 @@ final class TimerCoordinator: ObservableObject {
         guard !hasRestoredPersistedTimer else { return }
         hasRestoredPersistedTimer = true
 
+        restorePersistedTimer(preferences: preferences, cancelWhenMissing: false)
+    }
+
+    func reloadFromSharedTimer(preferences: UserPreferences) {
+        restorePersistedTimer(preferences: preferences, cancelWhenMissing: activeTea != nil)
+    }
+
+    private func restorePersistedTimer(preferences: UserPreferences, cancelWhenMissing: Bool) {
+
         guard
             let data = AppGroup.userDefaults.data(forKey: ActiveTimerSnapshot.storageKey),
             let snapshot = try? JSONDecoder().decode(ActiveTimerSnapshot.self, from: data)
         else {
+            if cancelWhenMissing {
+                cancel(scheduleNotification: false)
+            }
             return
         }
 
+        timer?.cancel()
         activeTea = snapshot.tea
         currentSessionID = snapshot.sessionID
         startedAt = snapshot.startedAt
@@ -263,6 +307,7 @@ final class TimerCoordinator: ObservableObject {
 
         guard let data = try? JSONEncoder().encode(snapshot) else { return }
         AppGroup.userDefaults.set(data, forKey: ActiveTimerSnapshot.storageKey)
+        reloadCurrentBrewWidget()
         if state == .running, snapshot.secondsRemaining == snapshot.durationSeconds {
             LiveActivityService.start(snapshot: snapshot)
         } else {
@@ -272,5 +317,23 @@ final class TimerCoordinator: ObservableObject {
 
     private func clearPersistedTimer() {
         AppGroup.userDefaults.removeObject(forKey: ActiveTimerSnapshot.storageKey)
+        reloadCurrentBrewWidget()
+    }
+
+    private func reloadCurrentBrewWidget() {
+        #if canImport(WidgetKit)
+        WidgetCenter.shared.reloadTimelines(ofKind: "com.steepr.current-brew")
+        #endif
+    }
+
+    private static func loadSharedPreferences() -> UserPreferences {
+        guard
+            let data = AppGroup.userDefaults.data(forKey: UserPreferencesSnapshot.storageKey),
+            let snapshot = try? JSONDecoder().decode(UserPreferencesSnapshot.self, from: data)
+        else {
+            return .defaults
+        }
+
+        return snapshot.preferences
     }
 }
