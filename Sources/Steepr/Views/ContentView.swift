@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject private var teaStore: TeaStore
     @EnvironmentObject private var brewSessionStore: BrewSessionStore
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var timerCoordinator = TimerCoordinator()
     @State private var selectedTab = 0
     @State private var libraryPath = NavigationPath()
@@ -50,16 +51,27 @@ struct ContentView: View {
                 showingCompletionSheet = false
             }
         }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            timerCoordinator.reloadFromSharedTimer(preferences: teaStore.preferences)
+            if timerCoordinator.activeTea != nil {
+                selectedTab = 0
+            }
+        }
+        .onOpenURL { url in
+            handleWidgetURL(url)
+        }
         .sheet(isPresented: $showingCompletionSheet) {
             TimerCompleteSheet(timerCoordinator: timerCoordinator)
                 .environmentObject(teaStore)
         }
-        .fullScreenCover(isPresented: Binding(
+        .onboardingPresentation(isPresented: Binding(
             get: { !teaStore.preferences.onboardingComplete },
             set: { _ in }
         )) {
             OnboardingView()
                 .environmentObject(teaStore)
+                .environmentObject(brewSessionStore)
         }
     }
 
@@ -80,6 +92,65 @@ struct ContentView: View {
             durationSeconds: timerCoordinator.durationSeconds,
             infusionNumber: timerCoordinator.infusionNumber
         )
+    }
+
+    private func handleWidgetURL(_ url: URL) {
+        guard url.scheme == "steepr" else { return }
+
+        switch url.host {
+        case "quick-brew":
+            handleQuickBrewURL(url)
+        case "timer":
+            handleTimerControlURL(url)
+        default:
+            return
+        }
+    }
+
+    private func handleQuickBrewURL(_ url: URL) {
+
+        let idString = url.pathComponents.dropFirst().first
+        guard
+            let idString,
+            let teaID = UUID(uuidString: idString),
+            let tea = teaStore.tea(with: teaID)
+        else {
+            selectedTab = 1
+            return
+        }
+
+        selectedTab = 0
+        timerCoordinator.start(tea, preferences: teaStore.preferences)
+    }
+
+    private func handleTimerControlURL(_ url: URL) {
+        guard let action = url.pathComponents.dropFirst().first else { return }
+
+        timerCoordinator.reloadFromSharedTimer(preferences: teaStore.preferences)
+        selectedTab = 0
+
+        switch action {
+        case "pause":
+            timerCoordinator.pause()
+        case "stop":
+            timerCoordinator.cancel()
+        default:
+            return
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func onboardingPresentation<Content: View>(
+        isPresented: Binding<Bool>,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        #if os(macOS)
+        sheet(isPresented: isPresented, content: content)
+        #else
+        fullScreenCover(isPresented: isPresented, content: content)
+        #endif
     }
 }
 

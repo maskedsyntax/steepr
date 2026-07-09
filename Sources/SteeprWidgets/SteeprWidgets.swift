@@ -45,6 +45,7 @@ struct BrewLiveActivityWidget: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: SteeprLiveActivityAttributes.self) { context in
             BrewLiveActivityView(
+                sessionID: context.attributes.sessionID,
                 teaName: context.attributes.teaName,
                 symbolName: context.attributes.symbolName,
                 state: context.state.state,
@@ -66,7 +67,8 @@ struct BrewLiveActivityWidget: Widget {
                     liveActivityTimeText(
                         state: context.state.state,
                         endDate: context.state.endDate,
-                        secondsRemaining: context.state.secondsRemaining
+                        secondsRemaining: context.state.secondsRemaining,
+                        sessionID: context.attributes.sessionID
                     )
                     .font(.title3.monospacedDigit().weight(.semibold))
                 }
@@ -75,12 +77,11 @@ struct BrewLiveActivityWidget: Widget {
                     HStack(spacing: 10) {
                         ProgressView(value: context.state.progress)
 
-                        Button(intent: PauseBrewTimerIntent()) {
+                        Link(destination: WidgetTimerControlURL.pause) {
                             Image(systemName: "pause.fill")
                         }
-                        .disabled(context.state.state != "running")
 
-                        Button(intent: CancelBrewTimerIntent()) {
+                        Link(destination: WidgetTimerControlURL.stop) {
                             Image(systemName: "xmark")
                         }
                     }
@@ -92,7 +93,8 @@ struct BrewLiveActivityWidget: Widget {
                 liveActivityTimeText(
                     state: context.state.state,
                     endDate: context.state.endDate,
-                    secondsRemaining: context.state.secondsRemaining
+                    secondsRemaining: context.state.secondsRemaining,
+                    sessionID: context.attributes.sessionID
                 )
                 .font(.caption2.monospacedDigit())
             } minimal: {
@@ -203,22 +205,26 @@ private struct CurrentBrewWidgetView: View {
                 activeBrewContent(snapshot)
                 if snapshot.state == .running || snapshot.state == .paused {
                     HStack(spacing: 7) {
-                        Button(intent: PauseBrewTimerIntent()) {
-                            Label(snapshot.state == .running ? "Pause" : "Paused", systemImage: snapshot.state == .running ? "pause.fill" : "pause")
+                        if snapshot.state == .running {
+                            Link(destination: WidgetTimerControlURL.pause) {
+                                Label("Pause", systemImage: "pause.fill")
+                                    .font(.caption.weight(.semibold))
+                                    .frame(maxWidth: .infinity, minHeight: 30)
+                                    .background(.thinMaterial, in: Capsule())
+                            }
+                        } else {
+                            Label("Paused", systemImage: "pause")
                                 .font(.caption.weight(.semibold))
                                 .frame(maxWidth: .infinity, minHeight: 30)
                                 .background(.thinMaterial, in: Capsule())
                         }
-                        .disabled(snapshot.state != .running)
-                        .buttonStyle(.plain)
 
-                        Button(intent: CancelBrewTimerIntent()) {
+                        Link(destination: WidgetTimerControlURL.stop) {
                             Label("Stop", systemImage: "xmark")
                                 .font(.caption.weight(.semibold))
                                 .frame(maxWidth: .infinity, minHeight: 30)
                                 .background(Color.red.opacity(0.18), in: Capsule())
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             } else {
@@ -381,6 +387,7 @@ private struct QuickBrewCard: View {
 }
 
 private struct BrewLiveActivityView: View {
+    let sessionID: UUID
     let teaName: String
     let symbolName: String
     let state: String
@@ -407,7 +414,8 @@ private struct BrewLiveActivityView: View {
                 liveActivityTimeText(
                     state: state,
                     endDate: endDate,
-                    secondsRemaining: secondsRemaining
+                    secondsRemaining: secondsRemaining,
+                    sessionID: sessionID
                 )
                 .font(.system(size: 30, weight: .bold, design: .rounded))
                 .monospacedDigit()
@@ -416,12 +424,11 @@ private struct BrewLiveActivityView: View {
             ProgressView(value: progress)
 
             HStack(spacing: 10) {
-                Button(intent: PauseBrewTimerIntent()) {
+                Link(destination: WidgetTimerControlURL.pause) {
                     Label("Pause", systemImage: "pause.fill")
                 }
-                .disabled(state != "running")
 
-                Button(intent: CancelBrewTimerIntent()) {
+                Link(destination: WidgetTimerControlURL.stop) {
                     Label("Cancel", systemImage: "xmark")
                 }
             }
@@ -445,11 +452,16 @@ private struct BrewLiveActivityView: View {
 }
 
 @ViewBuilder
-private func liveActivityTimeText(state: String, endDate: Date?, secondsRemaining: Int) -> some View {
-    if state == "running", let endDate {
-        Text(timerInterval: Date()...endDate, countsDown: true)
+private func liveActivityTimeText(state: String, endDate: Date?, secondsRemaining: Int, sessionID: UUID) -> some View {
+    let snapshot = WidgetActiveTimerSnapshot.load().flatMap { $0.sessionID == sessionID ? $0 : nil }
+    let resolvedState = snapshot?.state.rawValue ?? state
+    let resolvedEndDate = snapshot?.endDate ?? endDate
+    let resolvedSecondsRemaining = snapshot?.currentSecondsRemaining ?? secondsRemaining
+
+    if resolvedState == "running", let resolvedEndDate {
+        Text(timerInterval: Date()...resolvedEndDate, countsDown: true)
     } else {
-        let value = max(0, secondsRemaining)
+        let value = max(0, resolvedSecondsRemaining)
         Text(String(format: "%d:%02d", value / 60, value % 60))
     }
 }
@@ -758,6 +770,11 @@ private struct WidgetTea: Codable, Equatable, Hashable, Identifiable {
     }()
 }
 
+private enum WidgetTimerControlURL {
+    static let pause = URL(string: "steepr://timer/pause")!
+    static let stop = URL(string: "steepr://timer/stop")!
+}
+
 struct PauseBrewTimerIntent: AppIntent {
     static var title: LocalizedStringResource = "Pause Brew Timer"
     static var description = IntentDescription("Pauses the active Steepr timer.")
@@ -810,11 +827,15 @@ private func updateLiveActivity(snapshot: WidgetActiveTimerSnapshot) async {
         secondsRemaining: snapshot.currentSecondsRemaining,
         progress: snapshot.progress
     )
+    let content = ActivityContent(state: state, staleDate: snapshot.endDate)
 
-    for activity in Activity<SteeprLiveActivityAttributes>.activities
-        where activity.attributes.sessionID == snapshot.sessionID
-    {
-        await activity.update(ActivityContent(state: state, staleDate: snapshot.endDate))
+    let matchingActivities = Activity<SteeprLiveActivityAttributes>.activities.filter {
+        $0.attributes.sessionID == snapshot.sessionID
+    }
+    let activities = matchingActivities.isEmpty ? Activity<SteeprLiveActivityAttributes>.activities : matchingActivities
+
+    for activity in activities {
+        await activity.update(content)
     }
 }
 

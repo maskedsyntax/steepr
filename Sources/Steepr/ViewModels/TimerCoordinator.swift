@@ -127,16 +127,19 @@ final class TimerCoordinator: ObservableObject {
             cancel()
         case .paused:
             secondsRemaining = max(0, snapshot.pausedRemainingSeconds)
+            LiveActivityService.update(snapshot: snapshot)
         case .running:
             refreshRemaining()
             if secondsRemaining <= 0 {
                 complete(playFeedback: false)
             } else {
                 scheduleNotifications(for: snapshot.tea, preferences: preferences, durationSeconds: snapshot.durationSeconds)
+                LiveActivityService.update(snapshot: snapshot)
                 startTicker()
             }
         case .completed:
             secondsRemaining = 0
+            LiveActivityService.update(snapshot: snapshot)
         }
     }
 
