@@ -1,0 +1,80 @@
+{
+  "version" : 2,
+  "source" : "\/Users\/batman\/maskedsyntax\/steepr\/Sources\/Steepr\/Intents\/TeaTimerIntents.swift",
+  "tables" : {
+    "AppShortcuts" : [
+      {
+        "values" : [
+          "Start my ${tea} timer in ${applicationName}",
+          "Brew ${tea} in ${applicationName}"
+        ],
+        "appShortcutMetadata" : [
+          {
+            "parameterDisplayRepresentations" : {
+              "TeaEntity" : [
+                "Tea"
+              ]
+            },
+            "actionIdentifier" : "StartTeaTimerIntent",
+            "parameterTypes" : {
+              "tea" : "TeaEntity"
+            },
+            "title" : "Start Tea Timer",
+            "index" : 0
+          }
+        ],
+        "location" : {
+          "startingLine" : 96,
+          "startingColumn" : 0
+        },
+        "key" : "Start my ${tea} timer in ${applicationName}"
+      },
+      {
+        "values" : [
+          "Pause my tea timer in ${applicationName}"
+        ],
+        "appShortcutMetadata" : [
+          {
+            "parameterDisplayRepresentations" : {
+
+            },
+            "actionIdentifier" : "PauseTeaTimerIntent",
+            "parameterTypes" : {
+
+            },
+            "title" : "Pause Tea Timer",
+            "index" : 1
+          }
+        ],
+        "location" : {
+          "startingLine" : 96,
+          "startingColumn" : 0
+        },
+        "key" : "Pause my tea timer in ${applicationName}"
+      },
+      {
+        "values" : [
+          "Stop my tea timer in ${applicationName}"
+        ],
+        "appShortcutMetadata" : [
+          {
+            "parameterDisplayRepresentations" : {
+
+            },
+            "actionIdentifier" : "StopTeaTimerIntent",
+            "parameterTypes" : {
+
+            },
+            "title" : "Stop Tea Timer",
+            "index" : 2
+          }
+        ],
+        "location" : {
+          "startingLine" : 96,
+          "startingColumn" : 0
+        },
+        "key" : "Stop my tea timer in ${applicationName}"
+      }
+    ]
+  }
+}

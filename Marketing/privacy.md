@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Effective date: To be updated before launch.
+Effective date: June 5, 2026.
 
 Steepr is designed to collect as little information as possible.
 
@@ -51,4 +51,4 @@ You can delete custom teas and brew history in the app. Deleting the app removes
 
 For privacy questions, contact:
 
-aftaab@aftaab.dev
+support@maskedsyntax.com

@@ -18,7 +18,7 @@ let package = Package(
             name: "Steepr",
             dependencies: [],
             path: "Sources/Steepr",
-            exclude: ["Steepr.entitlements"],
+            exclude: ["Info.plist", "Steepr.entitlements"],
             resources: [
                 .process("Assets.xcassets"),
                 .process("PrivacyInfo.xcprivacy"),
@@ -29,7 +29,11 @@ let package = Package(
             name: "SteeprWatch",
             dependencies: [],
             path: "Sources/SteeprWatch",
-            exclude: ["SteeprWatch.entitlements"]
+            exclude: ["SteeprWatch.entitlements"],
+            resources: [
+                .process("Assets.xcassets"),
+                .process("PrivacyInfo.xcprivacy")
+            ]
         ),
         .testTarget(
             name: "SteeprTests",

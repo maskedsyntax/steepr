@@ -6,6 +6,7 @@ struct BrewHistoryView: View {
     @State private var showingPaywall = false
     @State private var journalSession: BrewSession?
     @State private var searchText = ""
+    @State private var pendingSessionDeleteIDs: [BrewSession.ID] = []
 
     private var visibleSessions: [BrewSession] {
         let baseSessions: [BrewSession]
@@ -92,11 +93,45 @@ struct BrewHistoryView: View {
             }
             .presentationDetents([.medium, .large])
         }
+        .alert(deleteConfirmationTitle, isPresented: deleteConfirmationBinding) {
+            Button(deleteConfirmationButtonTitle, role: .destructive) {
+                deletePendingSessions()
+            }
+            Button("Cancel", role: .cancel) {
+                pendingSessionDeleteIDs = []
+            }
+        } message: {
+            Text(deleteConfirmationMessage)
+        }
     }
 
     private func deleteVisibleSessions(at offsets: IndexSet) {
-        let idsToDelete = offsets.map { visibleSessions[$0].id }
-        brewSessionStore.deleteSessions(ids: idsToDelete)
+        pendingSessionDeleteIDs = offsets.map { visibleSessions[$0].id }
+    }
+
+    private var deleteConfirmationBinding: Binding<Bool> {
+        Binding(
+            get: { !pendingSessionDeleteIDs.isEmpty },
+            set: { if !$0 { pendingSessionDeleteIDs = [] } }
+        )
+    }
+
+    private var deleteConfirmationTitle: String {
+        pendingSessionDeleteIDs.count == 1 ? "Delete Brew?" : "Delete Brews?"
+    }
+
+    private var deleteConfirmationButtonTitle: String {
+        pendingSessionDeleteIDs.count == 1 ? "Delete Brew" : "Delete Brews"
+    }
+
+    private var deleteConfirmationMessage: String {
+        "This cannot be undone."
+    }
+
+    private func deletePendingSessions() {
+        let ids = pendingSessionDeleteIDs
+        pendingSessionDeleteIDs = []
+        brewSessionStore.deleteSessions(ids: ids)
     }
 }
 

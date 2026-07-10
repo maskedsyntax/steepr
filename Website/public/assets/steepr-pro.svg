@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1947" viewBox="0 0 900 1947" role="img" aria-labelledby="title desc">
+  <title id="title">Steepr Pro</title>
+  <desc id="desc">Pro unlocks unlimited teas, brew journal, guided re-steeps, iCloud sync, and stronger haptics.</desc>
+  <rect width="900" height="1947" fill="#f7f5ed"/>
+  <circle cx="805" cy="115" r="205" fill="#fff"/>
+  <path d="M0 1500c205-80 322 60 520-15 150-56 219-190 380-166v628H0z" fill="#eaf4e6"/>
+  <text x="54" y="155" fill="#4a7c4e" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="42" font-weight="800">STEEPR PRO</text>
+  <text x="54" y="300" fill="#090909" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="72" font-weight="850">More room for</text>
+  <text x="54" y="388" fill="#090909" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="72" font-weight="850">tea lovers.</text>
+  <text x="54" y="505" fill="#111" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="38">Unlock unlimited teas, brew history,</text>
+  <text x="54" y="555" fill="#111" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="38">guided re-steeps, and iCloud sync.</text>
+  <rect x="74" y="690" width="752" height="1110" rx="28" fill="#fff" stroke="#4a7c4e" stroke-width="7" transform="rotate(-2 450 1245)"/>
+  <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">
+    <circle cx="450" cy="820" r="72" fill="#e4eee4"/><text x="404" y="845" font-size="56" fill="#4a7c4e">✦</text>
+    <text x="132" y="990" font-size="60" font-weight="850">Steepr Pro</text>
+    <text x="132" y="1050" font-size="34" fill="#8a8d93">Save, sync, and repeat your best tea routines.</text>
+    <text x="132" y="1160" font-size="34" font-weight="750">＋  Unlimited teas</text><text x="180" y="1206" font-size="28" fill="#8a8d93">Save every loose leaf and recipe.</text>
+    <text x="132" y="1295" font-size="34" font-weight="750">↺  Guided re-steeps</text><text x="180" y="1341" font-size="28" fill="#8a8d93">Later infusions adjust for you.</text>
+    <text x="132" y="1430" font-size="34" font-weight="750">☁  iCloud sync</text><text x="180" y="1476" font-size="28" fill="#8a8d93">Carry your shelf across devices.</text>
+    <text x="132" y="1565" font-size="34" font-weight="750">✎  Brew journal</text><text x="180" y="1611" font-size="28" fill="#8a8d93">Keep tasting notes and history.</text>
+    <rect x="132" y="1678" width="636" height="82" rx="41" fill="#4a7c4e"/><text x="450" y="1732" text-anchor="middle" font-size="34" fill="#fff">Unlock forever</text>
+  </g>
+</svg>

@@ -44,8 +44,6 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.segmented)
 
-                    LabeledContent("Time format", value: "M:SS")
-
                     Toggle("Pre-completion alert", isOn: Binding(
                         get: { teaStore.preferences.preAlertSeconds != nil },
                         set: { teaStore.preferences.preAlertSeconds = $0 ? 30 : nil }
@@ -89,19 +87,12 @@ struct SettingsView: View {
                     }
 
                     Toggle("Sound on completion", isOn: $teaStore.preferences.soundEnabled)
-                    Picker("Sound", selection: $teaStore.preferences.soundName) {
-                        Text("Default").tag("Default")
-                        Text("Chime").tag("Chime")
-                        Text("Soft Bell").tag("Soft Bell")
-                    }
-                    .disabled(!teaStore.preferences.soundEnabled)
                 }
 
                 Section("Watch") {
                     NavigationLink("Manage Favorites") {
                         ManageWatchFavoritesView()
                     }
-                    Toggle("Auto-start same tea on complication tap", isOn: $teaStore.preferences.autoStartSameTea)
                 }
 
                 Section("Purchases") {
@@ -116,7 +107,7 @@ struct SettingsView: View {
                 }
 
                 Section("About") {
-                    LabeledContent("Version", value: "1.1")
+                    LabeledContent("Version", value: appVersion)
                     if shouldShowSettingsProPrompt {
                         Button {
                             teaStore.markSettingsProPromptSeen()
@@ -129,6 +120,16 @@ struct SettingsView: View {
                     Link("Support", destination: URL(string: "https://steepr.maskedsyntax.com/support")!)
                     Link("Contact support", destination: URL(string: "mailto:support@maskedsyntax.com")!)
                 }
+
+                #if DEBUG
+                Section("Debug") {
+                    Button {
+                        teaStore.setOnboardingComplete(false)
+                    } label: {
+                        Label("Replay onboarding", systemImage: "arrow.counterclockwise")
+                    }
+                }
+                #endif
             }
             .navigationTitle("Settings")
             #if os(iOS)
@@ -152,6 +153,22 @@ struct SettingsView: View {
         }
 
         return Date().timeIntervalSince(teaStore.preferences.firstOpenedAt) >= 14 * 24 * 60 * 60
+    }
+
+    private var appVersion: String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+
+        switch (version, build) {
+        case let (version?, build?) where !build.isEmpty:
+            return "\(version) (\(build))"
+        case let (version?, _):
+            return version
+        case let (_, build?) where !build.isEmpty:
+            return build
+        default:
+            return "Unknown"
+        }
     }
 
     private func handleNotificationPermissionTap() {

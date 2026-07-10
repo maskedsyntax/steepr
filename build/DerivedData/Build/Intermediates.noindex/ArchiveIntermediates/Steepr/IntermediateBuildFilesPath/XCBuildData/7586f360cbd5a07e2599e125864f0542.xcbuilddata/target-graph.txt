@@ -1,0 +1,8 @@
+Target dependency graph (4 targets)
+Target 'Steepr' in project 'Steepr'
+➜ Explicit dependency on target 'SteeprWidgets' in project 'Steepr'
+➜ Explicit dependency on target 'SteeprWatch' in project 'Steepr'
+Target 'SteeprWatch' in project 'Steepr'
+➜ Explicit dependency on target 'SteeprComplications' in project 'Steepr'
+Target 'SteeprComplications' in project 'Steepr' (no dependencies)
+Target 'SteeprWidgets' in project 'Steepr' (no dependencies)

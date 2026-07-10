@@ -1,0 +1,32 @@
+{
+  "source": "/Users/batman/maskedsyntax/steepr/Sources/Steepr/Views/DesignSystemViews.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@ remaining",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 48
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 65
+        }
+      },
+      {
+        "comment": "",
+        "key": "•",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 59
+        }
+      }
+    ]
+  },
+  "version": 1
+}

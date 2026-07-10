@@ -16,6 +16,8 @@ final class PersistentTea {
     var favoriteRank: Int?
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
+    /// JSON-encoded `[BrewStep]`. Empty/nil means use default steps from steep/temp.
+    var stepsJSON: Data?
 
     init(tea: Tea) {
         self.id = tea.id
@@ -31,6 +33,7 @@ final class PersistentTea {
         self.favoriteRank = tea.favoriteRank
         self.createdAt = tea.createdAt
         self.updatedAt = tea.updatedAt
+        self.stepsJSON = Self.encodeSteps(tea.steps)
     }
 
     func apply(_ tea: Tea) {
@@ -47,6 +50,7 @@ final class PersistentTea {
         favoriteRank = tea.favoriteRank
         createdAt = tea.createdAt
         updatedAt = tea.updatedAt
+        stepsJSON = Self.encodeSteps(tea.steps)
     }
 
     var tea: Tea {
@@ -63,8 +67,19 @@ final class PersistentTea {
             isFavorite: isFavorite,
             favoriteRank: favoriteRank,
             createdAt: createdAt,
-            updatedAt: updatedAt
+            updatedAt: updatedAt,
+            steps: Self.decodeSteps(stepsJSON)
         )
+    }
+
+    private static func encodeSteps(_ steps: [BrewStep]) -> Data? {
+        guard !steps.isEmpty else { return nil }
+        return try? JSONEncoder().encode(steps)
+    }
+
+    private static func decodeSteps(_ data: Data?) -> [BrewStep] {
+        guard let data else { return [] }
+        return (try? JSONDecoder().decode([BrewStep].self, from: data)) ?? []
     }
 }
 
@@ -83,6 +98,10 @@ final class PersistentUserPreferences {
     var hasSeenBrewMilestoneProPrompt: Bool = false
     var firstOpenedAt: Date = Date()
     var hasSeenSettingsProPrompt: Bool = false
+    var displayName: String = ""
+    var email: String = ""
+    var preferredTeaTypeRawValues: [String] = ["green"]
+    var defaultSteepSeconds: Int = 180
 
     init(preferences: UserPreferences, id: String = "default") {
         self.id = id
@@ -98,6 +117,10 @@ final class PersistentUserPreferences {
         self.hasSeenBrewMilestoneProPrompt = preferences.hasSeenBrewMilestoneProPrompt
         self.firstOpenedAt = preferences.firstOpenedAt
         self.hasSeenSettingsProPrompt = preferences.hasSeenSettingsProPrompt
+        self.displayName = preferences.displayName
+        self.email = preferences.email
+        self.preferredTeaTypeRawValues = preferences.preferredTeaTypeRawValues
+        self.defaultSteepSeconds = preferences.defaultSteepSeconds
     }
 
     func apply(_ preferences: UserPreferences) {
@@ -113,6 +136,10 @@ final class PersistentUserPreferences {
         hasSeenBrewMilestoneProPrompt = preferences.hasSeenBrewMilestoneProPrompt
         firstOpenedAt = preferences.firstOpenedAt
         hasSeenSettingsProPrompt = preferences.hasSeenSettingsProPrompt
+        displayName = preferences.displayName
+        email = preferences.email
+        preferredTeaTypeRawValues = preferences.preferredTeaTypeRawValues
+        defaultSteepSeconds = preferences.defaultSteepSeconds
     }
 
     var preferences: UserPreferences {
@@ -128,7 +155,11 @@ final class PersistentUserPreferences {
             proPurchased: proPurchased,
             hasSeenBrewMilestoneProPrompt: hasSeenBrewMilestoneProPrompt,
             firstOpenedAt: firstOpenedAt,
-            hasSeenSettingsProPrompt: hasSeenSettingsProPrompt
+            hasSeenSettingsProPrompt: hasSeenSettingsProPrompt,
+            displayName: displayName,
+            email: email,
+            preferredTeaTypeRawValues: preferredTeaTypeRawValues,
+            defaultSteepSeconds: defaultSteepSeconds
         )
     }
 }

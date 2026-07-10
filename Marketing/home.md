@@ -20,7 +20,8 @@ Steepr Pro is a one-time purchase for people who brew often.
 - Unlimited custom teas.
 - iCloud sync for teas, preferences, and brew history.
 - Advanced haptics.
-- Additional calm alert sounds.
+- Guided re-steeps for later infusions.
+- Stronger completion haptic option.
 - Family Sharing support.
 
 ## Privacy
@@ -29,4 +30,4 @@ No accounts. No ads. No tracking. Tea data stays on your device unless you enabl
 
 ## Download
 
-Available on the App Store soon.
+Available now on the App Store.

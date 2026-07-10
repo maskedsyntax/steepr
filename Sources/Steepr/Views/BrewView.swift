@@ -13,6 +13,7 @@ struct BrewView: View {
     @Binding var selectedTab: Int
     @State private var notificationsDenied = false
     @State private var showingPaywall = false
+    @State private var showingCancelConfirmation = false
 
     private let gridColumns = [
         GridItem(.flexible(), spacing: 12),
@@ -62,6 +63,18 @@ struct BrewView: View {
             }
             .sheet(isPresented: $showingPaywall) {
                 PaywallView(trigger: "Guided infusions")
+            }
+            .confirmationDialog(
+                "Cancel timer?",
+                isPresented: $showingCancelConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Cancel Timer", role: .destructive) {
+                    cancelTimer()
+                }
+                Button("Keep Timer", role: .cancel) { }
+            } message: {
+                Text("The current brew timer will stop.")
             }
         }
     }
@@ -238,8 +251,7 @@ struct BrewView: View {
                     SessionControlBar(
                         isRunning: timerCoordinator.state == .running,
                         onCancel: {
-                            recordCancellationIfNeeded()
-                            timerCoordinator.cancel()
+                            showingCancelConfirmation = true
                         },
                         onTogglePause: togglePause,
                         onNext: {
@@ -352,6 +364,11 @@ struct BrewView: View {
         } else {
             timerCoordinator.resume(preferences: teaStore.preferences)
         }
+    }
+
+    private func cancelTimer() {
+        recordCancellationIfNeeded()
+        timerCoordinator.cancel()
     }
 
     @ViewBuilder

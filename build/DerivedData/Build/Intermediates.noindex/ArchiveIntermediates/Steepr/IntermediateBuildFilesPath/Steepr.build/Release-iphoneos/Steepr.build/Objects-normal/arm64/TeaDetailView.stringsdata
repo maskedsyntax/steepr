@@ -1,0 +1,80 @@
+{
+  "source": "/Users/batman/maskedsyntax/steepr/Sources/Steepr/Views/TeaDetailView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Favorite limit reached",
+        "location": {
+          "startingColumn": 16,
+          "startingLine": 114
+        }
+      },
+      {
+        "comment": "",
+        "key": "Brew now",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 46
+        }
+      },
+      {
+        "comment": "",
+        "key": "Remove from Favorites",
+        "location": {
+          "startingColumn": 55,
+          "startingLine": 59
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add to Favorites",
+        "location": {
+          "startingColumn": 81,
+          "startingLine": 59
+        }
+      },
+      {
+        "comment": "",
+        "key": "Duplicate to My Teas",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 75
+        }
+      },
+      {
+        "comment": "",
+        "key": "Edit Tea",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 84
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete Tea",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 93
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 115
+        }
+      },
+      {
+        "comment": "",
+        "key": "Keep up to six favorites for quick brewing.",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 117
+        }
+      }
+    ]
+  },
+  "version": 1
+}

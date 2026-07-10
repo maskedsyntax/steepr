@@ -65,6 +65,38 @@ enum TeaColorSlot: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+/// One ordered unit in a tea brew profile (boil, cool, steep, enjoy, etc.).
+struct BrewStep: Codable, Identifiable, Equatable, Hashable {
+    var id: UUID
+    var name: String
+    var symbolName: String
+    /// Secondary line under the name (e.g. "100°C", "Target temperature").
+    var detail: String
+    /// Timed steps use seconds; untimed steps (boil cue, enjoy) use `nil`.
+    var durationSeconds: Int?
+    var temperatureCelsius: Int?
+
+    init(
+        id: UUID = UUID(),
+        name: String,
+        symbolName: String,
+        detail: String = "",
+        durationSeconds: Int? = nil,
+        temperatureCelsius: Int? = nil
+    ) {
+        self.id = id
+        self.name = name
+        self.symbolName = symbolName
+        self.detail = detail
+        self.durationSeconds = durationSeconds
+        self.temperatureCelsius = temperatureCelsius
+    }
+
+    var hasTimer: Bool {
+        (durationSeconds ?? 0) > 0
+    }
+}
+
 struct Tea: Codable, Identifiable, Equatable, Hashable {
     var id: UUID
     var name: String
@@ -79,6 +111,8 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
     var favoriteRank: Int?
     var createdAt: Date
     var updatedAt: Date
+    /// Ordered brew workflow. Empty means "use default steps from steep/temp".
+    var steps: [BrewStep]
 
     init(
         id: UUID = UUID(),
@@ -93,7 +127,8 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
         isFavorite: Bool = false,
         favoriteRank: Int? = nil,
         createdAt: Date = Date(),
-        updatedAt: Date = Date()
+        updatedAt: Date = Date(),
+        steps: [BrewStep] = []
     ) {
         self.id = id
         self.name = name
@@ -108,6 +143,31 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
         self.favoriteRank = favoriteRank
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.steps = steps
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, name, symbolName, colorSlot, steepSeconds, temperatureCelsius
+        case caffeineMilligrams, notes, isBuiltIn, isFavorite, favoriteRank
+        case createdAt, updatedAt, steps
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        symbolName = try container.decode(String.self, forKey: .symbolName)
+        colorSlot = try container.decode(TeaColorSlot.self, forKey: .colorSlot)
+        steepSeconds = try container.decode(Int.self, forKey: .steepSeconds)
+        temperatureCelsius = try container.decode(Int.self, forKey: .temperatureCelsius)
+        caffeineMilligrams = try container.decodeIfPresent(Int.self, forKey: .caffeineMilligrams)
+        notes = try container.decodeIfPresent(String.self, forKey: .notes) ?? ""
+        isBuiltIn = try container.decodeIfPresent(Bool.self, forKey: .isBuiltIn) ?? false
+        isFavorite = try container.decodeIfPresent(Bool.self, forKey: .isFavorite) ?? false
+        favoriteRank = try container.decodeIfPresent(Int.self, forKey: .favoriteRank)
+        createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt) ?? Date()
+        updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt) ?? Date()
+        steps = try container.decodeIfPresent([BrewStep].self, forKey: .steps) ?? []
     }
 }
 
@@ -139,6 +199,103 @@ extension Tea {
         case .matcha: return "Umami & Fresh"
         case .customA, .customB: return "Custom blend"
         }
+    }
+
+    /// Steps shown/edited in the tea profile. Falls back to a sensible preset workflow.
+    var brewSteps: [BrewStep] {
+        steps.isEmpty ? Self.defaultSteps(steepSeconds: steepSeconds, temperatureCelsius: temperatureCelsius, colorSlot: colorSlot) : steps
+    }
+
+    var totalBrewSeconds: Int {
+        brewSteps.compactMap(\.durationSeconds).reduce(0, +)
+    }
+
+    /// Keep classic timer fields in sync with the profile's steep step.
+    mutating func syncTimingFromSteps() {
+        let active = steps.isEmpty ? brewSteps : steps
+        if let steep = active.first(where: { $0.name.localizedCaseInsensitiveContains("steep") && ($0.durationSeconds ?? 0) > 0 })
+            ?? active.first(where: { ($0.durationSeconds ?? 0) > 0 }) {
+            if let duration = steep.durationSeconds, duration > 0 {
+                steepSeconds = duration
+            }
+            if let temperature = steep.temperatureCelsius {
+                temperatureCelsius = temperature
+            }
+        }
+    }
+
+    static func defaultSteps(steepSeconds: Int, temperatureCelsius: Int, colorSlot: TeaColorSlot) -> [BrewStep] {
+        // Matcha is whisked, not cooled from a full boil workflow.
+        if colorSlot == .matcha {
+            return [
+                BrewStep(
+                    name: "Heat Water",
+                    symbolName: "drop.fill",
+                    detail: "\(temperatureCelsius)°C",
+                    durationSeconds: nil,
+                    temperatureCelsius: temperatureCelsius
+                ),
+                BrewStep(
+                    name: "Whisk",
+                    symbolName: "circle.hexagongrid.fill",
+                    detail: "\(temperatureCelsius)°C",
+                    durationSeconds: max(15, steepSeconds),
+                    temperatureCelsius: temperatureCelsius
+                ),
+                BrewStep(
+                    name: "Enjoy",
+                    symbolName: "cup.and.saucer.fill",
+                    detail: "Savor your tea",
+                    durationSeconds: nil,
+                    temperatureCelsius: nil
+                )
+            ]
+        }
+
+        let boilTemp = max(temperatureCelsius, 95)
+        let coolSeconds = temperatureCelsius < 95 ? 60 : nil
+
+        var result: [BrewStep] = [
+            BrewStep(
+                name: "Boil Water",
+                symbolName: "flame.fill",
+                detail: "\(boilTemp)°C",
+                durationSeconds: nil,
+                temperatureCelsius: boilTemp
+            )
+        ]
+
+        if let coolSeconds {
+            result.append(
+                BrewStep(
+                    name: "Cool to \(temperatureCelsius)°C",
+                    symbolName: "thermometer.medium",
+                    detail: "Target temperature",
+                    durationSeconds: coolSeconds,
+                    temperatureCelsius: temperatureCelsius
+                )
+            )
+        }
+
+        result.append(
+            BrewStep(
+                name: "Steep",
+                symbolName: "leaf.fill",
+                detail: "\(temperatureCelsius)°C",
+                durationSeconds: max(15, steepSeconds),
+                temperatureCelsius: temperatureCelsius
+            )
+        )
+        result.append(
+            BrewStep(
+                name: "Enjoy",
+                symbolName: "cup.and.saucer.fill",
+                detail: "Savor your tea",
+                durationSeconds: nil,
+                temperatureCelsius: nil
+            )
+        )
+        return result
     }
 
     var guidedReSteepIncrementSeconds: Int {

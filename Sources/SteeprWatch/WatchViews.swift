@@ -3,6 +3,7 @@ import SwiftUI
 struct WatchRootView: View {
     @EnvironmentObject private var store: WatchDataStore
     @StateObject private var timerCoordinator = WatchTimerCoordinator()
+    @State private var showingCancelTimerConfirmation = false
 
     var body: some View {
         Group {
@@ -68,7 +69,7 @@ struct WatchRootView: View {
                     .accessibilityLabel(timerCoordinator.state == .running ? "Pause timer" : "Resume timer")
 
                     Button(role: .destructive) {
-                        timerCoordinator.cancel()
+                        showingCancelTimerConfirmation = true
                     } label: {
                         Image(systemName: "xmark")
                     }
@@ -77,6 +78,18 @@ struct WatchRootView: View {
             }
         }
         .padding(.horizontal, 4)
+        .confirmationDialog(
+            "Cancel timer?",
+            isPresented: $showingCancelTimerConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Cancel Timer", role: .destructive) {
+                timerCoordinator.cancel()
+            }
+            Button("Keep Timer", role: .cancel) { }
+        } message: {
+            Text("The current brew timer will stop.")
+        }
     }
 
     private var completedTimer: some View {

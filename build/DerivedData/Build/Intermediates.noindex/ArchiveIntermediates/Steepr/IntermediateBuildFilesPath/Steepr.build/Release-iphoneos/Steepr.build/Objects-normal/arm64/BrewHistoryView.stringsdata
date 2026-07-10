@@ -1,0 +1,128 @@
+{
+  "source": "/Users/batman/maskedsyntax/steepr/Sources/Steepr/Views/BrewHistoryView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Brew History",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 75
+        }
+      },
+      {
+        "comment": "",
+        "key": "Search brews",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 79
+        }
+      },
+      {
+        "comment": "",
+        "key": "Recent Brews",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 47
+        }
+      },
+      {
+        "comment": "",
+        "key": "No brews yet",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 36
+        }
+      },
+      {
+        "comment": "",
+        "key": "Completed and cancelled timers will appear here.",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 38
+        }
+      },
+      {
+        "comment": "",
+        "key": "No matching brews.",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 49
+        }
+      },
+      {
+        "comment": "",
+        "key": "Free shows the five most recent brews. Pro keeps your full journal.",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 68
+        }
+      },
+      {
+        "comment": "",
+        "key": "Unlock full brew history",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 66
+        }
+      },
+      {
+        "comment": "",
+        "key": "Brew Journal",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 88
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld star%@",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 137
+        }
+      },
+      {
+        "comment": "",
+        "key": "Infusion %lld",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 119
+        }
+      },
+      {
+        "comment": "",
+        "key": "•",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 120
+        }
+      },
+      {
+        "comment": "",
+        "key": "•",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 122
+        }
+      },
+      {
+        "comment": "",
+        "key": "Edit tasting notes",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 157
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add tasting notes",
+        "location": {
+          "startingColumn": 68,
+          "startingLine": 157
+        }
+      }
+    ]
+  },
+  "version": 1
+}

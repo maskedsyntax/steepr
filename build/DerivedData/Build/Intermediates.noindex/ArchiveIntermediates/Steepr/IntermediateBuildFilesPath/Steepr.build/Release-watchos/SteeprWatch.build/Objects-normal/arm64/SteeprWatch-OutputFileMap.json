@@ -1,0 +1,41 @@
+{
+  "" : {
+    "const-values" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary.swiftconstvalues",
+    "dependencies" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary.d",
+    "diagnostics" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary.dia",
+    "emit-module-dependencies" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary-emit-module.dia",
+    "pch" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary.swiftdeps"
+  },
+  "/Users/batman/maskedsyntax/steepr/Sources/SteeprWatch/SteeprWatchApp.swift" : {
+    "index-unit-output-path" : "/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatchApp.o",
+    "llvm-bc" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatchApp.bc",
+    "object" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatchApp.o"
+  },
+  "/Users/batman/maskedsyntax/steepr/Sources/SteeprWatch/WatchDataStore.swift" : {
+    "index-unit-output-path" : "/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchDataStore.o",
+    "llvm-bc" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchDataStore.bc",
+    "object" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchDataStore.o"
+  },
+  "/Users/batman/maskedsyntax/steepr/Sources/SteeprWatch/WatchModels.swift" : {
+    "index-unit-output-path" : "/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchModels.o",
+    "llvm-bc" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchModels.bc",
+    "object" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchModels.o"
+  },
+  "/Users/batman/maskedsyntax/steepr/Sources/SteeprWatch/WatchTimerCoordinator.swift" : {
+    "index-unit-output-path" : "/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchTimerCoordinator.o",
+    "llvm-bc" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchTimerCoordinator.bc",
+    "object" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchTimerCoordinator.o"
+  },
+  "/Users/batman/maskedsyntax/steepr/Sources/SteeprWatch/WatchViews.swift" : {
+    "index-unit-output-path" : "/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchViews.o",
+    "llvm-bc" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchViews.bc",
+    "object" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/WatchViews.o"
+  },
+  "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  }
+}

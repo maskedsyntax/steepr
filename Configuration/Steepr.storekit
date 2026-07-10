@@ -5,12 +5,12 @@
   ],
   "products" : [
     {
-      "displayPrice" : "5.99",
+      "displayPrice" : "2.99",
       "familyShareable" : true,
       "internalID" : "1",
       "localizations" : [
         {
-          "description" : "Unlock unlimited custom teas, iCloud sync, stronger haptics, and additional alert sounds.",
+          "description" : "Unlock unlimited custom teas, iCloud sync, guided re-steeps, a full brew journal, and stronger haptics.",
           "displayName" : "Steepr Pro",
           "locale" : "en_US"
         }

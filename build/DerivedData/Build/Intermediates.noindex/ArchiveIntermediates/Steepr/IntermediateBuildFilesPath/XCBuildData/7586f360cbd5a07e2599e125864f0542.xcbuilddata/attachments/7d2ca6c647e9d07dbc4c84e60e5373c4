@@ -1,0 +1,16 @@
+{
+  "" : {
+    "const-values" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications-primary.swiftconstvalues",
+    "dependencies" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications-primary.d",
+    "diagnostics" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications-primary.dia",
+    "emit-module-dependencies" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications-primary-emit-module.dia",
+    "pch" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications-primary.swiftdeps"
+  },
+  "/Users/batman/maskedsyntax/steepr/Sources/SteeprComplications/SteeprComplications.swift" : {
+    "index-unit-output-path" : "/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications.o",
+    "llvm-bc" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications.bc",
+    "object" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprComplications.build/Objects-normal/arm64_32/SteeprComplications.o"
+  }
+}

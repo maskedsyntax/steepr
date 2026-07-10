@@ -65,14 +65,34 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 - [x] Decide whether Apple Watch ships in v1: Watch ships in v1, per `spec.md`.
 - [x] If Watch does not ship in v1, remove Watch-facing onboarding, settings, support, and marketing copy: not required because Watch ships in v1.
 - [x] Verify final 1024x1024 app icon asset.
-- [ ] Capture final App Store screenshots from release builds.
-- [ ] Capture required iPhone screenshots for App Store Connect.
-- [x] Capture required iPad screenshots if the app remains universal: not required for iPhone-only v1.
 - [x] Create privacy policy and marketing site content.
 - [x] Publish production privacy policy and support URLs.
 - [x] Run unsigned Release build.
 - [x] Run signed archive validation.
 - [x] Run device and TestFlight QA.
+- [x] Ship v1.0 on the App Store.
+
+## v1.1 App Store Submission (1.1 build 3)
+
+Code is ready. Remaining work is App Store Connect metadata, screenshots, and upload.
+
+- [ ] Smoke-test v1.1 on a physical iPhone and paired Apple Watch (onboarding, guided re-steep, journal, search).
+- [ ] Archive `Steepr` scheme in Release with version 1.1 / build 3.
+- [ ] Upload build to App Store Connect and wait for processing.
+- [ ] Attach build 3 to the v1.1 version in App Store Connect.
+- [ ] Paste What's New copy for v1.1 (draft in release prep notes).
+- [ ] Update subtitle, promotional text, and description for ASO (see `GROWTH.md`).
+- [ ] Update keywords to intent-based set: `tea timer,steep timer,brew timer,tea clock,matcha timer,herbal timer,tea reminder,brewing guide,tea alarm,loose leaf`.
+- [ ] Capture v1.1 iPhone screenshots from release builds (journal, re-steep completion, onboarding optional).
+- [ ] Capture updated Watch screenshots if guided infusion UI changed materially.
+- [ ] Reorder screenshots: brew flow first, Watch second, paywall last.
+- [ ] Submit for review.
+
+## Post-v1.1 ASO (no code required)
+
+- [ ] Ask 10–15 existing users to leave an App Store rating.
+- [ ] Post a short screen-recording demo to r/tea and r/applewatch.
+- [ ] Update `Marketing/home.md` App Store link from placeholder to live listing URL.
 
 ## Deferred After V1
 
@@ -84,7 +104,7 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 
 ## Growth Improvements
 
-Build these in order after the current screen refresh. Keep the app tea-only and keep onboarding deferred until the core flows below are ready.
+Build these in order after the v1.1 screen refresh. Keep the app tea-only.
 
 1. [x] Improve re-steep into a real workflow.
    - Free: manual re-steep repeats the same tea duration.
@@ -109,6 +129,6 @@ Build these in order after the current screen refresh. Keep the app tea-only and
 7. [ ] Make favorites more useful.
    - Improve reorder access.
    - Show recent brew context where useful.
-8. [ ] Re-enable and refresh onboarding in the next update.
-   - Starter favorites, unit choice, notification prompt, Watch mention.
-   - No coffee and no caffeine feature unless explicitly revived later.
+8. [x] Re-enable and refresh onboarding.
+   - Redesigned welcome flow with starter favorites, unit choice, notification prompt, and Watch mention.
+   - Wired via first-launch full-screen cover in v1.1.

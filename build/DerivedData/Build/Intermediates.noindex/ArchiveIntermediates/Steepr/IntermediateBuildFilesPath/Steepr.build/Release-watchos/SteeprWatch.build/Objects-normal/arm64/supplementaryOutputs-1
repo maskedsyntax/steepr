@@ -1,0 +1,12 @@
+{
+  "/Users/batman/maskedsyntax/steepr/Sources/SteeprWatch/SteeprWatchApp.swift" : {
+    "abi-baseline-json" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch.abi.json",
+    "const-values" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary.swiftconstvalues",
+    "dependencies" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary.d",
+    "diagnostics" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-primary.dia",
+    "objc-header" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch-Swift.h",
+    "swiftdoc" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch.swiftdoc",
+    "swiftmodule" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch.swiftmodule",
+    "swiftsourceinfo" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-watchos/SteeprWatch.build/Objects-normal/arm64/SteeprWatch.swiftsourceinfo"
+  }
+}

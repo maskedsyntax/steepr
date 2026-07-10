@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1947" viewBox="0 0 900 1947" role="img" aria-labelledby="title desc">
+  <title id="title">Steepr brew presets</title>
+  <desc id="desc">Favorite tea presets with steep times and temperatures.</desc>
+  <rect width="900" height="1947" fill="#f7f5ed"/>
+  <circle cx="805" cy="115" r="205" fill="#fff"/>
+  <path d="M0 1500c205-80 322 60 520-15 150-56 219-190 380-166v628H0z" fill="#eaf4e6"/>
+  <text x="54" y="155" fill="#4a7c4e" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="42" font-weight="800">BREW</text>
+  <text x="54" y="300" fill="#090909" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="72" font-weight="850">Pick a favorite.</text>
+  <text x="54" y="388" fill="#090909" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="72" font-weight="850">Start steeping.</text>
+  <text x="54" y="505" fill="#111" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="38">Built-in favorites show the right</text>
+  <text x="54" y="555" fill="#111" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="38">time and temperature at a glance.</text>
+  <rect x="34" y="720" width="832" height="1030" rx="28" fill="#fff" stroke="#4a7c4e" stroke-width="7"/>
+  <text x="78" y="805" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="54" font-weight="850">What are you brewing?</text>
+  <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">
+    <g transform="translate(78 875)"><rect width="350" height="210" rx="18" fill="#fff" stroke="#ddd" stroke-width="2"/><circle cx="72" cy="70" r="45" fill="#e2ece3"/><text x="135" y="82" font-size="36" font-weight="750">Green</text><text x="135" y="138" font-size="30" fill="#7b7f86">2m 30s  ·  80°C</text></g>
+    <g transform="translate(472 875)"><rect width="350" height="210" rx="18" fill="#fff" stroke="#ddd" stroke-width="2"/><circle cx="72" cy="70" r="45" fill="#e4dfdc"/><text x="135" y="82" font-size="36" font-weight="750">Black</text><text x="135" y="138" font-size="30" fill="#7b7f86">4m  ·  95°C</text></g>
+    <g transform="translate(78 1120)"><rect width="350" height="210" rx="18" fill="#fff" stroke="#ddd" stroke-width="2"/><circle cx="72" cy="70" r="45" fill="#f3e8dc"/><text x="135" y="82" font-size="36" font-weight="750">Oolong</text><text x="135" y="138" font-size="30" fill="#7b7f86">3m 30s  ·  90°C</text></g>
+    <g transform="translate(472 1120)"><rect width="350" height="210" rx="18" fill="#fff" stroke="#ddd" stroke-width="2"/><circle cx="72" cy="70" r="45" fill="#f0dde6"/><text x="135" y="82" font-size="36" font-weight="750">Herbal</text><text x="135" y="138" font-size="30" fill="#7b7f86">5m  ·  100°C</text></g>
+    <g transform="translate(78 1365)"><rect width="350" height="210" rx="18" fill="#fff" stroke="#ddd" stroke-width="2"/><circle cx="72" cy="70" r="45" fill="#eee2d7"/><text x="135" y="82" font-size="36" font-weight="750">Chai</text><text x="135" y="138" font-size="30" fill="#7b7f86">5m  ·  100°C</text></g>
+    <g transform="translate(472 1365)"><rect width="350" height="210" rx="18" fill="#fff" stroke="#ddd" stroke-width="2"/><circle cx="72" cy="70" r="45" fill="#e8efd7"/><text x="135" y="82" font-size="36" font-weight="750">Matcha</text><text x="135" y="138" font-size="30" fill="#7b7f86">30s  ·  75°C</text></g>
+  </g>
+</svg>

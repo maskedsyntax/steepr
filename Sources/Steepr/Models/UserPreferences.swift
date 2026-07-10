@@ -29,6 +29,14 @@ struct UserPreferences: Codable, Equatable {
     var hasSeenBrewMilestoneProPrompt: Bool
     var firstOpenedAt: Date
     var hasSeenSettingsProPrompt: Bool
+    /// Local-only display name shown on the profile screen.
+    var displayName: String
+    /// Local-only contact email. Not used for accounts or sync.
+    var email: String
+    /// Preferred tea type color slots (e.g. green, black).
+    var preferredTeaTypeRawValues: [String]
+    /// Default steep duration used when creating a custom tea.
+    var defaultSteepSeconds: Int
 
     init(
         useCelsius: Bool,
@@ -42,7 +50,11 @@ struct UserPreferences: Codable, Equatable {
         proPurchased: Bool,
         hasSeenBrewMilestoneProPrompt: Bool = false,
         firstOpenedAt: Date = Date(),
-        hasSeenSettingsProPrompt: Bool = false
+        hasSeenSettingsProPrompt: Bool = false,
+        displayName: String = "",
+        email: String = "",
+        preferredTeaTypeRawValues: [String] = ["green"],
+        defaultSteepSeconds: Int = 180
     ) {
         self.useCelsius = useCelsius
         self.preAlertSeconds = preAlertSeconds
@@ -56,6 +68,10 @@ struct UserPreferences: Codable, Equatable {
         self.hasSeenBrewMilestoneProPrompt = hasSeenBrewMilestoneProPrompt
         self.firstOpenedAt = firstOpenedAt
         self.hasSeenSettingsProPrompt = hasSeenSettingsProPrompt
+        self.displayName = displayName
+        self.email = email
+        self.preferredTeaTypeRawValues = preferredTeaTypeRawValues
+        self.defaultSteepSeconds = defaultSteepSeconds
     }
 
     static let defaults = UserPreferences(
@@ -70,6 +86,17 @@ struct UserPreferences: Codable, Equatable {
         proPurchased: false
     )
 
+    var preferredTeaTypes: Set<TeaColorSlot> {
+        get {
+            Set(preferredTeaTypeRawValues.compactMap(TeaColorSlot.init(rawValue:)))
+        }
+        set {
+            preferredTeaTypeRawValues = TeaColorSlot.allCases
+                .filter { newValue.contains($0) }
+                .map(\.rawValue)
+        }
+    }
+
     private enum CodingKeys: String, CodingKey {
         case useCelsius
         case preAlertSeconds
@@ -83,6 +110,10 @@ struct UserPreferences: Codable, Equatable {
         case hasSeenBrewMilestoneProPrompt
         case firstOpenedAt
         case hasSeenSettingsProPrompt
+        case displayName
+        case email
+        case preferredTeaTypeRawValues
+        case defaultSteepSeconds
     }
 
     init(from decoder: Decoder) throws {
@@ -99,5 +130,9 @@ struct UserPreferences: Codable, Equatable {
         hasSeenBrewMilestoneProPrompt = try container.decodeIfPresent(Bool.self, forKey: .hasSeenBrewMilestoneProPrompt) ?? false
         firstOpenedAt = try container.decodeIfPresent(Date.self, forKey: .firstOpenedAt) ?? Date()
         hasSeenSettingsProPrompt = try container.decodeIfPresent(Bool.self, forKey: .hasSeenSettingsProPrompt) ?? false
+        displayName = try container.decodeIfPresent(String.self, forKey: .displayName) ?? ""
+        email = try container.decodeIfPresent(String.self, forKey: .email) ?? ""
+        preferredTeaTypeRawValues = try container.decodeIfPresent([String].self, forKey: .preferredTeaTypeRawValues) ?? ["green"]
+        defaultSteepSeconds = try container.decodeIfPresent(Int.self, forKey: .defaultSteepSeconds) ?? 180
     }
 }

@@ -1,0 +1,112 @@
+{
+  "source": "/Users/batman/maskedsyntax/steepr/Sources/Steepr/Intents/TeaTimerIntents.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Start Tea Timer",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 5
+        }
+      },
+      {
+        "comment": "",
+        "key": "Starts a Steepr timer for the selected tea.",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 6
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tea"
+      },
+      {
+        "comment": "",
+        "key": "Tea"
+      },
+      {
+        "comment": "",
+        "key": "Pause Tea Timer",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 36
+        }
+      },
+      {
+        "comment": "",
+        "key": "Pauses the active Steepr timer.",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 37
+        }
+      },
+      {
+        "comment": "",
+        "key": "Stop Tea Timer",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 56
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancels the active Steepr timer.",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 57
+        }
+      },
+      {
+        "comment": "",
+        "key": "Brew Quick",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 76
+        }
+      },
+      {
+        "comment": "",
+        "key": "Starts a Steepr timer for a favorite tea.",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 77
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tea"
+      },
+      {
+        "comment": "",
+        "key": "Tea"
+      },
+      {
+        "comment": "",
+        "key": "Start Tea Timer",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 103
+        }
+      },
+      {
+        "comment": "",
+        "key": "Pause Tea Timer",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 112
+        }
+      },
+      {
+        "comment": "",
+        "key": "Stop Tea Timer",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 121
+        }
+      }
+    ]
+  },
+  "version": 1
+}

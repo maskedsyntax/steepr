@@ -1,0 +1,48 @@
+{
+  "source": "/Users/batman/maskedsyntax/steepr/Sources/Steepr/Views/BrewJournalPrompt.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Add a tasting note",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 64
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tasting notes",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 26
+        }
+      },
+      {
+        "comment": "",
+        "key": "Saved",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 30
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld star%@",
+        "location": {
+          "startingColumn": 41,
+          "startingLine": 48
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save journal entry",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 76
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%@ is steeping for %@.</key>
+	<string>%@ is steeping for %@.</string>
+	<key>%d seconds left</key>
+	<string>%d seconds left</string>
+	<key>%d seconds left on your %@.</key>
+	<string>%d seconds left on your %@.</string>
+	<key>Brew</key>
+	<string>Brew</string>
+	<key>I couldn't find that tea.</key>
+	<string>I couldn't find that tea.</string>
+	<key>Library</key>
+	<string>Library</string>
+	<key>No tea timer is active.</key>
+	<string>No tea timer is active.</string>
+	<key>No tea timer is running.</key>
+	<string>No tea timer is running.</string>
+	<key>Paused %@.</key>
+	<string>Paused %@.</string>
+	<key>Settings</key>
+	<string>Settings</string>
+	<key>Steeped for %@. Tap to brew again.</key>
+	<string>Steeped for %@. Tap to brew again.</string>
+	<key>Steepr</key>
+	<string>Steepr</string>
+	<key>Stopped %@.</key>
+	<string>Stopped %@.</string>
+	<key>The perfect cup, every time.</key>
+	<string>The perfect cup, every time.</string>
+	<key>What are you brewing?</key>
+	<string>What are you brewing?</string>
+	<key>Your %@ is ready</key>
+	<string>Your %@ is ready</string>
+</dict>
+</plist>

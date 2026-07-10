@@ -1,0 +1,40 @@
+{
+  "source": "/Users/batman/maskedsyntax/steepr/Sources/Steepr/Intents/TeaEntity.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Tea",
+        "location": {
+          "startingColumn": 76,
+          "startingLine": 5
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 12
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tea",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 62
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tea",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 62
+        }
+      }
+    ]
+  },
+  "version": 1
+}

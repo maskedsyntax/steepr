@@ -2,7 +2,7 @@
 
 For help with Steepr, email:
 
-aftaab@aftaab.dev
+support@maskedsyntax.com
 
 ## Common Questions
 
@@ -32,4 +32,4 @@ Open Settings in Steepr and use Restore purchases. Purchases are restored throug
 
 ### How do I contact support?
 
-Email aftaab@aftaab.dev with your device model, iOS or watchOS version, and a short description of the issue.
+Email support@maskedsyntax.com with your device model, iOS or watchOS version, and a short description of the issue.

@@ -9,6 +9,7 @@ struct LibraryView: View {
     @State private var showingAddTea = false
     @State private var showingPaywall = false
     @State private var showingFavoriteLimit = false
+    @State private var pendingTeaDeleteIDs: [Tea.ID] = []
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -24,9 +25,7 @@ struct LibraryView: View {
                             }
                         }
                         .onDelete { offsets in
-                            for index in offsets {
-                                teaStore.deleteTea(teaStore.customTeas[index])
-                            }
+                            pendingTeaDeleteIDs = offsets.map { teaStore.customTeas[$0].id }
                         }
                     }
                 } header: {
@@ -66,7 +65,7 @@ struct LibraryView: View {
                 )
             }
             .sheet(isPresented: $showingAddTea) {
-                AddTeaSheet()
+                AddTeaSheet(defaultSteepSeconds: teaStore.preferences.defaultSteepSeconds)
             }
             .sheet(isPresented: $showingPaywall) {
                 PaywallView(trigger: "Custom teas")
@@ -75,6 +74,49 @@ struct LibraryView: View {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text("Keep up to six favorites for quick brewing.")
+            }
+            .alert(deleteConfirmationTitle, isPresented: deleteConfirmationBinding) {
+                Button(deleteConfirmationButtonTitle, role: .destructive) {
+                    deletePendingTeas()
+                }
+                Button("Cancel", role: .cancel) {
+                    pendingTeaDeleteIDs = []
+                }
+            } message: {
+                Text(deleteConfirmationMessage)
+            }
+        }
+    }
+
+    private var deleteConfirmationBinding: Binding<Bool> {
+        Binding(
+            get: { !pendingTeaDeleteIDs.isEmpty },
+            set: { if !$0 { pendingTeaDeleteIDs = [] } }
+        )
+    }
+
+    private var deleteConfirmationTitle: String {
+        pendingTeaDeleteIDs.count == 1 ? "Delete Tea?" : "Delete Teas?"
+    }
+
+    private var deleteConfirmationButtonTitle: String {
+        pendingTeaDeleteIDs.count == 1 ? "Delete Tea" : "Delete Teas"
+    }
+
+    private var deleteConfirmationMessage: String {
+        if pendingTeaDeleteIDs.count == 1,
+           let tea = teaStore.customTeas.first(where: { $0.id == pendingTeaDeleteIDs[0] }) {
+            return "\(tea.name) will be permanently removed."
+        }
+        return "The selected tea profiles will be permanently removed."
+    }
+
+    private func deletePendingTeas() {
+        let ids = pendingTeaDeleteIDs
+        pendingTeaDeleteIDs = []
+        for id in ids {
+            if let tea = teaStore.customTeas.first(where: { $0.id == id }) {
+                teaStore.deleteTea(tea)
             }
         }
     }

@@ -1,0 +1,96 @@
+{
+  "source": "/Users/batman/maskedsyntax/steepr/Sources/Steepr/Views/LibraryView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Library",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 57
+        }
+      },
+      {
+        "comment": "",
+        "key": "Favorite limit reached",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 74
+        }
+      },
+      {
+        "comment": "",
+        "key": "Built-in",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 49
+        }
+      },
+      {
+        "comment": "",
+        "key": "Custom teas you add will appear here.",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 18
+        }
+      },
+      {
+        "comment": "",
+        "key": "My Teas",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 34
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add custom tea",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 45
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 75
+        }
+      },
+      {
+        "comment": "",
+        "key": "Keep up to six favorites for quick brewing.",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 77
+        }
+      },
+      {
+        "comment": "",
+        "key": "Remove %@ from favorites",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 102
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add %@ to favorites",
+        "location": {
+          "startingColumn": 88,
+          "startingLine": 102
+        }
+      },
+      {
+        "comment": "",
+        "key": "Built-in",
+        "location": {
+          "startingColumn": 57,
+          "startingLine": 116
+        }
+      }
+    ]
+  },
+  "version": 1
+}

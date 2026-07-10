@@ -1,0 +1,208 @@
+{
+  "source": "/Users/batman/maskedsyntax/steepr/Sources/Steepr/Views/BrewView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Brew",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 43
+        }
+      },
+      {
+        "comment": "",
+        "key": "Settings",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 72
+        }
+      },
+      {
+        "comment": "",
+        "key": "Notifications are off",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 63
+        }
+      },
+      {
+        "comment": "",
+        "key": "Enable notifications so Steepr can alert you when your tea is ready.",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 65
+        }
+      },
+      {
+        "comment": "",
+        "key": "Pick your favorites",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 111
+        }
+      },
+      {
+        "comment": "",
+        "key": "What are you brewing?",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 89
+        }
+      },
+      {
+        "comment": "",
+        "key": "Start a favorite tea or browse the full library.",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 92
+        }
+      },
+      {
+        "comment": "",
+        "key": "Pick your favorites",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 102
+        }
+      },
+      {
+        "comment": "",
+        "key": "Choose a few teas in Library for one-tap brewing.",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 104
+        }
+      },
+      {
+        "comment": "",
+        "key": "Start %@ timer",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 125
+        }
+      },
+      {
+        "comment": "",
+        "key": "Browse all teas",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 132
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ remaining",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 150
+        }
+      },
+      {
+        "comment": "",
+        "key": "Pause timer",
+        "location": {
+          "startingColumn": 82,
+          "startingLine": 151
+        }
+      },
+      {
+        "comment": "",
+        "key": "Resume timer",
+        "location": {
+          "startingColumn": 98,
+          "startingLine": 151
+        }
+      },
+      {
+        "comment": "",
+        "key": "Infusion %lld",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 166
+        }
+      },
+      {
+        "comment": "",
+        "key": "Pause",
+        "location": {
+          "startingColumn": 68,
+          "startingLine": 179
+        }
+      },
+      {
+        "comment": "",
+        "key": "Resume",
+        "location": {
+          "startingColumn": 78,
+          "startingLine": 179
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 188
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done!",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 205
+        }
+      },
+      {
+        "comment": "",
+        "key": "Your %@ is ready.",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 208
+        }
+      },
+      {
+        "comment": "",
+        "key": "Infusion %lld complete",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 212
+        }
+      },
+      {
+        "comment": "",
+        "key": "Next guided steep: %@.",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 258
+        }
+      },
+      {
+        "comment": "",
+        "key": "Unlock full tea journal",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 223
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 242
+        }
+      },
+      {
+        "comment": "",
+        "key": "Unlock guided infusion timing",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 265
+        }
+      }
+    ]
+  },
+  "version": 1
+}

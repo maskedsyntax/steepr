@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>colors</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/batman/maskedsyntax/steepr/Sources/SteeprWatch/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACColorNameAccentColor</string>
+			<key>relativePath</key>
+			<string>./AccentColor.colorset</string>
+			<key>swiftSymbol</key>
+			<string>accent</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/batman/maskedsyntax/steepr/Sources/SteeprWatch/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACColorNameBrandGreen</string>
+			<key>relativePath</key>
+			<string>./BrandGreen.colorset</string>
+			<key>swiftSymbol</key>
+			<string>brandGreen</string>
+		</dict>
+	</array>
+	<key>images</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/batman/maskedsyntax/steepr/Sources/SteeprWatch/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameSteeprLogo</string>
+			<key>relativePath</key>
+			<string>./SteeprLogo.imageset</string>
+			<key>swiftSymbol</key>
+			<string>steeprLogo</string>
+		</dict>
+	</array>
+	<key>symbols</key>
+	<array/>
+</dict>
+</plist>

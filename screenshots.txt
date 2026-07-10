@@ -1,0 +1,260 @@
+Screenshot Strategy
+
+The first 3 screenshots should sell the core promise immediately:
+
+Steepr is not just a timer. It is a calm, guided tea ritual app that helps people brew better tea without thinking about timing.
+
+The App Store screenshots should make the user feel:
+
+"I want my tea routine to feel this simple."
+
+Core Positioning
+
+Primary promise:
+Better tea, timed beautifully.
+
+Supporting promise:
+Steepr guides every part of your brew, from water cooling to steeping, with clean timers and gentle reminders.
+
+Emotional angle:
+A calmer, more intentional tea ritual.
+
+Functional angle:
+Multi-step tea timers, saved profiles, notifications, watch support, widgets, and brew history.
+
+Recommended Screenshot Set
+
+Use 6 to 8 screenshots total.
+
+Screenshot 1: Hero Hook
+
+Goal:
+Instantly communicate the app's value.
+
+Visual:
+Show the main active timer screen with a beautiful tea profile running. Large timer, current step, calm UI.
+
+Headline options:
+Never Oversteep Again
+Brew Better Tea
+Your Tea, Timed Perfectly
+
+Subtext:
+Guided timers for every step of your tea ritual.
+
+Best headline:
+Never Oversteep Again
+
+Why:
+It solves a clear pain immediately.
+
+Screenshot 2: Multi-Step Brewing
+
+Goal:
+Show that this is more than a basic countdown timer.
+
+Visual:
+Show a tea profile with ordered steps like:
+Boil Water
+Cool to 175F
+Steep
+Enjoy
+
+Headline:
+Every Step, Guided
+
+Subtext:
+Create tea profiles with multiple timed steps.
+
+Why:
+This is the product's key differentiator.
+
+Screenshot 3: Calm Active Timer
+
+Goal:
+Sell the experience and emotional benefit.
+
+Visual:
+Full-screen brew timer with clean typography, soft colors, and minimal controls.
+
+Headline:
+A Calmer Way to Brew
+
+Subtext:
+Clear countdowns, gentle transitions, no clutter.
+
+Why:
+This helps the app feel premium, not utilitarian.
+
+Screenshot 4: Saved Tea Profiles
+
+Goal:
+Show repeat usage and personalization.
+
+Visual:
+Library/profile screen with teas like Green Tea, Earl Grey, Oolong, Matcha, Custom Brew.
+
+Headline:
+Save Your Favorites
+
+Subtext:
+Keep perfect timings for every tea you love.
+
+Why:
+Shows long-term value.
+
+Screenshot 5: Notifications
+
+Goal:
+Show practical reliability.
+
+Visual:
+Mock notification or in-app transition showing a completed step.
+
+Headline:
+Know Exactly When It's Ready
+
+Subtext:
+Get notified when each step is complete.
+
+Why:
+Reassures users the app will actually help.
+
+Screenshot 6: Widgets / Live Activity
+
+Goal:
+Show convenience.
+
+Visual:
+Lock screen or home screen widget/live activity style presentation.
+
+Headline:
+Track Your Brew Anywhere
+
+Subtext:
+Keep an eye on your timer without opening the app.
+
+Why:
+Strong modern iOS value.
+
+Screenshot 7: Apple Watch
+
+Goal:
+Sell ecosystem polish.
+
+Visual:
+Watch timer screen beside phone.
+
+Headline:
+On Your Wrist, Too
+
+Subtext:
+Start and follow your brew from Apple Watch.
+
+Why:
+Good for perceived quality and differentiation.
+
+Screenshot 8: Brew History / Journal
+
+Goal:
+Show depth without making it feel complex.
+
+Visual:
+History screen with recent brews or notes.
+
+Headline:
+Remember What Worked
+
+Subtext:
+Track your favorite brews and refine your ritual.
+
+Why:
+Appeals to tea enthusiasts.
+
+First Three Screenshot Flow
+
+The first three should work as a mini sales funnel:
+
+1. Never Oversteep Again
+Pain point and immediate promise.
+
+2. Every Step, Guided
+Differentiator and practical value.
+
+3. A Calmer Way to Brew
+Emotional payoff and brand feel.
+
+Together they say:
+Steepr helps you brew better tea, guides the full process, and makes the experience peaceful.
+
+Visual Direction
+
+Use a calm premium visual language:
+
+Colors:
+warm cream, soft green, deep charcoal, tea amber, muted clay.
+
+Typography:
+Large, elegant, readable. Avoid overly playful fonts.
+
+Layout:
+Use big headlines at the top, app UI in the center, small supporting text at the bottom.
+
+Composition:
+The app screen should be large enough to read. Do not overcrowd.
+
+Mood:
+Minimal, warm, focused, intentional.
+
+Avoid:
+Busy backgrounds, too much text, generic phone mockups, feature dumping, harsh gradients.
+
+Copy Style
+
+Keep every screenshot short.
+
+Good:
+Never Oversteep Again
+Every Step, Guided
+Save Your Favorites
+Track Your Brew Anywhere
+
+Avoid:
+Create custom tea profiles with multiple steps and receive notifications
+
+Reason:
+Users scan screenshots in seconds.
+
+App Store vs Play Store
+
+For App Store:
+Use iPhone-first screenshots, plus optional Apple Watch-focused screenshot if supported.
+Lean into polish, calmness, widgets, Live Activities, Apple Watch.
+
+For Play Store:
+If the app is not actually on Android, do not prepare Play Store screenshots yet.
+If an Android version is planned, keep the same story but remove Apple-specific features like Apple Watch, Live Activities, and iOS widgets unless Android equivalents exist.
+
+Play Store version would be:
+
+1. Never Oversteep Again
+2. Every Step, Guided
+3. A Calmer Way to Brew
+4. Save Your Favorites
+5. Know When It's Ready
+6. Track Every Brew
+
+Best Final Set
+
+I would ship these App Store screenshots:
+
+1. Never Oversteep Again
+2. Every Step, Guided
+3. A Calmer Way to Brew
+4. Save Your Favorites
+5. Know Exactly When It's Ready
+6. Track Your Brew Anywhere
+7. On Your Wrist, Too
+8. Remember What Worked
+
+This gives you a strong first impression, clear feature coverage, and a premium feel without making the app look complicated.

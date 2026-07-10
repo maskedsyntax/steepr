@@ -1,0 +1,523 @@
+2026-07-07 12:28:29 +0000 [MT] Initial pipeline context: <IDEDistributionProcessingPipelineContext: 0x991f61800; archive(resolved)="<IDEArchive: 0x98fb981c0>", distributionTask(resolved)="2", distributionDestination(resolved)="1", distributionMethod(resolved)="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team(resolved)="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	Chain (15, self inclusive):
+	<IDEDistributionProcessingPipelineContext: 0x991f61800; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionProcessingPipelineContext: 0x991f61500; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991863200; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991862800; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991862580; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991862300; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991862080; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991861e00; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991861b80; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991860f00; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991860c80; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991860780; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="<IDEProvisioningBasicTeam: 0x991f7a800; teamID='GVGJLY2H53', teamName='(null)'>">
+	<IDEDistributionContext: 0x991860500; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="(null)">
+	<IDEDistributionContext: 0x10294add0; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x9914b7d90>", team="(null)">
+	<IDEDistributionContext: 0x10294b9d0; archive = "<IDEArchive: 0x98fb981c0>", distributionMethod="(null)", team="(null)">
+</IDEDistributionProcessingPipelineContext: 0x991f61800>
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionCreateDestRootStep
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionCopyItemStep
+2026-07-07 12:28:29 +0000 [MT] Running /usr/bin/ditto '-V' '/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app' '/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app'
+2026-07-07 12:28:29 +0000  >>> Copying /Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app 
+2026-07-07 12:28:29 +0000  copying file ./_CodeSignature/CodeResources ... 
+2026-07-07 12:28:29 +0000  9594 bytes for ./_CodeSignature/CodeResources
+2026-07-07 12:28:29 +0000  copying file ./en.lproj/nlu.appintents/nlu.lzfse ... 
+2026-07-07 12:28:29 +0000  2306 bytes for ./en.lproj/nlu.appintents/nlu.lzfse
+2026-07-07 12:28:29 +0000  copying file ./en.lproj/nlu.appintents/e0b4e82bfcb5a219309796d852d808e5.version ... 
+2026-07-07 12:28:29 +0000  1 bytes for ./en.lproj/nlu.appintents/e0b4e82bfcb5a219309796d852d808e5.version
+2026-07-07 12:28:29 +0000  copying file ./en.lproj/Localizable.strings ... 
+2026-07-07 12:28:29 +0000  426 bytes for ./en.lproj/Localizable.strings
+2026-07-07 12:28:29 +0000  copying file ./Metadata.appintents/version.json ... 
+2026-07-07 12:28:29 +0000  52 bytes for ./Metadata.appintents/version.json
+2026-07-07 12:28:29 +0000  copying file ./Metadata.appintents/extract.actionsdata ... 
+2026-07-07 12:28:29 +0000  7058 bytes for ./Metadata.appintents/extract.actionsdata
+2026-07-07 12:28:29 +0000  copying file ./PlugIns/SteeprWidgets.appex/_CodeSignature/CodeResources ... 
+2026-07-07 12:28:29 +0000  2782 bytes for ./PlugIns/SteeprWidgets.appex/_CodeSignature/CodeResources
+2026-07-07 12:28:29 +0000  copying file ./PlugIns/SteeprWidgets.appex/Metadata.appintents/version.json ... 
+2026-07-07 12:28:29 +0000  52 bytes for ./PlugIns/SteeprWidgets.appex/Metadata.appintents/version.json
+2026-07-07 12:28:29 +0000  copying file ./PlugIns/SteeprWidgets.appex/Metadata.appintents/extract.actionsdata ... 
+2026-07-07 12:28:29 +0000  4176 bytes for ./PlugIns/SteeprWidgets.appex/Metadata.appintents/extract.actionsdata
+2026-07-07 12:28:29 +0000  copying file ./PlugIns/SteeprWidgets.appex/SteeprWidgets ... 
+2026-07-07 12:28:29 +0000  279168 bytes for ./PlugIns/SteeprWidgets.appex/SteeprWidgets
+2026-07-07 12:28:29 +0000  copying file ./PlugIns/SteeprWidgets.appex/PrivacyInfo.xcprivacy ... 
+2026-07-07 12:28:29 +0000  461 bytes for ./PlugIns/SteeprWidgets.appex/PrivacyInfo.xcprivacy
+2026-07-07 12:28:29 +0000  copying file ./PlugIns/SteeprWidgets.appex/embedded.mobileprovision ... 
+2026-07-07 12:28:29 +0000  12715 bytes for ./PlugIns/SteeprWidgets.appex/embedded.mobileprovision
+2026-07-07 12:28:29 +0000  copying file ./PlugIns/SteeprWidgets.appex/Info.plist ... 
+2026-07-07 12:28:29 +0000  891 bytes for ./PlugIns/SteeprWidgets.appex/Info.plist
+2026-07-07 12:28:29 +0000  copying file ./AppIcon60x60@2x.png ... 
+2026-07-07 12:28:29 +0000  18957 bytes for ./AppIcon60x60@2x.png
+2026-07-07 12:28:29 +0000  copying file ./Steepr ... 
+2026-07-07 12:28:29 +0000  1092784 bytes for ./Steepr
+2026-07-07 12:28:29 +0000  copying file ./Assets.car ... 
+2026-07-07 12:28:29 +0000  1310072 bytes for ./Assets.car
+2026-07-07 12:28:29 +0000  copying file ./AppIcon76x76@2x~ipad.png ... 
+2026-07-07 12:28:29 +0000  28119 bytes for ./AppIcon76x76@2x~ipad.png
+2026-07-07 12:28:29 +0000  copying file ./PrivacyInfo.xcprivacy ... 
+2026-07-07 12:28:29 +0000  461 bytes for ./PrivacyInfo.xcprivacy
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/_CodeSignature/CodeResources ... 
+2026-07-07 12:28:29 +0000  3927 bytes for ./Watch/SteeprWatch.app/_CodeSignature/CodeResources
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/_CodeSignature/CodeResources ... 
+2026-07-07 12:28:29 +0000  2112 bytes for ./Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/_CodeSignature/CodeResources
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/SteeprComplications ... 
+2026-07-07 12:28:29 +0000  330208 bytes for ./Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/SteeprComplications
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/embedded.mobileprovision ... 
+2026-07-07 12:28:29 +0000  12779 bytes for ./Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/embedded.mobileprovision
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/Info.plist ... 
+2026-07-07 12:28:29 +0000  875 bytes for ./Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/Info.plist
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/Assets.car ... 
+2026-07-07 12:28:29 +0000  1307928 bytes for ./Watch/SteeprWatch.app/Assets.car
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/SteeprWatch ... 
+2026-07-07 12:28:29 +0000  559952 bytes for ./Watch/SteeprWatch.app/SteeprWatch
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/embedded.mobileprovision ... 
+2026-07-07 12:28:29 +0000  12693 bytes for ./Watch/SteeprWatch.app/embedded.mobileprovision
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/Info.plist ... 
+2026-07-07 12:28:29 +0000  995 bytes for ./Watch/SteeprWatch.app/Info.plist
+2026-07-07 12:28:29 +0000  copying file ./Watch/SteeprWatch.app/PkgInfo ... 
+2026-07-07 12:28:29 +0000  8 bytes for ./Watch/SteeprWatch.app/PkgInfo
+2026-07-07 12:28:29 +0000  copying file ./embedded.mobileprovision ... 
+2026-07-07 12:28:29 +0000  14298 bytes for ./embedded.mobileprovision
+2026-07-07 12:28:29 +0000  copying file ./Info.plist ... 
+2026-07-07 12:28:29 +0000  1402 bytes for ./Info.plist
+2026-07-07 12:28:29 +0000  copying file ./PkgInfo ... 
+2026-07-07 12:28:29 +0000  8 bytes for ./PkgInfo
+2026-07-07 12:28:29 +0000 [MT] /usr/bin/ditto exited with 0
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionEmbedProfileStep
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionInfoPlistStep
+2026-07-07 12:28:29 +0000 [MT] Skipping setting DTXcodeBuildDistribution because toolsBuildVersionName was nil.
+2026-07-07 12:28:29 +0000 [MT] Skipping setting DTXcodeBuildDistribution because toolsBuildVersionName was nil.
+2026-07-07 12:28:29 +0000 [MT] Skipping setting DTXcodeBuildDistribution because toolsBuildVersionName was nil.
+2026-07-07 12:28:29 +0000 [MT] Skipping setting DTXcodeBuildDistribution because toolsBuildVersionName was nil.
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionItemRemovalStep
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionAppThinningPlistStep
+2026-07-07 12:28:29 +0000 [MT] Skipping step: IDEDistributionAppThinningPlistStep because it said so
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionSymbolsStep
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/069FB557-4174-367C-B9E7-8462AC4F3D84.symbols
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/5F0A1D03-586C-3AD1-930B-567AC15EC40C.symbols
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/25AF293B-AD16-33DC-9CE4-90A8C0064287.symbols
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/25C9FE96-4993-3B56-9B24-6B4E70FA4BAB.symbols
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/25AF293B-AD16-33DC-9CE4-90A8C0064287.symbols
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/25C9FE96-4993-3B56-9B24-6B4E70FA4BAB.symbols
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/5D182B68-0D39-33A8-ADB0-E942A7C0B6B1.symbols
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/91CEA6AC-D7F6-3E89-8A97-FF1437758160.symbols
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/5D182B68-0D39-33A8-ADB0-E942A7C0B6B1.symbols
+2026-07-07 12:28:29 +0000 [MT] Writing /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols/91CEA6AC-D7F6-3E89-8A97-FF1437758160.symbols
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionCopyAppleProvidedContentStep
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionAppThinningStep
+2026-07-07 12:28:29 +0000 [MT] Skipping step: IDEDistributionAppThinningStep because it said so
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionArchThinningStep
+2026-07-07 12:28:29 +0000 [MT] Archs to thin for item /Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex are []
+2026-07-07 12:28:29 +0000 [MT] Archs to thin for item /Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/PlugIns/SteeprWidgets.appex are []
+2026-07-07 12:28:29 +0000 [MT] Archs to thin for item /Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app are []
+2026-07-07 12:28:29 +0000 [MT] Archs to thin for item /Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app are []
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionODRStep
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionStripXattrsStep
+2026-07-07 12:28:29 +0000 [MT] Skipping stripping extended attributes because the codesign step will strip them.
+2026-07-07 12:28:29 +0000 [MT] Skipping stripping extended attributes because the codesign step will strip them.
+2026-07-07 12:28:29 +0000 [MT] Skipping stripping extended attributes because the codesign step will strip them.
+2026-07-07 12:28:29 +0000 [MT] Skipping stripping extended attributes because the codesign step will strip them.
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionCodesignStep
+2026-07-07 12:28:29 +0000 [MT] Entitlements for <IDEDistributionItem: 0x98f480ae0; bundleID='com.maskedsyntax.Steepr.watchkitapp.complications', path='<DVTFilePath:0x98fb9a450:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480b40; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fb840; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp.complications";
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr.watchkitapp.complications', executablePath='<DVTFilePath:0x98fb9a4c0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/SteeprComplications'>', hardenedRuntime='0'>'>: {
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp.complications";
+    "beta-reports-active" = 1;
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 0;
+}
+2026-07-07 12:28:29 +0000 [MT] Associated App Clip Identifiers Filter: Skipping because "com.apple.developer.associated-appclip-app-identifiers" is not present
+2026-07-07 12:28:29 +0000 [MT] Entitlements for <IDEDistributionItem: 0x98f480ae0; bundleID='com.maskedsyntax.Steepr.watchkitapp.complications', path='<DVTFilePath:0x98fb9a450:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480b40; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fbcc0; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp.complications";
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr.watchkitapp.complications', executablePath='<DVTFilePath:0x98fb9a4c0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/SteeprComplications'>', hardenedRuntime='0'>'> are: {
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp.complications";
+    "beta-reports-active" = 1;
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 0;
+}
+2026-07-07 12:28:29 +0000 [MT] Writing entitlements for <IDEDistributionItem: 0x98f480ae0; bundleID='com.maskedsyntax.Steepr.watchkitapp.complications', path='<DVTFilePath:0x98fb9a450:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480b40; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fbcc0; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp.complications";
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr.watchkitapp.complications', executablePath='<DVTFilePath:0x98fb9a4c0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/SteeprComplications'>', hardenedRuntime='0'>'> to: /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/entitlements~~~88n64G
+2026-07-07 12:28:29 +0000 [MT] invoking codesign: <NSConcreteTask: 0x98f783e80; launchPath='/usr/bin/codesign', arguments='(
+    "-f",
+    "-s",
+    623E9DD2311AB9DF5E0DA7BFDD1703043A571173,
+    "--entitlements",
+    "/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/entitlements~~~88n64G",
+    "--preserve-metadata=identifier,flags,runtime,launch-constraints,library-constraints",
+    "--generate-entitlement-der",
+    "--strip-disallowed-xattrs",
+    "-vvv",
+    "/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex"
+)'>
+2026-07-07 12:28:29 +0000 [MT] codesign output: /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex: replacing existing signature
+/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex: signed bundle with Mach-O universal (arm64 arm64_32) [com.maskedsyntax.Steepr.watchkitapp.complications]
+2026-07-07 12:28:29 +0000 [MT] Entitlements for <IDEDistributionItem: 0x98f480a80; bundleID='com.maskedsyntax.Steepr.widgets', path='<DVTFilePath:0x98fb99dc0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/PlugIns/SteeprWidgets.appex'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480a20; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fb840; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.widgets";
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr.widgets', executablePath='<DVTFilePath:0x990f504e0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/PlugIns/SteeprWidgets.appex/SteeprWidgets'>', hardenedRuntime='0'>'>: {
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.widgets";
+    "beta-reports-active" = 1;
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 0;
+}
+2026-07-07 12:28:29 +0000 [MT] Associated App Clip Identifiers Filter: Skipping because "com.apple.developer.associated-appclip-app-identifiers" is not present
+2026-07-07 12:28:29 +0000 [MT] Entitlements for <IDEDistributionItem: 0x98f480a80; bundleID='com.maskedsyntax.Steepr.widgets', path='<DVTFilePath:0x98fb99dc0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/PlugIns/SteeprWidgets.appex'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480a20; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fbcc0; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.widgets";
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr.widgets', executablePath='<DVTFilePath:0x990f504e0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/PlugIns/SteeprWidgets.appex/SteeprWidgets'>', hardenedRuntime='0'>'> are: {
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.widgets";
+    "beta-reports-active" = 1;
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 0;
+}
+2026-07-07 12:28:29 +0000 [MT] Writing entitlements for <IDEDistributionItem: 0x98f480a80; bundleID='com.maskedsyntax.Steepr.widgets', path='<DVTFilePath:0x98fb99dc0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/PlugIns/SteeprWidgets.appex'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480a20; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fbcc0; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.widgets";
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr.widgets', executablePath='<DVTFilePath:0x990f504e0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/PlugIns/SteeprWidgets.appex/SteeprWidgets'>', hardenedRuntime='0'>'> to: /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/entitlements~~~b2dKKN
+2026-07-07 12:28:29 +0000 [MT] invoking codesign: <NSConcreteTask: 0x98f780d20; launchPath='/usr/bin/codesign', arguments='(
+    "-f",
+    "-s",
+    623E9DD2311AB9DF5E0DA7BFDD1703043A571173,
+    "--entitlements",
+    "/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/entitlements~~~b2dKKN",
+    "--preserve-metadata=identifier,flags,runtime,launch-constraints,library-constraints",
+    "--generate-entitlement-der",
+    "--strip-disallowed-xattrs",
+    "-vvv",
+    "/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/PlugIns/SteeprWidgets.appex"
+)'>
+2026-07-07 12:28:29 +0000 [MT] codesign output: /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/PlugIns/SteeprWidgets.appex: replacing existing signature
+/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/PlugIns/SteeprWidgets.appex: signed bundle with Mach-O thin (arm64) [com.maskedsyntax.Steepr.widgets]
+2026-07-07 12:28:29 +0000 [MT] Entitlements for <IDEDistributionItem: 0x98f480ba0; bundleID='com.maskedsyntax.Steepr.watchkitapp', path='<DVTFilePath:0x98fb7fa20:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480c00; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fb840; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp";
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr.watchkitapp', executablePath='<DVTFilePath:0x98f480360:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/SteeprWatch'>', hardenedRuntime='0'>'>: {
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp";
+    "beta-reports-active" = 1;
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 0;
+}
+2026-07-07 12:28:29 +0000 [MT] Associated App Clip Identifiers Filter: Skipping because "com.apple.developer.associated-appclip-app-identifiers" is not present
+2026-07-07 12:28:29 +0000 [MT] Entitlements for <IDEDistributionItem: 0x98f480ba0; bundleID='com.maskedsyntax.Steepr.watchkitapp', path='<DVTFilePath:0x98fb7fa20:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480c00; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fbcc0; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp";
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr.watchkitapp', executablePath='<DVTFilePath:0x98f480360:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/SteeprWatch'>', hardenedRuntime='0'>'> are: {
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp";
+    "beta-reports-active" = 1;
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 0;
+}
+2026-07-07 12:28:29 +0000 [MT] Writing entitlements for <IDEDistributionItem: 0x98f480ba0; bundleID='com.maskedsyntax.Steepr.watchkitapp', path='<DVTFilePath:0x98fb7fa20:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480c00; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fbcc0; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr.watchkitapp";
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr.watchkitapp', executablePath='<DVTFilePath:0x98f480360:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Watch/SteeprWatch.app/SteeprWatch'>', hardenedRuntime='0'>'> to: /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/entitlements~~~sny36Q
+2026-07-07 12:28:29 +0000 [MT] invoking codesign: <NSConcreteTask: 0x98f780d20; launchPath='/usr/bin/codesign', arguments='(
+    "-f",
+    "-s",
+    623E9DD2311AB9DF5E0DA7BFDD1703043A571173,
+    "--entitlements",
+    "/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/entitlements~~~sny36Q",
+    "--preserve-metadata=identifier,flags,runtime,launch-constraints,library-constraints",
+    "--generate-entitlement-der",
+    "--strip-disallowed-xattrs",
+    "-vvv",
+    "/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/Watch/SteeprWatch.app"
+)'>
+2026-07-07 12:28:29 +0000 [MT] codesign output: /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/Watch/SteeprWatch.app: replacing existing signature
+/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/Watch/SteeprWatch.app: signed app bundle with Mach-O universal (arm64 arm64_32) [com.maskedsyntax.Steepr.watchkitapp]
+2026-07-07 12:28:29 +0000 [MT] Entitlements for <IDEDistributionItem: 0x98f481020; bundleID='com.maskedsyntax.Steepr', path='<DVTFilePath:0x98fb7d7a0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480cc0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fb840; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr";
+    "com.apple.developer.icloud-container-identifiers" =     (
+        "iCloud.com.maskedsyntax.Steepr"
+    );
+    "com.apple.developer.icloud-services" =     (
+        CloudKit
+    );
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr', executablePath='<DVTFilePath:0x98fb7f720:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Steepr'>', hardenedRuntime='0'>'>: {
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr";
+    "beta-reports-active" = 1;
+    "com.apple.developer.icloud-container-environment" = Production;
+    "com.apple.developer.icloud-container-identifiers" =     (
+        "iCloud.com.maskedsyntax.Steepr"
+    );
+    "com.apple.developer.icloud-services" =     (
+        CloudKit
+    );
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 0;
+}
+2026-07-07 12:28:29 +0000 [MT] Associated App Clip Identifiers Filter: Skipping because "com.apple.developer.associated-appclip-app-identifiers" is not present
+2026-07-07 12:28:29 +0000 [MT] Entitlements for <IDEDistributionItem: 0x98f481020; bundleID='com.maskedsyntax.Steepr', path='<DVTFilePath:0x98fb7d7a0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480cc0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fbcc0; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr";
+    "com.apple.developer.icloud-container-identifiers" =     (
+        "iCloud.com.maskedsyntax.Steepr"
+    );
+    "com.apple.developer.icloud-services" =     (
+        CloudKit
+    );
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr', executablePath='<DVTFilePath:0x98fb7f720:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Steepr'>', hardenedRuntime='0'>'> are: {
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr";
+    "beta-reports-active" = 1;
+    "com.apple.developer.icloud-container-environment" = Production;
+    "com.apple.developer.icloud-container-identifiers" =     (
+        "iCloud.com.maskedsyntax.Steepr"
+    );
+    "com.apple.developer.icloud-services" =     (
+        CloudKit
+    );
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 0;
+}
+2026-07-07 12:28:29 +0000 [MT] Writing entitlements for <IDEDistributionItem: 0x98f481020; bundleID='com.maskedsyntax.Steepr', path='<DVTFilePath:0x98fb7d7a0:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x98f480cc0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x98f8fbcc0; name='Apple Development: aftaab2507@gmail.com (FC84RQ83VB)', hash='F175E1D5E691450000EBC3BF0F5BB6F1C4450432', serialNumber='14D731AEC3AAF89443E001FD7570FD18', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2026-04-18 13:14:24 +0000''>', entitlements='{
+    "application-identifier" = "GVGJLY2H53.com.maskedsyntax.Steepr";
+    "com.apple.developer.icloud-container-identifiers" =     (
+        "iCloud.com.maskedsyntax.Steepr"
+    );
+    "com.apple.developer.icloud-services" =     (
+        CloudKit
+    );
+    "com.apple.developer.team-identifier" = GVGJLY2H53;
+    "com.apple.security.application-groups" =     (
+        "group.com.maskedsyntax.steepr"
+    );
+    "get-task-allow" = 1;
+}', teamID='GVGJLY2H53', identifier='com.maskedsyntax.Steepr', executablePath='<DVTFilePath:0x98fb7f720:'/Users/batman/maskedsyntax/steepr/build/AppStore/Steepr.xcarchive/Products/Applications/Steepr.app/Steepr'>', hardenedRuntime='0'>'> to: /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/entitlements~~~S8wT0L
+2026-07-07 12:28:29 +0000 [MT] invoking codesign: <NSConcreteTask: 0x98f780d20; launchPath='/usr/bin/codesign', arguments='(
+    "-f",
+    "-s",
+    623E9DD2311AB9DF5E0DA7BFDD1703043A571173,
+    "--entitlements",
+    "/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/entitlements~~~S8wT0L",
+    "--preserve-metadata=identifier,flags,runtime,launch-constraints,library-constraints",
+    "--generate-entitlement-der",
+    "--strip-disallowed-xattrs",
+    "-vvv",
+    "/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app"
+)'>
+2026-07-07 12:28:29 +0000 [MT] codesign output: /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app: replacing existing signature
+/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app: signed app bundle with Mach-O thin (arm64) [com.maskedsyntax.Steepr]
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionZipODRItemStep
+2026-07-07 12:28:29 +0000 [MT] Skipping step: IDEDistributionZipODRItemStep because it said so
+2026-07-07 12:28:29 +0000 [MT] Skipping step: IDEDistributionZipODRItemStep because it said so
+2026-07-07 12:28:29 +0000 [MT] Skipping step: IDEDistributionZipODRItemStep because it said so
+2026-07-07 12:28:29 +0000 [MT] Skipping step: IDEDistributionZipODRItemStep because it said so
+2026-07-07 12:28:29 +0000 [MT] Processing step: IDEDistributionCreateIPAStep
+2026-07-07 12:28:29 +0000 [MT] Running /usr/bin/rsync '-8aPhhE' '/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Symbols' '--link-dest' '/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv' '/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root'
+2026-07-07 12:28:29 +0000  Symbols/
+._Symbols
+            163  64%    1.21MB/s   00:00:00 (xfer#1, to-check=0/14)
+2026-07-07 12:28:29 +0000  Symbols/069FB557-4174-367C-B9E7-8462AC4F3D84.symbols
+Symbols/25AF293B-AD16-33DC-9CE4-90A8C0064287.symbols
+Symbols/25C9FE96-4993-3B56-9B24-6B4E70FA4BAB.symbols
+Symbols/5D182B68-0D39-33A8-ADB0-E942A7C0B6B1.symbols
+Symbols/5F0A1D03-586C-3AD1-930B-567AC15EC40C.symbols
+Symbols/91CEA6AC-D7F6-3E89-8A97-FF1437758160.symbols
+Symbols/._069FB557-4174-367C-B9E7-8462AC4F3D84.symbols
+            163   0%  365.03KB/s   00:00:00 (xfer#2, to-check=2/14)
+2026-07-07 12:28:29 +0000  Symbols/._25AF293B-AD16-33DC-9CE4-90A8C0064287.symbols
+            163   0%  365.03KB/s   00:00:00 (xfer#3, to-check=3/14)
+2026-07-07 12:28:29 +0000  Symbols/._25C9FE96-4993-3B56-9B24-6B4E70FA4BAB.symbols
+            163   0%  379.78KB/s   00:00:00 (xfer#4, to-check=4/14)
+2026-07-07 12:28:29 +0000  Symbols/._5D182B68-0D39-33A8-ADB0-E942A7C0B6B1.symbols
+            163   0%  361.09KB/s   00:00:00 (xfer#5, to-check=5/14)
+2026-07-07 12:28:29 +0000  Symbols/._5F0A1D03-586C-3AD1-930B-567AC15EC40C.symbols
+            163   0%  442.44KB/s   00:00:00 (xfer#6, to-check=6/14)
+2026-07-07 12:28:29 +0000  Symbols/._91CEA6AC-D7F6-3E89-8A97-FF1437758160.symbols
+            163   0%  400.03KB/s   00:00:00 (xfer#7, to-check=7/14)
+2026-07-07 12:28:29 +0000 [MT] /usr/bin/rsync exited with 0
+2026-07-07 12:28:29 +0000 [MT] Running /usr/bin/ditto '-V' '-c' '-k' '--norsrc' '/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root' '/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Packages/Steepr.ipa'
+2026-07-07 12:28:29 +0000  >>> Copying /var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root 
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/_CodeSignature/CodeResources ... 
+2026-07-07 12:28:29 +0000  9594 bytes for ./Payload/Steepr.app/_CodeSignature/CodeResources
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/en.lproj/nlu.appintents/nlu.lzfse ... 
+2026-07-07 12:28:29 +0000  2306 bytes for ./Payload/Steepr.app/en.lproj/nlu.appintents/nlu.lzfse
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/en.lproj/nlu.appintents/e0b4e82bfcb5a219309796d852d808e5.version ... 
+2026-07-07 12:28:29 +0000  1 bytes for ./Payload/Steepr.app/en.lproj/nlu.appintents/e0b4e82bfcb5a219309796d852d808e5.version
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/en.lproj/Localizable.strings ... 
+2026-07-07 12:28:29 +0000  426 bytes for ./Payload/Steepr.app/en.lproj/Localizable.strings
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Metadata.appintents/version.json ... 
+2026-07-07 12:28:29 +0000  52 bytes for ./Payload/Steepr.app/Metadata.appintents/version.json
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Metadata.appintents/extract.actionsdata ... 
+2026-07-07 12:28:29 +0000  7058 bytes for ./Payload/Steepr.app/Metadata.appintents/extract.actionsdata
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/_CodeSignature/CodeResources ... 
+2026-07-07 12:28:29 +0000  2782 bytes for ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/_CodeSignature/CodeResources
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/Metadata.appintents/version.json ... 
+2026-07-07 12:28:29 +0000  52 bytes for ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/Metadata.appintents/version.json
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/Metadata.appintents/extract.actionsdata ... 
+2026-07-07 12:28:29 +0000  4176 bytes for ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/Metadata.appintents/extract.actionsdata
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/SteeprWidgets ... 
+2026-07-07 12:28:29 +0000  279232 bytes for ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/SteeprWidgets
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/PrivacyInfo.xcprivacy ... 
+2026-07-07 12:28:29 +0000  461 bytes for ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/PrivacyInfo.xcprivacy
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/embedded.mobileprovision ... 
+2026-07-07 12:28:29 +0000  14711 bytes for ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/embedded.mobileprovision
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/Info.plist ... 
+2026-07-07 12:28:29 +0000  891 bytes for ./Payload/Steepr.app/PlugIns/SteeprWidgets.appex/Info.plist
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/AppIcon60x60@2x.png ... 
+2026-07-07 12:28:29 +0000  18957 bytes for ./Payload/Steepr.app/AppIcon60x60@2x.png
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Steepr ... 
+2026-07-07 12:28:29 +0000  1093008 bytes for ./Payload/Steepr.app/Steepr
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Assets.car ... 
+2026-07-07 12:28:29 +0000  1310072 bytes for ./Payload/Steepr.app/Assets.car
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/AppIcon76x76@2x~ipad.png ... 
+2026-07-07 12:28:29 +0000  28119 bytes for ./Payload/Steepr.app/AppIcon76x76@2x~ipad.png
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/PrivacyInfo.xcprivacy ... 
+2026-07-07 12:28:29 +0000  461 bytes for ./Payload/Steepr.app/PrivacyInfo.xcprivacy
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/_CodeSignature/CodeResources ... 
+2026-07-07 12:28:29 +0000  3927 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/_CodeSignature/CodeResources
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/_CodeSignature/CodeResources ... 
+2026-07-07 12:28:29 +0000  2112 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/_CodeSignature/CodeResources
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/SteeprComplications ... 
+2026-07-07 12:28:29 +0000  330272 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/SteeprComplications
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/embedded.mobileprovision ... 
+2026-07-07 12:28:29 +0000  14775 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/embedded.mobileprovision
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/Info.plist ... 
+2026-07-07 12:28:29 +0000  875 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex/Info.plist
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/Assets.car ... 
+2026-07-07 12:28:29 +0000  1307928 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/Assets.car
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/SteeprWatch ... 
+2026-07-07 12:28:29 +0000  560016 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/SteeprWatch
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/embedded.mobileprovision ... 
+2026-07-07 12:28:29 +0000  14689 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/embedded.mobileprovision
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/Info.plist ... 
+2026-07-07 12:28:29 +0000  995 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/Info.plist
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Watch/SteeprWatch.app/PkgInfo ... 
+2026-07-07 12:28:29 +0000  8 bytes for ./Payload/Steepr.app/Watch/SteeprWatch.app/PkgInfo
+copying file ./Payload/Steepr.app/embedded.mobileprovision ... 
+2026-07-07 12:28:29 +0000  16298 bytes for ./Payload/Steepr.app/embedded.mobileprovision
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/Info.plist ... 
+2026-07-07 12:28:29 +0000  1402 bytes for ./Payload/Steepr.app/Info.plist
+2026-07-07 12:28:29 +0000  copying file ./Payload/Steepr.app/PkgInfo ... 
+2026-07-07 12:28:29 +0000  8 bytes for ./Payload/Steepr.app/PkgInfo
+2026-07-07 12:28:29 +0000  copying file ./Symbols/5D182B68-0D39-33A8-ADB0-E942A7C0B6B1.symbols ... 
+2026-07-07 12:28:29 +0000  96180 bytes for ./Symbols/5D182B68-0D39-33A8-ADB0-E942A7C0B6B1.symbols
+2026-07-07 12:28:29 +0000  copying file ./Symbols/25C9FE96-4993-3B56-9B24-6B4E70FA4BAB.symbols ... 
+2026-07-07 12:28:29 +0000  280332 bytes for ./Symbols/25C9FE96-4993-3B56-9B24-6B4E70FA4BAB.symbols
+2026-07-07 12:28:29 +0000  copying file ./Symbols/91CEA6AC-D7F6-3E89-8A97-FF1437758160.symbols ... 
+2026-07-07 12:28:29 +0000  94972 bytes for ./Symbols/91CEA6AC-D7F6-3E89-8A97-FF1437758160.symbols
+2026-07-07 12:28:29 +0000  copying file ./Symbols/069FB557-4174-367C-B9E7-8462AC4F3D84.symbols ... 
+2026-07-07 12:28:30 +0000  2808052 bytes for ./Symbols/069FB557-4174-367C-B9E7-8462AC4F3D84.symbols
+2026-07-07 12:28:30 +0000  copying file ./Symbols/5F0A1D03-586C-3AD1-930B-567AC15EC40C.symbols ... 
+2026-07-07 12:28:30 +0000  444268 bytes for ./Symbols/5F0A1D03-586C-3AD1-930B-567AC15EC40C.symbols
+2026-07-07 12:28:30 +0000  copying file ./Symbols/25AF293B-AD16-33DC-9CE4-90A8C0064287.symbols ... 
+2026-07-07 12:28:30 +0000  286500 bytes for ./Symbols/25AF293B-AD16-33DC-9CE4-90A8C0064287.symbols
+2026-07-07 12:28:30 +0000 [MT] /usr/bin/ditto exited with 0
+2026-07-07 12:28:30 +0000 [MT] Processing step: IDEDistributionAppStoreInformationStep
+2026-07-07 12:28:30 +0000 [MT] Skipping step: IDEDistributionAppStoreInformationStep because it said so
+2026-07-07 12:28:30 +0000 [MT] Processing step: IDEDistributionGenerateProcessedDistributionItems
+2026-07-07 12:28:30 +0000 [MT] IDEDistributionItem init <DVTFilePath:0x98f6a7250:'/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/Watch/SteeprWatch.app/PlugIns/SteeprComplications.appex'>
+2026-07-07 12:28:30 +0000 [MT] IDEDistributionItem init <DVTFilePath:0x98f482be0:'/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/Watch/SteeprWatch.app'>
+2026-07-07 12:28:30 +0000 [MT] IDEDistributionItem init <DVTFilePath:0x98f6a6140:'/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app/PlugIns/SteeprWidgets.appex'>
+2026-07-07 12:28:30 +0000 [MT] IDEDistributionItem init <DVTFilePath:0x98f4829a0:'/var/folders/99/99_53n6d0kx7ckzzlqk07qsr0000gn/T/XcodeDistPipeline.~~~TtnkNv/Root/Payload/Steepr.app'>
+2026-07-07 12:28:30 +0000 [MT] Processing step: IDEDistributionCreateManifestStep
+2026-07-07 12:28:30 +0000 [MT] Skipping step: IDEDistributionCreateManifestStep because it said so

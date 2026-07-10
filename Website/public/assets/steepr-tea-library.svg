@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1947" viewBox="0 0 900 1947" role="img" aria-labelledby="title desc">
+  <title id="title">Steepr tea library</title>
+  <desc id="desc">Tea library with custom teas, built-in teas, and favorites.</desc>
+  <rect width="900" height="1947" fill="#f7f5ed"/>
+  <circle cx="805" cy="115" r="205" fill="#fff"/>
+  <path d="M0 1500c205-80 322 60 520-15 150-56 219-190 380-166v628H0z" fill="#f3eadf"/>
+  <text x="54" y="155" fill="#4a7c4e" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="42" font-weight="800">LIBRARY</text>
+  <text x="54" y="300" fill="#090909" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="72" font-weight="850">Keep your teas</text>
+  <text x="54" y="388" fill="#090909" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="72" font-weight="850">organized.</text>
+  <text x="54" y="505" fill="#111" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="38">Add custom teas, favorite up to six,</text>
+  <text x="54" y="555" fill="#111" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="38">and browse built-in presets.</text>
+  <rect x="42" y="690" width="816" height="1110" rx="28" fill="#fff" stroke="#4a7c4e" stroke-width="7"/>
+  <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">
+    <text x="92" y="780" font-size="36" fill="#777" font-weight="750">My Teas</text>
+    <text x="780" y="780" font-size="46" fill="#4a7c4e" font-weight="600">+</text>
+    <text x="92" y="850" font-size="30" fill="#777">Custom teas you add will appear here.</text>
+    <text x="92" y="950" font-size="36" fill="#777" font-weight="750">Built-in</text>
+    <g font-size="34">
+      <text x="105" y="1040" fill="#f5c400">★</text><circle cx="185" cy="1028" r="38" fill="#e4dfdc"/><text x="250" y="1040" font-weight="750">Black</text><text x="250" y="1084" fill="#7b7f86" font-size="28">4m  ·  95°C</text>
+      <line x1="250" y1="1120" x2="805" y2="1120" stroke="#e5e5e5"/>
+      <text x="105" y="1198" fill="#f5c400">★</text><circle cx="185" cy="1186" r="38" fill="#e8efd7"/><text x="250" y="1198" font-weight="750">Green</text><text x="250" y="1242" fill="#7b7f86" font-size="28">2m 30s  ·  80°C</text>
+      <line x1="250" y1="1278" x2="805" y2="1278" stroke="#e5e5e5"/>
+      <text x="105" y="1356" fill="#f5c400">★</text><circle cx="185" cy="1344" r="38" fill="#f3e8dc"/><text x="250" y="1356" font-weight="750">Oolong</text><text x="250" y="1400" fill="#7b7f86" font-size="28">3m 30s  ·  90°C</text>
+      <line x1="250" y1="1436" x2="805" y2="1436" stroke="#e5e5e5"/>
+      <text x="105" y="1514" fill="#aaa">☆</text><circle cx="185" cy="1502" r="38" fill="#eee9dc"/><text x="250" y="1514" font-weight="750">White</text><text x="250" y="1558" fill="#7b7f86" font-size="28">3m  ·  75°C</text>
+      <line x1="250" y1="1594" x2="805" y2="1594" stroke="#e5e5e5"/>
+      <text x="105" y="1672" fill="#aaa">☆</text><circle cx="185" cy="1660" r="38" fill="#e7ded8"/><text x="250" y="1672" font-weight="750">Pu-erh</text><text x="250" y="1716" fill="#7b7f86" font-size="28">3m  ·  95°C</text>
+    </g>
+  </g>
+</svg>

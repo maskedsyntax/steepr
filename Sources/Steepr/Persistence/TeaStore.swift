@@ -50,7 +50,15 @@ final class TeaStore: ObservableObject {
     }
 
     func tea(with id: Tea.ID) -> Tea? {
-        teas.first { $0.id == id }
+        if let tea = teas.first(where: { $0.id == id }) {
+            return tea
+        }
+
+        guard let builtIn = Tea.builtIns.first(where: { $0.id == id }) else {
+            return nil
+        }
+
+        return teas.first { $0.isBuiltIn && $0.name == builtIn.name }
     }
 
     func addCustomTea(_ tea: Tea) {
@@ -89,7 +97,16 @@ final class TeaStore: ObservableObject {
             temperatureCelsius: tea.temperatureCelsius,
             caffeineMilligrams: tea.caffeineMilligrams,
             notes: tea.notes,
-            isBuiltIn: false
+            isBuiltIn: false,
+            steps: tea.brewSteps.map {
+                BrewStep(
+                    name: $0.name,
+                    symbolName: $0.symbolName,
+                    detail: $0.detail,
+                    durationSeconds: $0.durationSeconds,
+                    temperatureCelsius: $0.temperatureCelsius
+                )
+            }
         )
     }
 

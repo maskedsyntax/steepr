@@ -1,0 +1,12 @@
+{
+  "/Users/batman/maskedsyntax/steepr/Sources/Steepr/Intents/TeaEntity.swift" : {
+    "abi-baseline-json" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-iphoneos/Steepr.build/Objects-normal/arm64/Steepr.abi.json",
+    "const-values" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-iphoneos/Steepr.build/Objects-normal/arm64/Steepr-primary.swiftconstvalues",
+    "dependencies" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-iphoneos/Steepr.build/Objects-normal/arm64/Steepr-primary.d",
+    "diagnostics" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-iphoneos/Steepr.build/Objects-normal/arm64/Steepr-primary.dia",
+    "objc-header" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-iphoneos/Steepr.build/Objects-normal/arm64/Steepr-Swift.h",
+    "swiftdoc" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-iphoneos/Steepr.build/Objects-normal/arm64/Steepr.swiftdoc",
+    "swiftmodule" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-iphoneos/Steepr.build/Objects-normal/arm64/Steepr.swiftmodule",
+    "swiftsourceinfo" : "/Users/batman/maskedsyntax/steepr/build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Steepr/IntermediateBuildFilesPath/Steepr.build/Release-iphoneos/Steepr.build/Objects-normal/arm64/Steepr.swiftsourceinfo"
+  }
+}
