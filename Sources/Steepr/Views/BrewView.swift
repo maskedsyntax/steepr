@@ -19,30 +19,43 @@ struct BrewView: View {
         GridItem(.flexible(), spacing: 12)
     ]
 
+    private var isActiveSession: Bool {
+        switch timerCoordinator.state {
+        case .running, .paused, .completed:
+            return true
+        case .idle:
+            return false
+        }
+    }
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    if notificationsDenied {
-                        notificationDeniedBanner
-                    }
+            ZStack {
+                SteeprPalette.background
+                    .ignoresSafeArea()
 
-                    switch timerCoordinator.state {
-                    case .idle:
-                        idleContent
-                    case .running, .paused:
-                        activeTimerContent
-                    case .completed:
-                        completedContent
+                Group {
+                    if isActiveSession {
+                        activeSessionChrome
+                    } else {
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 24) {
+                                if notificationsDenied {
+                                    notificationDeniedBanner
+                                }
+                                idleContent
+                            }
+                            .padding()
+                            .frame(maxWidth: 640, alignment: .leading)
+                            .frame(maxWidth: .infinity)
+                        }
                     }
                 }
-                .padding()
-                .frame(maxWidth: 640, alignment: .leading)
-                .frame(maxWidth: .infinity)
             }
-            .navigationTitle("Brew")
+            .navigationTitle(isActiveSession ? "" : "Brew")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar(isActiveSession ? .hidden : .automatic, for: .navigationBar)
             #endif
             .task {
                 await refreshNotificationStatus()
@@ -53,18 +66,43 @@ struct BrewView: View {
         }
     }
 
+    // MARK: - Active session shell
+
+    private var activeSessionChrome: some View {
+        VStack(spacing: 0) {
+            if notificationsDenied {
+                notificationDeniedBanner
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+            }
+
+            switch timerCoordinator.state {
+            case .running, .paused:
+                activeTimerContent
+            case .completed:
+                completedContent
+            case .idle:
+                EmptyView()
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    // MARK: - Idle
+
     private var notificationDeniedBanner: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: "bell.slash.fill")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(SteeprPalette.inkSecondary)
                 .frame(width: 24)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Notifications are off")
                     .font(.headline)
+                    .foregroundStyle(SteeprPalette.ink)
                 Text("Enable notifications so Steepr can alert you when your tea is ready.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(SteeprPalette.inkSecondary)
             }
 
             Spacer()
@@ -79,8 +117,12 @@ struct BrewView: View {
             .buttonStyle(.bordered)
         }
         .padding(12)
-        .background(.thinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .background(SteeprPalette.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke(SteeprPalette.controlStroke, lineWidth: 1)
+        }
     }
 
     private var idleContent: some View {
@@ -88,21 +130,23 @@ struct BrewView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text("What are you brewing?")
                     .font(.largeTitle.bold())
+                    .foregroundStyle(SteeprPalette.ink)
                     .fixedSize(horizontal: false, vertical: true)
                 Text("Start a favorite tea or browse the full library.")
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(SteeprPalette.inkSecondary)
             }
 
             if teaStore.favoriteTeas.isEmpty {
                 VStack(spacing: 10) {
                     Image(systemName: "star")
                         .font(.system(size: 42, weight: .medium))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(SteeprPalette.inkSecondary)
                     Text("Pick your favorites")
                         .font(.title3.bold())
+                        .foregroundStyle(SteeprPalette.ink)
                     Text("Choose a few teas in Library for one-tap brewing.")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(SteeprPalette.inkSecondary)
                         .multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity)
@@ -112,6 +156,7 @@ struct BrewView: View {
                     selectedTab = 1
                 }
                 .buttonStyle(.borderedProminent)
+                .tint(SteeprPalette.accentSolid)
                 .controlSize(.large)
             } else {
                 LazyVGrid(columns: gridColumns, spacing: 12) {
@@ -133,122 +178,180 @@ struct BrewView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
+                .tint(SteeprPalette.accent)
                 .controlSize(.large)
             }
         }
     }
 
+    // MARK: - Active timer (screenshot-style)
+
     private var activeTimerContent: some View {
-        VStack(spacing: 22) {
-            if let tea = timerCoordinator.activeTea {
-                TimerRingView(
-                    progress: timerCoordinator.progress,
-                    timeText: timerCoordinator.formattedTime(),
-                    color: tea.colorSlot.color
-                )
-                .frame(maxWidth: 360)
-                .accessibilityLabel("\(timerCoordinator.formattedTime()) remaining")
-                .accessibilityAction(named: timerCoordinator.state == .running ? "Pause timer" : "Resume timer") {
-                    if timerCoordinator.state == .running {
-                        timerCoordinator.pause()
-                    } else {
-                        timerCoordinator.resume(preferences: teaStore.preferences)
+        GeometryReader { geometry in
+            let isCompact = geometry.size.height < 700
+
+            VStack(spacing: 0) {
+                Spacer(minLength: isCompact ? 8 : 16)
+
+                if let tea = timerCoordinator.activeTea {
+                    ActiveSessionHeader(
+                        tea: tea,
+                        statusLine: statusLine(for: tea)
+                    )
+                    .padding(.horizontal, 24)
+
+                    Spacer(minLength: isCompact ? 16 : 28)
+
+                    TimerRingView(
+                        progress: timerCoordinator.progress,
+                        timeText: timerCoordinator.formattedTime(),
+                        statusText: timerCoordinator.state == .paused ? "Paused" : "Steeping",
+                        color: tea.colorSlot.color
+                    )
+                    .frame(maxWidth: min(geometry.size.width - 48, isCompact ? 280 : 320))
+                    .frame(maxWidth: .infinity)
+                    .accessibilityAction(named: timerCoordinator.state == .running ? "Pause timer" : "Resume timer") {
+                        togglePause()
                     }
-                }
 
-                VStack(spacing: 8) {
-                    Text(tea.name)
-                        .font(.title.bold())
-                        .multilineTextAlignment(.center)
-                    Text(formatTemperature(tea.temperatureCelsius, useCelsius: teaStore.preferences.useCelsius))
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
-                    Text("Infusion \(timerCoordinator.infusionNumber)")
-                        .font(.footnote.weight(.medium))
-                        .foregroundStyle(.secondary)
-                }
+                    Spacer(minLength: isCompact ? 16 : 28)
 
-                HStack(spacing: 12) {
-                    Button {
-                        if timerCoordinator.state == .running {
-                            timerCoordinator.pause()
-                        } else {
-                            timerCoordinator.resume(preferences: teaStore.preferences)
+                    HStack(spacing: 12) {
+                        BrewMetaCard(
+                            icon: "thermometer.medium",
+                            iconColor: SteeprPalette.temperature,
+                            title: formatTemperature(tea.temperatureCelsius, useCelsius: teaStore.preferences.useCelsius),
+                            subtitle: "Ideal temperature"
+                        )
+
+                        BrewMetaCard(
+                            icon: "leaf.fill",
+                            iconColor: tea.colorSlot.color,
+                            title: tea.tasteProfile,
+                            subtitle: "Taste profile"
+                        )
+                    }
+                    .padding(.horizontal, 20)
+
+                    Spacer(minLength: isCompact ? 20 : 32)
+
+                    SessionControlBar(
+                        isRunning: timerCoordinator.state == .running,
+                        onCancel: {
+                            recordCancellationIfNeeded()
+                            timerCoordinator.cancel()
+                        },
+                        onTogglePause: togglePause,
+                        onNext: {
+                            timerCoordinator.skip()
                         }
-                    } label: {
-                        Label(timerCoordinator.state == .running ? "Pause" : "Resume", systemImage: timerCoordinator.state == .running ? "pause.fill" : "play.fill")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-
-                    Button(role: .destructive) {
-                        recordCancellationIfNeeded()
-                        timerCoordinator.cancel()
-                    } label: {
-                        Label("Cancel", systemImage: "xmark")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
+                    )
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, isCompact ? 12 : 24)
                 }
-                .frame(maxWidth: 420)
             }
+            .frame(width: geometry.size.width, height: geometry.size.height)
         }
+        .frame(maxWidth: 640)
         .frame(maxWidth: .infinity)
-        .padding(.top, 12)
     }
 
+    // MARK: - Completed
+
     private var completedContent: some View {
-        VStack(spacing: 18) {
+        VStack(spacing: 0) {
+            Spacer(minLength: 24)
+
             if let tea = timerCoordinator.activeTea {
-                TeaIconView(tea: tea, size: 88)
-
-                Text("Done!")
-                    .font(.largeTitle.bold())
-
-                Text("Your \(tea.name) is ready.")
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                Text("Infusion \(timerCoordinator.infusionNumber) complete")
-                    .font(.footnote.weight(.medium))
-                    .foregroundStyle(.secondary)
-
-                reSteepSequenceHint(for: tea)
-
-                if shouldShowMilestonePrompt {
-                    Button {
-                        teaStore.markBrewMilestoneProPromptSeen()
-                        showingPaywall = true
-                    } label: {
-                        Label("Unlock full tea journal", systemImage: "sparkles")
-                            .frame(maxWidth: .infinity)
+                VStack(spacing: 18) {
+                    ZStack {
+                        Circle()
+                            .fill(tea.colorSlot.color.opacity(0.14))
+                            .frame(width: 96, height: 96)
+                        Image(systemName: "bell.fill")
+                            .font(.system(size: 36, weight: .medium))
+                            .foregroundStyle(tea.colorSlot.color)
                     }
-                    .buttonStyle(.bordered)
-                    .frame(maxWidth: 420)
+
+                    VStack(spacing: 8) {
+                        Text("Done!")
+                            .font(.largeTitle.bold())
+                            .foregroundStyle(SteeprPalette.ink)
+
+                        Text("Your \(tea.name) is ready.")
+                            .font(.title3)
+                            .foregroundStyle(SteeprPalette.inkSecondary)
+                            .multilineTextAlignment(.center)
+
+                        Text("Infusion \(timerCoordinator.infusionNumber) complete")
+                            .font(.footnote.weight(.medium))
+                            .foregroundStyle(SteeprPalette.accent)
+                    }
+
+                    reSteepSequenceHint(for: tea)
+
+                    if shouldShowMilestonePrompt {
+                        Button {
+                            teaStore.markBrewMilestoneProPromptSeen()
+                            showingPaywall = true
+                        } label: {
+                            Label("Unlock full tea journal", systemImage: "sparkles")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(SteeprPalette.accent)
+                        .frame(maxWidth: 420)
+                    }
                 }
+                .padding(.horizontal, 28)
 
-                HStack(spacing: 12) {
-                    Button {
-                        timerCoordinator.reSteep(preferences: teaStore.preferences)
-                    } label: {
-                        Label(nextInfusionTitle(for: tea), systemImage: "arrow.clockwise")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
+                Spacer(minLength: 24)
 
-                    Button {
+                HStack(spacing: 28) {
+                    SessionControlButton(
+                        systemImage: "checkmark",
+                        label: "Done",
+                        style: .secondary
+                    ) {
                         timerCoordinator.done()
-                    } label: {
-                        Label("Done", systemImage: "checkmark")
-                            .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.bordered)
+
+                    SessionControlButton(
+                        systemImage: "arrow.clockwise",
+                        label: nextInfusionTitle(for: tea),
+                        style: .primary
+                    ) {
+                        timerCoordinator.reSteep(preferences: teaStore.preferences)
+                    }
                 }
-                .frame(maxWidth: 420)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 28)
             }
         }
-        .frame(maxWidth: .infinity)
-        .padding(.top, 60)
+        .frame(maxWidth: 640)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    // MARK: - Helpers
+
+    private func statusLine(for tea: Tea) -> String {
+        let time = timerCoordinator.formattedTime()
+        switch timerCoordinator.state {
+        case .paused:
+            return "Paused · \(time) remaining"
+        case .running:
+            return "Steeping · \(time) remaining"
+        default:
+            return tea.name
+        }
+    }
+
+    private func togglePause() {
+        if timerCoordinator.state == .running {
+            timerCoordinator.pause()
+        } else {
+            timerCoordinator.resume(preferences: teaStore.preferences)
+        }
     }
 
     @ViewBuilder
@@ -257,7 +360,7 @@ struct BrewView: View {
             if teaStore.preferences.proPurchased {
                 Text("Next guided steep: \(formatDuration(nextInfusionSeconds(for: tea))).")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(SteeprPalette.inkSecondary)
             } else {
                 Button {
                     showingPaywall = true
@@ -265,13 +368,14 @@ struct BrewView: View {
                     Label("Unlock guided infusion timing", systemImage: "sparkles")
                 }
                 .buttonStyle(.bordered)
+                .tint(SteeprPalette.accent)
             }
         }
     }
 
     private func nextInfusionTitle(for tea: Tea) -> String {
         if teaStore.preferences.proPurchased, tea.supportsGuidedReSteep {
-            return "Start infusion \(timerCoordinator.infusionNumber + 1)"
+            return "Infusion \(timerCoordinator.infusionNumber + 1)"
         }
         return "Re-steep"
     }
@@ -332,7 +436,7 @@ private struct FavoriteTeaCard: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(tea.name)
                     .font(.headline)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(SteeprPalette.ink)
                     .lineLimit(1)
                     .minimumScaleFactor(0.82)
 
@@ -341,11 +445,11 @@ private struct FavoriteTeaCard: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, minHeight: 134, alignment: .leading)
-        .background(.background)
-        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .background(SteeprPalette.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay {
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .stroke(.quaternary, lineWidth: 1)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(SteeprPalette.controlStroke, lineWidth: 1)
         }
         .accessibilityElement(children: .combine)
     }

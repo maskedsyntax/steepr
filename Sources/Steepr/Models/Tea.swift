@@ -112,6 +112,35 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
 }
 
 extension Tea {
+    /// Short taste-profile label for session meta cards.
+    var tasteProfile: String {
+        if !isBuiltIn {
+            let trimmed = notes.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !trimmed.isEmpty {
+                // Prefer a compact phrase when the user wrote notes.
+                if let first = trimmed.split(separator: ".", maxSplits: 1, omittingEmptySubsequences: true).first {
+                    let phrase = String(first).trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !phrase.isEmpty, phrase.count <= 28 {
+                        return phrase
+                    }
+                }
+            }
+            return "Custom blend"
+        }
+
+        switch colorSlot {
+        case .green: return "Delicate & Floral"
+        case .black: return "Bold & Malty"
+        case .oolong: return "Smooth & Toasted"
+        case .white: return "Light & Sweet"
+        case .herbal: return "Aromatic & Herbal"
+        case .chai: return "Spiced & Warm"
+        case .puerh: return "Earth & Deep"
+        case .matcha: return "Umami & Fresh"
+        case .customA, .customB: return "Custom blend"
+        }
+    }
+
     var guidedReSteepIncrementSeconds: Int {
         switch colorSlot {
         case .green, .white:
@@ -142,14 +171,14 @@ extension Tea {
     }
 
     static let builtIns: [Tea] = [
-        Tea(name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, notes: "Lower heat keeps green tea smooth.", isBuiltIn: true, isFavorite: true, favoriteRank: 0),
-        Tea(name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "A full, strong steep works best near boiling.", isBuiltIn: true, isFavorite: true, favoriteRank: 1),
-        Tea(name: "Oolong", symbolName: "flame.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "Balanced heat opens darker and lighter oolongs.", isBuiltIn: true, isFavorite: true, favoriteRank: 2),
-        Tea(name: "White", symbolName: "cloud.fill", colorSlot: .white, steepSeconds: 180, temperatureCelsius: 75, notes: "Delicate leaves prefer a cooler cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
-        Tea(name: "Herbal", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, caffeineMilligrams: nil, notes: "Most herbal blends want a longer infusion.", isBuiltIn: true, isFavorite: true, favoriteRank: 3),
-        Tea(name: "Chai", symbolName: "sparkles", colorSlot: .chai, steepSeconds: 300, temperatureCelsius: 100, notes: "Spices need time and heat to bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 4),
-        Tea(name: "Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 95, notes: "Rinse first if you prefer a cleaner cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
-        Tea(name: "Matcha", symbolName: "circle.hexagongrid.fill", colorSlot: .matcha, steepSeconds: 30, temperatureCelsius: 75, notes: "Whisk briskly after a short bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 5)
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000001")!, name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, notes: "Lower heat keeps green tea smooth.", isBuiltIn: true, isFavorite: true, favoriteRank: 0),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000002")!, name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "A full, strong steep works best near boiling.", isBuiltIn: true, isFavorite: true, favoriteRank: 1),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000003")!, name: "Oolong", symbolName: "flame.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "Balanced heat opens darker and lighter oolongs.", isBuiltIn: true, isFavorite: true, favoriteRank: 2),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000004")!, name: "Herbal", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, caffeineMilligrams: nil, notes: "Most herbal blends want a longer infusion.", isBuiltIn: true, isFavorite: true, favoriteRank: 3),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000005")!, name: "White", symbolName: "cloud.fill", colorSlot: .white, steepSeconds: 180, temperatureCelsius: 75, notes: "Delicate leaves prefer a cooler cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000006")!, name: "Chai", symbolName: "sparkles", colorSlot: .chai, steepSeconds: 300, temperatureCelsius: 100, notes: "Spices need time and heat to bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 4),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000007")!, name: "Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 95, notes: "Rinse first if you prefer a cleaner cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000008")!, name: "Matcha", symbolName: "circle.hexagongrid.fill", colorSlot: .matcha, steepSeconds: 30, temperatureCelsius: 75, notes: "Whisk briskly after a short bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 5)
     ]
 }
 

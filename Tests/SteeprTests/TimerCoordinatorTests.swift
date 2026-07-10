@@ -59,6 +59,17 @@ final class TimerCoordinatorTests: XCTestCase {
         XCTAssertEqual(coordinator.durationSeconds, 0)
     }
 
+    func testSkipCompletesActiveTimer() {
+        let coordinator = TimerCoordinator()
+
+        coordinator.start(testTea(seconds: 120), preferences: .defaults)
+        coordinator.skip()
+
+        XCTAssertEqual(coordinator.state, .completed)
+        XCTAssertEqual(coordinator.secondsRemaining, 0)
+        XCTAssertNotNil(coordinator.activeTea)
+    }
+
     func testRestoreRunningTimerFromPersistence() {
         let tea = testTea(seconds: 120)
         let preferences = UserPreferences.defaults

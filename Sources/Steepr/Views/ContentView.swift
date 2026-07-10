@@ -10,6 +10,10 @@ struct ContentView: View {
     @State private var showingCompletionSheet = false
     @State private var recordedCompletedSessions: Set<UUID> = []
 
+    private var isImmersiveSession: Bool {
+        selectedTab == 0 && (timerCoordinator.state == .running || timerCoordinator.state == .paused || timerCoordinator.state == .completed)
+    }
+
     var body: some View {
         TabView(selection: $selectedTab) {
             BrewView(
@@ -37,7 +41,12 @@ struct ContentView: View {
                 }
                 .tag(2)
         }
-        .tint(TeaColorSlot.green.color)
+        .tint(SteeprPalette.accent)
+        #if os(iOS)
+        .toolbarBackground(SteeprPalette.background, for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
+        .toolbar(isImmersiveSession ? .hidden : .visible, for: .tabBar)
+        #endif
         .task {
             timerCoordinator.restoreIfNeeded(preferences: teaStore.preferences)
         }

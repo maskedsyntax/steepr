@@ -200,6 +200,17 @@ final class TimerCoordinator: ObservableObject {
         cancel()
     }
 
+    /// Skip remaining time and mark the current steep complete.
+    func skip() {
+        guard state == .running || state == .paused else { return }
+        timer?.cancel()
+        removeNotifications()
+        secondsRemaining = 0
+        endDate = nil
+        pausedRemainingSeconds = 0
+        complete(playFeedback: true)
+    }
+
     func formattedTime(_ seconds: Int? = nil) -> String {
         let value = max(0, seconds ?? secondsRemaining)
         return String(format: "%d:%02d", value / 60, value % 60)
