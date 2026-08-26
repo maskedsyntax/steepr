@@ -97,6 +97,58 @@ final class BrewSessionStoreTests: XCTestCase {
         XCTAssertNotNil(store.session(with: secondID))
     }
 
+    func testCompletedCountIgnoresCancelledSessions() {
+        let store = BrewSessionStore(modelContainer: SteeprModelContainer.make(inMemory: true))
+        let tea = testTea()
+
+        store.recordCompletion(sessionID: UUID(), tea: tea, startedAt: Date(), durationSeconds: 150)
+        store.recordCompletion(sessionID: UUID(), tea: tea, startedAt: Date(), durationSeconds: 150)
+        store.recordCancellation(sessionID: UUID(), tea: tea, startedAt: Date(), elapsedSeconds: 20)
+
+        XCTAssertEqual(store.completedCount, 2)
+    }
+
+    func testReviewThresholdIsReachedOnThirdCompletedBrew() {
+        let store = BrewSessionStore(modelContainer: SteeprModelContainer.make(inMemory: true))
+        let tea = testTea()
+
+        store.recordCompletion(sessionID: UUID(), tea: tea, startedAt: Date(), durationSeconds: 150)
+        store.recordCancellation(sessionID: UUID(), tea: tea, startedAt: Date(), elapsedSeconds: 10)
+        XCTAssertLessThan(store.completedCount, 3, "A cancelled brew must not count toward the prompt")
+
+        store.recordCompletion(sessionID: UUID(), tea: tea, startedAt: Date(), durationSeconds: 150)
+        XCTAssertLessThan(store.completedCount, 3)
+
+        store.recordCompletion(sessionID: UUID(), tea: tea, startedAt: Date(), durationSeconds: 150)
+        XCTAssertGreaterThanOrEqual(store.completedCount, 3)
+    }
+
+    func testCompletedSessionsOnDayExcludesOtherDaysAndCancellations() {
+        let store = BrewSessionStore(modelContainer: SteeprModelContainer.make(inMemory: true))
+        let tea = testTea()
+        let yesterday = Date().addingTimeInterval(-60 * 60 * 24)
+
+        store.recordCompletion(sessionID: UUID(), tea: tea, startedAt: Date(), durationSeconds: 150)
+        store.recordCompletion(sessionID: UUID(), tea: tea, startedAt: yesterday, durationSeconds: 150)
+        store.recordCancellation(sessionID: UUID(), tea: tea, startedAt: Date(), elapsedSeconds: 30)
+
+        // `recordCompletion` stamps completedAt with "now", so both completions land on today.
+        XCTAssertEqual(store.completedSessions(on: Date()).count, 2)
+        XCTAssertEqual(store.completedSessions(on: yesterday).count, 0)
+    }
+
+    func testReviewRequestFlagDefaultsFalseAndPersists() {
+        let container = SteeprModelContainer.make(inMemory: true)
+        let store = TeaStore(modelContainer: container)
+        XCTAssertFalse(store.preferences.hasRequestedReview)
+
+        store.markReviewRequested()
+        XCTAssertTrue(store.preferences.hasRequestedReview)
+
+        let restored = TeaStore(modelContainer: container)
+        XCTAssertTrue(restored.preferences.hasRequestedReview, "The prompt must never be shown twice")
+    }
+
     private func testTea() -> Tea {
         Tea(
             name: "Test Tea",

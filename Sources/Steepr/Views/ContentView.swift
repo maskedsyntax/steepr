@@ -1,9 +1,15 @@
+import StoreKit
 import SwiftUI
+
+/// Completed brews required before the App Store review prompt is requested.
+/// Deliberately not 7, which is already claimed by the Pro milestone prompt in `BrewView`.
+private let reviewPromptBrewThreshold = 3
 
 struct ContentView: View {
     @EnvironmentObject private var teaStore: TeaStore
     @EnvironmentObject private var brewSessionStore: BrewSessionStore
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.requestReview) private var requestReview
     @StateObject private var timerCoordinator = TimerCoordinator()
     @State private var selectedTab = 0
     @State private var libraryPath = NavigationPath()
@@ -54,6 +60,7 @@ struct ContentView: View {
             guard state == .completed else { return }
             recordCompletionIfNeeded()
             showingCompletionSheet = selectedTab != 0
+            requestReviewIfEarned()
         }
         .onChange(of: selectedTab) { _, tab in
             if tab == 0 {
@@ -101,6 +108,26 @@ struct ContentView: View {
             durationSeconds: timerCoordinator.durationSeconds,
             infusionNumber: timerCoordinator.infusionNumber
         )
+    }
+
+    /// Asks for an App Store review once the user has completed enough brews to have an opinion.
+    /// The flag is persisted so the prompt is only ever requested a single time; Apple applies
+    /// its own rate limiting on top and may show nothing at all.
+    private func requestReviewIfEarned() {
+        guard
+            !teaStore.preferences.hasRequestedReview,
+            brewSessionStore.completedCount >= reviewPromptBrewThreshold
+        else {
+            return
+        }
+
+        teaStore.markReviewRequested()
+
+        Task {
+            // Let the completion sheet and its haptic settle before the system prompt lands.
+            try? await Task.sleep(for: .seconds(2))
+            requestReview()
+        }
     }
 
     private func handleWidgetURL(_ url: URL) {

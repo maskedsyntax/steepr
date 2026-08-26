@@ -138,6 +138,37 @@ struct BrewView: View {
         }
     }
 
+    /// Caffeine and brew count for today, or `nil` when nothing has been brewed yet.
+    /// Teas deleted since a session was logged still count as a brew but contribute no caffeine.
+    private var todayCaffeineSummary: (milligrams: Int, brews: Int)? {
+        let completed = brewSessionStore.completedSessions(on: Date())
+        guard !completed.isEmpty else { return nil }
+
+        let milligrams = completed.reduce(into: 0) { total, session in
+            total += teaStore.tea(with: session.teaID)?.caffeineMilligrams ?? 0
+        }
+        return (milligrams, completed.count)
+    }
+
+    private func todaySummaryRow(_ summary: (milligrams: Int, brews: Int)) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "bolt.fill")
+                .font(.footnote)
+                .foregroundStyle(SteeprPalette.accentSolid)
+            Text("Today: \(summary.milligrams) mg from \(summary.brews) \(summary.brews == 1 ? "brew" : "brews")")
+                .font(.subheadline.weight(.medium))
+                .foregroundStyle(SteeprPalette.inkSecondary)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(SteeprPalette.accentSolid.opacity(0.10))
+        )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Today: \(summary.milligrams) milligrams of caffeine from \(summary.brews) \(summary.brews == 1 ? "brew" : "brews")")
+    }
+
     private var idleContent: some View {
         VStack(alignment: .leading, spacing: 20) {
             VStack(alignment: .leading, spacing: 6) {
@@ -148,6 +179,10 @@ struct BrewView: View {
                 Text("Start a favorite tea or browse the full library.")
                     .font(.subheadline)
                     .foregroundStyle(SteeprPalette.inkSecondary)
+            }
+
+            if let summary = todayCaffeineSummary {
+                todaySummaryRow(summary)
             }
 
             if teaStore.favoriteTeas.isEmpty {

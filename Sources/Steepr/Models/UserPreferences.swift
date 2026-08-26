@@ -29,6 +29,8 @@ struct UserPreferences: Codable, Equatable {
     var hasSeenBrewMilestoneProPrompt: Bool
     var firstOpenedAt: Date
     var hasSeenSettingsProPrompt: Bool
+    /// Set once the App Store review prompt has been requested, so it is never asked twice.
+    var hasRequestedReview: Bool
     /// Local-only display name shown on the profile screen.
     var displayName: String
     /// Local-only contact email. Not used for accounts or sync.
@@ -51,6 +53,7 @@ struct UserPreferences: Codable, Equatable {
         hasSeenBrewMilestoneProPrompt: Bool = false,
         firstOpenedAt: Date = Date(),
         hasSeenSettingsProPrompt: Bool = false,
+        hasRequestedReview: Bool = false,
         displayName: String = "",
         email: String = "",
         preferredTeaTypeRawValues: [String] = ["green"],
@@ -68,6 +71,7 @@ struct UserPreferences: Codable, Equatable {
         self.hasSeenBrewMilestoneProPrompt = hasSeenBrewMilestoneProPrompt
         self.firstOpenedAt = firstOpenedAt
         self.hasSeenSettingsProPrompt = hasSeenSettingsProPrompt
+        self.hasRequestedReview = hasRequestedReview
         self.displayName = displayName
         self.email = email
         self.preferredTeaTypeRawValues = preferredTeaTypeRawValues
@@ -110,6 +114,7 @@ struct UserPreferences: Codable, Equatable {
         case hasSeenBrewMilestoneProPrompt
         case firstOpenedAt
         case hasSeenSettingsProPrompt
+        case hasRequestedReview
         case displayName
         case email
         case preferredTeaTypeRawValues
@@ -130,6 +135,7 @@ struct UserPreferences: Codable, Equatable {
         hasSeenBrewMilestoneProPrompt = try container.decodeIfPresent(Bool.self, forKey: .hasSeenBrewMilestoneProPrompt) ?? false
         firstOpenedAt = try container.decodeIfPresent(Date.self, forKey: .firstOpenedAt) ?? Date()
         hasSeenSettingsProPrompt = try container.decodeIfPresent(Bool.self, forKey: .hasSeenSettingsProPrompt) ?? false
+        hasRequestedReview = try container.decodeIfPresent(Bool.self, forKey: .hasRequestedReview) ?? false
         displayName = try container.decodeIfPresent(String.self, forKey: .displayName) ?? ""
         email = try container.decodeIfPresent(String.self, forKey: .email) ?? ""
         preferredTeaTypeRawValues = try container.decodeIfPresent([String].self, forKey: .preferredTeaTypeRawValues) ?? ["green"]

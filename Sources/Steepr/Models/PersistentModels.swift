@@ -98,6 +98,7 @@ final class PersistentUserPreferences {
     var hasSeenBrewMilestoneProPrompt: Bool = false
     var firstOpenedAt: Date = Date()
     var hasSeenSettingsProPrompt: Bool = false
+    var hasRequestedReview: Bool = false
     var displayName: String = ""
     var email: String = ""
     var preferredTeaTypeRawValues: [String] = ["green"]
@@ -117,6 +118,7 @@ final class PersistentUserPreferences {
         self.hasSeenBrewMilestoneProPrompt = preferences.hasSeenBrewMilestoneProPrompt
         self.firstOpenedAt = preferences.firstOpenedAt
         self.hasSeenSettingsProPrompt = preferences.hasSeenSettingsProPrompt
+        self.hasRequestedReview = preferences.hasRequestedReview
         self.displayName = preferences.displayName
         self.email = preferences.email
         self.preferredTeaTypeRawValues = preferences.preferredTeaTypeRawValues
@@ -136,6 +138,7 @@ final class PersistentUserPreferences {
         hasSeenBrewMilestoneProPrompt = preferences.hasSeenBrewMilestoneProPrompt
         firstOpenedAt = preferences.firstOpenedAt
         hasSeenSettingsProPrompt = preferences.hasSeenSettingsProPrompt
+        hasRequestedReview = preferences.hasRequestedReview
         displayName = preferences.displayName
         email = preferences.email
         preferredTeaTypeRawValues = preferences.preferredTeaTypeRawValues
@@ -156,6 +159,7 @@ final class PersistentUserPreferences {
             hasSeenBrewMilestoneProPrompt: hasSeenBrewMilestoneProPrompt,
             firstOpenedAt: firstOpenedAt,
             hasSeenSettingsProPrompt: hasSeenSettingsProPrompt,
+            hasRequestedReview: hasRequestedReview,
             displayName: displayName,
             email: email,
             preferredTeaTypeRawValues: preferredTeaTypeRawValues,

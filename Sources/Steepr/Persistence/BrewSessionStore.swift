@@ -27,6 +27,20 @@ final class BrewSessionStore: ObservableObject {
         sessions.sorted { $0.startedAt > $1.startedAt }
     }
 
+    /// Number of sessions that ran to completion. Counts each infusion separately.
+    var completedCount: Int {
+        sessions.lazy.filter { $0.completedAt != nil }.count
+    }
+
+    /// Sessions that ran to completion on the given day, newest first.
+    /// Caffeine is resolved by the caller against `TeaStore`, since it lives on the tea
+    /// rather than on the session.
+    func completedSessions(on day: Date, calendar: Calendar = .current) -> [BrewSession] {
+        sessions
+            .filter { $0.completedAt.map { calendar.isDate($0, inSameDayAs: day) } ?? false }
+            .sorted { $0.startedAt > $1.startedAt }
+    }
+
     func session(with id: BrewSession.ID) -> BrewSession? {
         sessions.first { $0.id == id }
     }

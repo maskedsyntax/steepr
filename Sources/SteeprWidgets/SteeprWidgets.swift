@@ -480,6 +480,64 @@ private struct WidgetActiveTimerSnapshot: Codable, Equatable {
     var secondsRemaining: Int
     var endDate: Date?
     var pausedRemainingSeconds: Int
+    var infusionNumber: Int = 1
+
+    private enum CodingKeys: String, CodingKey {
+        case sessionID
+        case tea
+        case state
+        case startedAt
+        case hapticStyle
+        case soundEnabled
+        case durationSeconds
+        case secondsRemaining
+        case endDate
+        case pausedRemainingSeconds
+        case infusionNumber
+    }
+
+    // Written by hand because the synthesized decoder ignores the default above and would
+    // reject snapshots saved before `infusionNumber` existed. Mirrors `ActiveTimerSnapshot`.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        sessionID = try container.decode(UUID.self, forKey: .sessionID)
+        tea = try container.decode(WidgetTea.self, forKey: .tea)
+        state = try container.decode(WidgetActiveTimerState.self, forKey: .state)
+        startedAt = try container.decode(Date.self, forKey: .startedAt)
+        hapticStyle = try container.decode(WidgetHapticStyle.self, forKey: .hapticStyle)
+        soundEnabled = try container.decode(Bool.self, forKey: .soundEnabled)
+        durationSeconds = try container.decode(Int.self, forKey: .durationSeconds)
+        secondsRemaining = try container.decode(Int.self, forKey: .secondsRemaining)
+        endDate = try container.decodeIfPresent(Date.self, forKey: .endDate)
+        pausedRemainingSeconds = try container.decode(Int.self, forKey: .pausedRemainingSeconds)
+        infusionNumber = max(1, try container.decodeIfPresent(Int.self, forKey: .infusionNumber) ?? 1)
+    }
+
+    init(
+        sessionID: UUID,
+        tea: WidgetTea,
+        state: WidgetActiveTimerState,
+        startedAt: Date,
+        hapticStyle: WidgetHapticStyle,
+        soundEnabled: Bool,
+        durationSeconds: Int,
+        secondsRemaining: Int,
+        endDate: Date?,
+        pausedRemainingSeconds: Int,
+        infusionNumber: Int = 1
+    ) {
+        self.sessionID = sessionID
+        self.tea = tea
+        self.state = state
+        self.startedAt = startedAt
+        self.hapticStyle = hapticStyle
+        self.soundEnabled = soundEnabled
+        self.durationSeconds = durationSeconds
+        self.secondsRemaining = secondsRemaining
+        self.endDate = endDate
+        self.pausedRemainingSeconds = pausedRemainingSeconds
+        self.infusionNumber = max(1, infusionNumber)
+    }
 
     var isActive: Bool {
         state == .running || state == .paused || state == .completed
