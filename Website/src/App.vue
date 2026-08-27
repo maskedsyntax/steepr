@@ -117,70 +117,90 @@ onBeforeUnmount(() => {
 
 const features = [
   {
-    icon: '􀐫',
-    title: 'Built for real tea routines',
-    text: 'Choose a preset, save favorites, and start the next brew with a clear countdown.',
-    detail: 'Presets, custom teas, pause, resume'
+    icon:
+      "<rect x='6' y='6' width='12' height='12' rx='3.5'/><path d='M9 6V3.6h6V6M9 18v2.4h6V18M12 10v2.4l1.7 1'/>",
+    title: 'Brew from your wrist',
+    text: 'Start a favorite tea on Apple Watch, follow the active brew without your phone, and feel a clear haptic when it finishes.',
+    detail: 'Watch app and face complications'
   },
   {
-    icon: '􀋃',
-    title: 'Favorites stay close',
-    text: 'Keep regular teas on the Brew tab, with the full library ready when you want something different.',
-    detail: 'One-tap starts for daily cups'
+    icon:
+      "<path d='M5 19c0-6.6 4.2-11 14-11 0 6.9-4.6 11.4-10.5 11.4H5Z'/><path d='M5.5 19.5C8 16 11 13.6 14.5 12'/>",
+    title: 'Presets that know the tea',
+    text: 'Eight built-in guides, from matcha and green to oolong, chai, and pu-erh, each with a suggested temperature and time.',
+    detail: 'Plus custom teas with your own steps'
   },
   {
-    icon: '􀐭',
+    icon:
+      "<path d='M4.6 12a7.4 7.4 0 0 1 12.6-5.3l2.2 2.1'/><path d='M19.4 12a7.4 7.4 0 0 1-12.6 5.3l-2.2-2.1'/><path d='M19.4 4.4v4.4H15M4.6 19.6v-4.4H9'/>",
+    title: 'Every infusion, right on time',
+    text: 'Guided re-steeps dial in each later infusion, so gongfu sessions and second cups keep their timing.',
+    detail: 'Multi-step heat, steep, and sip flows'
+  },
+  {
+    icon:
+      "<path d='M5 5.2A2 2 0 0 1 7 3.4h11.6v17.2H7A2 2 0 0 1 5 18.8Z'/><path d='M5 17.2h13.6'/><path d='M8.6 7.6h6.4M8.6 11h4.4'/>",
+    title: 'Remember every cup',
+    text: 'Brew history, tasting notes, and a daily caffeine total on the Brew tab keep the record of what you actually drank.',
+    detail: 'History, notes, daily caffeine'
+  },
+  {
+    icon:
+      "<path d='M12 3.4a5.6 5.6 0 0 0-5.6 5.6c0 4-1.4 5.4-2 6.2h15.2c-.6-.8-2-2.2-2-6.2A5.6 5.6 0 0 0 12 3.4Z'/><path d='M10.2 18.4a2 2 0 0 0 3.6 0'/>",
     title: 'Visible without noise',
-    text: 'Live Activities, widgets, notifications, and clear in-app states keep timing easy to follow.',
-    detail: 'Useful on the Lock Screen and Home Screen'
+    text: 'Live Activities, the Dynamic Island, widgets, and Siri and Shortcuts keep the countdown one glance or one phrase away.',
+    detail: 'Lock Screen, Home Screen, hands-free starts'
   },
   {
-    icon: '􀎡',
+    icon:
+      "<rect x='5.4' y='10.4' width='13.2' height='10.2' rx='2.6'/><path d='M8.6 10.4V7.8a3.4 3.4 0 0 1 6.8 0v2.6'/><path d='M12 14.4v2.4'/>",
     title: 'Private by design',
-    text: 'No accounts, ads, or tracking. Your tea data stays local unless you choose iCloud sync with Pro.',
+    text: 'No accounts, ads, analytics, or tracking. Your tea data stays local unless you choose iCloud sync with Pro.',
     detail: 'Local-first, optional private sync'
   }
 ]
 
 const featureProof = [
-  'Built-in tea presets',
-  'Custom profiles',
-  'Brew history',
-  'Live Activities'
+  'Eight built-in tea guides',
+  'Apple Watch app',
+  'Watch complications',
+  'Siri and Shortcuts',
+  'Dynamic Island and Live Activities',
+  'Daily caffeine total'
 ]
 
 const screenshots = [
   {
-    src: '/assets/steepr-mockup-calm-way.svg',
-    alt: 'Steepr onboarding screen introducing a calmer way to make tea with Heat, Steep, Sip, and Repeat steps.',
-    caption: 'Calm onboarding'
+    src: '/assets/steepr-screen-timer.png',
+    alt: 'Steepr Brew screen with a Matcha countdown ring at 00:42, 75°C, infusion 1, pause and cancel controls, and a card for the next step.',
+    caption: 'Live timer and next step'
   },
   {
-    src: '/assets/steepr-mockup-favorite-tea.svg',
-    alt: 'Steepr Brew screen showing favorite tea presets with steep times and temperatures.',
-    caption: 'Favorite teas'
+    src: '/assets/steepr-screen-watch.png',
+    alt: 'Steepr on Apple Watch showing a running Green tea timer at 2:19 with pause and cancel, beside a favorites list of Green, Black, and Oolong.',
+    caption: 'Start from your wrist'
   },
   {
-    src: '/assets/steepr-mockup-perfect-timing.svg',
-    alt: 'Steepr active Matcha timer with countdown ring, temperature, infusion number, pause control, and cancel control.',
-    caption: 'Perfect timing'
+    src: '/assets/steepr-screen-library.png',
+    alt: 'Steepr Library screen listing built-in guides for Matcha, Oolong, Pu-erh, Green, White, and Chai with steep times, temperatures, and favorite stars.',
+    caption: 'Expert tea presets'
   },
   {
-    src: '/assets/steepr-mockup-gentle-alert.svg',
-    alt: 'Steepr completion screen showing Matcha is ready with re-steep and done actions.',
-    caption: 'Gentle alerts'
+    src: '/assets/steepr-screen-infusions.png',
+    alt: 'Steepr guided re-steep screen showing infusion 2 ready for Oolong, a session progress track, and a start infusion 3 button timed at 1:10.',
+    caption: 'Re-steeps, already timed'
   },
   {
-    src: '/assets/steepr-mockup-tea-library.svg',
-    alt: 'Steepr Library screen showing a custom tea and built-in teas with favorites, steep times, and temperatures.',
-    caption: 'Tea library'
+    src: '/assets/steepr-screen-history.png',
+    alt: 'Steepr History screen showing 96 mg of caffeine across three brews today, recent Matcha, Oolong, and Green cups, and a tasting note field.',
+    caption: 'History and daily caffeine'
   }
 ]
 
 const steps = [
-  { name: 'Pick a tea', detail: 'Green, black, oolong, white, herbal, chai, pu-erh, matcha, or your own custom profile.' },
-  { name: 'Start steeping', detail: 'Steepr handles the countdown with pause, resume, cancel, and brew-again controls.' },
-  { name: 'Enjoy the cup', detail: 'Optional pre-alerts and completion notifications tell you when the timing is right.' }
+  { name: 'Pick a tea', detail: 'Green, black, oolong, white, herbal, chai, pu-erh, matcha, or your own custom profile, from iPhone, Apple Watch, or Siri.' },
+  { name: 'Start steeping', detail: 'Steepr handles the countdown with pause, resume, cancel, and guided re-steeps for later infusions.' },
+  { name: 'Enjoy the cup', detail: 'Notifications and haptics tell you when the timing is right, then history, tasting notes, and your daily caffeine total keep the record.' }
 ]
 
 const proItems = [
@@ -196,22 +216,27 @@ const ecosystemItems = [
   {
     marker: '01',
     title: 'Start from the device in reach',
-    text: 'Open Steepr on iPhone, then start a favorite tea or browse the full library.'
+    text: 'Open Steepr on iPhone, or start a favorite straight from the Apple Watch app when your phone is across the room.'
   },
   {
     marker: '02',
-    title: 'Keep the timer visible',
-    text: 'Home Screen widgets, Lock Screen widgets, and Live Activities keep the active brew nearby.'
+    title: 'Ask instead of tapping',
+    text: 'Siri and Shortcuts start a tea hands-free, which is useful when the kettle is already pouring.'
   },
   {
     marker: '03',
-    title: 'Know when the cup is ready',
-    text: 'Completion notifications and haptics give a clear alert without repeated noise.'
+    title: 'Keep the timer visible',
+    text: 'Live Activities, the Dynamic Island, Home and Lock Screen widgets, and Apple Watch complications keep the active brew nearby.'
   },
   {
     marker: '04',
+    title: 'Know when the cup is ready',
+    text: 'Completion notifications and haptics on iPhone and Apple Watch give a clear alert without repeated noise.'
+  },
+  {
+    marker: '05',
     title: 'Sync the library with Pro',
-    text: 'Private iCloud sync keeps teas, preferences, and brew history available across Apple devices.'
+    text: 'Private iCloud sync keeps teas, preferences, and brew history available across your Apple devices.'
   }
 ]
 
@@ -259,6 +284,22 @@ const privacySections = [
 
 const faqs = [
   {
+    question: 'Does Steepr work on Apple Watch?',
+    answer: 'Yes. The Apple Watch app starts favorite teas, follows the active brew, and gives a haptic when the timer finishes. Supported watch faces can show brew progress in a complication.'
+  },
+  {
+    question: 'Can I start a brew with Siri or a Shortcut?',
+    answer: 'Yes. Steepr provides App Intents, so you can start a tea by voice with Siri or from the Shortcuts app without opening Steepr.'
+  },
+  {
+    question: 'How do guided re-steeps work?',
+    answer: 'After an infusion finishes, Steepr offers the next one with its timing already adjusted, so oolong, pu-erh, and gongfu sessions stay on track. Guided re-steeps are part of Steepr Pro.'
+  },
+  {
+    question: 'Where does the daily caffeine total come from?',
+    answer: 'It is estimated from the teas you brewed today and shown on the Brew tab. It is a guide for your own reference, not a medical measurement.'
+  },
+  {
     question: 'How do I create a custom tea?',
     answer: 'Open the Library tab, choose to add a tea, then set the name, steep time, temperature, notes, color, and icon.'
   },
@@ -267,8 +308,8 @@ const faqs = [
     answer: 'The free version includes a small number of custom teas. Steepr Pro unlocks unlimited custom teas.'
   },
   {
-    question: 'Do widgets and Live Activities sync with the active timer?',
-    answer: 'Yes. Widgets and Live Activities use a local shared timer snapshot so they can show the current brew state.'
+    question: 'Do widgets, Live Activities, and the Dynamic Island follow the active timer?',
+    answer: 'Yes. Widgets, Live Activities, and the Dynamic Island use a local shared timer snapshot so they show the current brew state.'
   },
   {
     question: 'Does Steepr sync with iCloud?',
@@ -276,9 +317,10 @@ const faqs = [
   },
   {
     question: 'How do I restore Steepr Pro?',
-    answer: 'Open Settings in Steepr and use Restore purchases. Purchases are restored through your Apple ID.'
+    answer: 'Open Settings in Steepr and use Restore purchases. Purchases are restored through your Apple ID, and Pro is covered by Family Sharing.'
   }
 ]
+
 </script>
 
 <template>
@@ -317,11 +359,12 @@ const faqs = [
     <main v-if="currentPage === 'home'" key="home">
       <section class="hero section-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Now available on the App Store</p>
-          <h1>The perfect cup, every time.</h1>
+          <p class="eyebrow">Now on iPhone and Apple Watch</p>
+          <h1>Perfect tea. No guesswork.</h1>
           <p class="hero-text">
-            Steepr is a calm tea timer for iPhone. Start a preset,
-            follow a clear countdown, and get gentle alerts when your tea is ready.
+            Steepr is a calm tea timer and brew guide for iPhone and Apple Watch.
+            Choose your tea, follow a clear countdown, and get a gentle alert
+            when every infusion is ready.
           </p>
           <div class="hero-actions" aria-label="Primary actions">
             <a class="button primary" :href="appStoreUrl" target="_blank" rel="noopener">Download on the App Store</a>
@@ -329,7 +372,7 @@ const faqs = [
           </div>
         </div>
 
-        <div class="device-stage" aria-label="Steepr iPhone preview">
+        <div class="device-stage" aria-label="Steepr on iPhone and Apple Watch">
           <div class="phone-mockup" aria-hidden="true">
             <div class="dynamic-island"></div>
             <div class="phone-screen">
@@ -356,6 +399,23 @@ const faqs = [
               </div>
             </div>
           </div>
+
+          <div class="watch-mockup" aria-hidden="true">
+            <span class="watch-crown"></span>
+            <div class="watch-screen">
+              <div class="watch-head">
+                <span>Green</span>
+                <span>12:52</span>
+              </div>
+              <div class="watch-ring">
+                <span>2:19</span>
+              </div>
+              <div class="watch-actions">
+                <span class="watch-pause">Ⅱ</span>
+                <span class="watch-cancel">×</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -364,18 +424,20 @@ const faqs = [
           <p class="eyebrow">Inside Steepr</p>
           <h2 id="screenshots-title">A quiet workflow from tea choice to final alert.</h2>
           <p>
-            The app keeps the important details close: steeping time, temperature,
-            favorites, notifications, and simple settings.
+            The app keeps the important details close: temperature and timing,
+            favorites on iPhone and Apple Watch, guided re-steeps, brew history,
+            and a timer you can follow from anywhere.
           </p>
         </div>
-        <div class="screenshot-strip" aria-label="Steepr app screenshots">
+        <div class="screenshot-strip" aria-label="Steepr app screens">
           <figure v-for="screenshot in screenshots" :key="screenshot.src" class="screenshot-frame">
             <img
               :src="screenshot.src"
               :alt="screenshot.alt"
-              width="900"
-              height="1947"
+              width="720"
+              height="1409"
               loading="lazy"
+              decoding="async"
             />
             <figcaption>{{ screenshot.caption }}</figcaption>
           </figure>
@@ -389,13 +451,17 @@ const faqs = [
             <h2 id="features-title">Everything needed for a better brew.</h2>
           </div>
           <p>
-            Steepr keeps the core workflow close: pick the tea, follow the time,
-            get the alert, and come back to your usual cups without extra setup.
+            Steepr keeps the core workflow close: pick the tea on whichever device
+            is in reach, follow the time, get the alert, and keep a record of the
+            cups you actually drank.
           </p>
         </div>
         <div class="feature-grid">
           <article v-for="feature in features" :key="feature.title" class="feature-card">
-            <span class="feature-icon" aria-hidden="true">{{ feature.icon }}</span>
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" v-html="feature.icon"></svg>
+            </span>
             <h3>{{ feature.title }}</h3>
             <p>{{ feature.text }}</p>
             <small>{{ feature.detail }}</small>
@@ -424,10 +490,11 @@ const faqs = [
           <p class="eyebrow">Apple ecosystem</p>
           <h2 id="ecosystem-title">Native surfaces, familiar behavior.</h2>
           <p>
-            Steepr is built for the places iPhone users expect tea timers to appear:
-            the app, Home Screen widgets, Lock Screen widgets, Live Activities,
-            notifications, and haptics. Pro adds private iCloud sync
-            for teas, preferences, and brew history.
+            Steepr is built for the places Apple users expect a tea timer to appear:
+            the iPhone app, the Apple Watch app and complications, Home and Lock Screen
+            widgets, Live Activities and the Dynamic Island, Siri and Shortcuts,
+            notifications, and haptics. Pro adds private iCloud sync for teas,
+            preferences, and brew history.
           </p>
         </div>
         <div class="ecosystem-list" aria-label="Supported Apple surfaces">
@@ -477,8 +544,8 @@ const faqs = [
           <p class="eyebrow">Available now</p>
           <h2 id="launch-title">Download Steepr from the App Store.</h2>
           <p>
-            Use Steepr on iPhone for simple tea presets,
-            clear brew timers, favorite teas, and completion alerts.
+            Use Steepr on iPhone and Apple Watch for expert tea presets, clear brew
+            timers, guided re-steeps, brew history, and completion alerts.
           </p>
         </div>
         <a class="button cta-button" :href="appStoreUrl" target="_blank" rel="noopener">Open App Store</a>
@@ -539,7 +606,7 @@ const faqs = [
     </Transition>
 
     <footer class="site-footer">
-      <p>© 2026 Aftaab Siddiqui. Steepr is built for iPhone.</p>
+      <p>© 2026 Aftaab Siddiqui. Steepr is built for iPhone and Apple Watch.</p>
       <div>
         <a href="/privacy/" @click="navigate($event, navItems[1])">Privacy</a>
         <a href="/support/" @click="navigate($event, navItems[2])">Support</a>
