@@ -27,6 +27,14 @@ final class BrewSessionStore: ObservableObject {
         sessions.sorted { $0.startedAt > $1.startedAt }
     }
 
+    /// Completed sessions ordered by when the tea finished, newest first.
+    /// Cancelled sessions are deliberately excluded from repeat-brew suggestions.
+    var recentCompletedSessions: [BrewSession] {
+        sessions
+            .filter { $0.completedAt != nil && $0.cancelledAt == nil }
+            .sorted { ($0.completedAt ?? .distantPast) > ($1.completedAt ?? .distantPast) }
+    }
+
     /// Number of sessions that ran to completion. Counts each infusion separately.
     var completedCount: Int {
         sessions.lazy.filter { $0.completedAt != nil }.count

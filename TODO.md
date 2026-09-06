@@ -72,21 +72,25 @@ This list tracks the remaining app work against `spec.md`. Keep each step small 
 - [x] Run device and TestFlight QA.
 - [x] Ship v1.0 on the App Store.
 
-## v1.1 App Store Submission (1.1 build 3)
+## v1.1 App Store Submission
 
-Code is ready. Remaining work is App Store Connect metadata, screenshots, and upload.
+- [x] Ship v1.1.0 build 8 on the App Store.
+- [x] Publish refreshed metadata, screenshots, website, and support content.
 
-- [ ] Smoke-test v1.1 on a physical iPhone and paired Apple Watch (onboarding, guided re-steep, journal, search).
-- [ ] Archive `Steepr` scheme in Release with version 1.1 / build 3.
-- [ ] Upload build to App Store Connect and wait for processing.
-- [ ] Attach build 3 to the v1.1 version in App Store Connect.
-- [ ] Paste What's New copy for v1.1 (draft in release prep notes).
-- [ ] Update subtitle, promotional text, and description for ASO (see `GROWTH.md`).
-- [ ] Update keywords to intent-based set: `tea timer,steep timer,brew timer,tea clock,matcha timer,herbal timer,tea reminder,brewing guide,tea alarm,loose leaf`.
-- [ ] Capture v1.1 iPhone screenshots from release builds (journal, re-steep completion, onboarding optional).
-- [ ] Capture updated Watch screenshots if guided infusion UI changed materially.
-- [ ] Reorder screenshots: brew flow first, Watch second, paywall last.
-- [ ] Submit for review.
+## v1.2 App Store Submission
+
+- [x] Add a repeatable Recent Brew card to the Brew tab.
+- [x] Move Brew History into the Brew flow.
+- [x] Expose favorite ordering from the Brew screen.
+- [x] Add completed-session and favorite-order regression tests.
+- [x] Update all targets to version 1.2 / build 10.
+- [x] Refresh README and canonical App Store metadata.
+- [x] Capture and review the new Brew Again screenshot.
+- [x] Run simulator builds and the Swift test suite.
+- [ ] Smoke-test on a physical iPhone and paired Apple Watch.
+- [ ] Push to `master` and verify Xcode Cloud build processing.
+- [ ] Stage App Store version 1.2.0 with the valid cloud build.
+- [ ] Validate and submit v1.2.0 for automatic release.
 
 ## Post-v1.1 ASO (no code required)
 

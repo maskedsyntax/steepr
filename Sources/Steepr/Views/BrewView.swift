@@ -8,6 +8,7 @@ import UIKit
 struct BrewView: View {
     @EnvironmentObject private var teaStore: TeaStore
     @EnvironmentObject private var brewSessionStore: BrewSessionStore
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.openURL) private var openURL
     @ObservedObject var timerCoordinator: TimerCoordinator
     @Binding var selectedTab: Int
@@ -15,10 +16,15 @@ struct BrewView: View {
     @State private var showingPaywall = false
     @State private var showingCancelConfirmation = false
 
-    private let gridColumns = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12)
-    ]
+    private var gridColumns: [GridItem] {
+        if dynamicTypeSize.isAccessibilitySize {
+            return [GridItem(.flexible())]
+        }
+        return [
+            GridItem(.flexible(), spacing: 12),
+            GridItem(.flexible(), spacing: 12)
+        ]
+    }
 
     private var isActiveSession: Bool {
         switch timerCoordinator.state {
@@ -27,6 +33,17 @@ struct BrewView: View {
         case .idle:
             return false
         }
+    }
+
+    /// The newest completed session whose tea still exists in the current library.
+    /// If a custom tea was deleted, continue looking so the card always remains actionable.
+    private var repeatableRecentBrew: (session: BrewSession, tea: Tea)? {
+        for session in brewSessionStore.recentCompletedSessions {
+            if let tea = teaStore.tea(with: session.teaID) {
+                return (session, tea)
+            }
+        }
+        return nil
     }
 
     var body: some View {
@@ -185,6 +202,10 @@ struct BrewView: View {
                 todaySummaryRow(summary)
             }
 
+            if !brewSessionStore.sessions.isEmpty {
+                recentBrewSection
+            }
+
             if teaStore.favoriteTeas.isEmpty {
                 VStack(spacing: 10) {
                     Image(systemName: "star")
@@ -207,6 +228,34 @@ struct BrewView: View {
                 .tint(SteeprPalette.accentSolid)
                 .controlSize(.large)
             } else {
+                if dynamicTypeSize.isAccessibilitySize {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Favorites")
+                            .font(.title3.bold())
+                            .foregroundStyle(SteeprPalette.ink)
+
+                        NavigationLink("Edit") {
+                            ManageFavoritesView()
+                        }
+                        .font(.subheadline.weight(.semibold))
+                        .accessibilityLabel("Edit favorites")
+                    }
+                } else {
+                    HStack {
+                        Text("Favorites")
+                            .font(.title3.bold())
+                            .foregroundStyle(SteeprPalette.ink)
+
+                        Spacer()
+
+                        NavigationLink("Edit") {
+                            ManageFavoritesView()
+                        }
+                        .font(.subheadline.weight(.semibold))
+                        .accessibilityLabel("Edit favorites")
+                    }
+                }
+
                 LazyVGrid(columns: gridColumns, spacing: 12) {
                     ForEach(teaStore.favoriteTeas) { tea in
                         Button {
@@ -228,6 +277,51 @@ struct BrewView: View {
                 .buttonStyle(.bordered)
                 .tint(SteeprPalette.accent)
                 .controlSize(.large)
+            }
+        }
+    }
+
+    private var recentBrewSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Recent Brew")
+                        .font(.title3.bold())
+                        .foregroundStyle(SteeprPalette.ink)
+
+                    NavigationLink("View All") {
+                        BrewHistoryView()
+                    }
+                    .font(.subheadline.weight(.semibold))
+                    .accessibilityLabel("View brew history")
+                }
+            } else {
+                HStack {
+                    Text("Recent Brew")
+                        .font(.title3.bold())
+                        .foregroundStyle(SteeprPalette.ink)
+
+                    Spacer()
+
+                    NavigationLink("View All") {
+                        BrewHistoryView()
+                    }
+                    .font(.subheadline.weight(.semibold))
+                    .accessibilityLabel("View brew history")
+                }
+            }
+
+            if let recentBrew = repeatableRecentBrew {
+                RecentBrewCard(
+                    session: recentBrew.session,
+                    tea: recentBrew.tea
+                ) {
+                    timerCoordinator.start(recentBrew.tea, preferences: teaStore.preferences)
+                }
+            } else {
+                Text("No completed brews yet.")
+                    .font(.subheadline)
+                    .foregroundStyle(SteeprPalette.inkSecondary)
             }
         }
     }
@@ -473,6 +567,79 @@ struct BrewView: View {
         let settings = await UNUserNotificationCenter.current().notificationSettings()
         await MainActor.run {
             notificationsDenied = settings.authorizationStatus == .denied
+        }
+    }
+}
+
+private struct RecentBrewCard: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    let session: BrewSession
+    let tea: Tea
+    let onBrewAgain: () -> Void
+
+    private var completedAt: Date {
+        session.completedAt ?? session.startedAt
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 12) {
+                        TeaIconView(tea: tea, size: 48)
+
+                        Text(tea.name)
+                            .font(.headline)
+                            .foregroundStyle(SteeprPalette.ink)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Last brewed")
+                        Text(completedAt, style: .relative)
+                        Label(formatDuration(session.actualSteepSeconds), systemImage: "clock")
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(SteeprPalette.inkSecondary)
+                }
+            } else {
+                HStack(spacing: 12) {
+                    TeaIconView(tea: tea, size: 48)
+
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(tea.name)
+                            .font(.headline)
+                            .foregroundStyle(SteeprPalette.ink)
+
+                        HStack(spacing: 6) {
+                            Text("Last brewed")
+                            Text(completedAt, style: .relative)
+                            Text("•")
+                            Label(formatDuration(session.actualSteepSeconds), systemImage: "clock")
+                        }
+                        .font(.footnote)
+                        .foregroundStyle(SteeprPalette.inkSecondary)
+                    }
+
+                    Spacer(minLength: 0)
+                }
+            }
+
+            Button(action: onBrewAgain) {
+                Label("Brew Again", systemImage: "arrow.clockwise")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(SteeprPalette.accentSolid)
+            .controlSize(.large)
+            .accessibilityLabel("Brew \(tea.name) again")
+            .accessibilityHint("Starts a new timer using the current tea profile")
+        }
+        .padding(14)
+        .background(SteeprPalette.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(SteeprPalette.controlStroke, lineWidth: 1)
         }
     }
 }

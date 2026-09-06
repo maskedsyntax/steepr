@@ -1,4 +1,5 @@
 import XCTest
+import SwiftData
 @testable import Steepr
 
 final class BrewSessionStoreTests: XCTestCase {
@@ -135,6 +136,42 @@ final class BrewSessionStoreTests: XCTestCase {
         // `recordCompletion` stamps completedAt with "now", so both completions land on today.
         XCTAssertEqual(store.completedSessions(on: Date()).count, 2)
         XCTAssertEqual(store.completedSessions(on: yesterday).count, 0)
+    }
+
+    func testRecentCompletedSessionsExcludeCancellationsAndUseCompletionOrder() throws {
+        let container = SteeprModelContainer.make(inMemory: true)
+        let context = ModelContext(container)
+        let now = Date()
+        let older = BrewSession(
+            teaID: UUID(),
+            teaSnapshotName: "Older",
+            startedAt: now.addingTimeInterval(-300),
+            completedAt: now.addingTimeInterval(-60),
+            actualSteepSeconds: 240
+        )
+        let newer = BrewSession(
+            teaID: UUID(),
+            teaSnapshotName: "Newer",
+            startedAt: now.addingTimeInterval(-600),
+            completedAt: now.addingTimeInterval(-30),
+            actualSteepSeconds: 150
+        )
+        let cancelled = BrewSession(
+            teaID: UUID(),
+            teaSnapshotName: "Cancelled",
+            startedAt: now,
+            completedAt: now.addingTimeInterval(10),
+            cancelledAt: now,
+            actualSteepSeconds: 10
+        )
+
+        context.insert(PersistentBrewSession(session: older))
+        context.insert(PersistentBrewSession(session: newer))
+        context.insert(PersistentBrewSession(session: cancelled))
+        try context.save()
+
+        let store = BrewSessionStore(modelContainer: container)
+        XCTAssertEqual(store.recentCompletedSessions.map(\.id), [newer.id, older.id])
     }
 
     func testReviewRequestFlagDefaultsFalseAndPersists() {

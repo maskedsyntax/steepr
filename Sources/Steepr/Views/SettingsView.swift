@@ -34,10 +34,6 @@ struct SettingsView: View {
                 }
 
                 Section("Brewing") {
-                    NavigationLink("Brew History") {
-                        BrewHistoryView()
-                    }
-
                     Picker("Temperature", selection: $teaStore.preferences.useCelsius) {
                         Text("°F").tag(false)
                         Text("°C").tag(true)
@@ -87,12 +83,6 @@ struct SettingsView: View {
                     }
 
                     Toggle("Sound on completion", isOn: $teaStore.preferences.soundEnabled)
-                }
-
-                Section("Watch") {
-                    NavigationLink("Manage Favorites") {
-                        ManageWatchFavoritesView()
-                    }
                 }
 
                 Section("Purchases") {
@@ -234,34 +224,5 @@ private enum NotificationPermissionStatus {
         case .denied: return "Denied"
         case .unknown: return "Unknown"
         }
-    }
-}
-
-private struct ManageWatchFavoritesView: View {
-    @EnvironmentObject private var teaStore: TeaStore
-
-    var body: some View {
-        List {
-            Section("Favorites") {
-                ForEach(teaStore.favoriteTeas) { tea in
-                    HStack {
-                        TeaIconView(tea: tea, size: 36)
-                        Text(tea.name)
-                    }
-                }
-                .onMove(perform: teaStore.moveFavorite)
-            }
-
-            Section {
-                Text("The first six favorites appear on Brew and Apple Watch.")
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .navigationTitle("Favorites")
-        #if os(iOS)
-        .toolbar {
-            EditButton()
-        }
-        #endif
     }
 }

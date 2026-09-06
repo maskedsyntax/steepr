@@ -60,6 +60,24 @@ final class TeaStoreSharedSnapshotTests: XCTestCase {
         XCTAssertNotNil(restoredStore.teas.first { $0.id == tea.id })
     }
 
+    func testFavoriteReorderPersistsAndPublishesInSnapshotOrder() throws {
+        let container = SteeprModelContainer.make(inMemory: true)
+        let firstStore = TeaStore(modelContainer: container)
+        let original = firstStore.favoriteTeas
+        XCTAssertGreaterThan(original.count, 1)
+
+        firstStore.moveFavorite(from: IndexSet(integer: 0), to: original.count)
+        let expectedIDs = Array(original.dropFirst().map(\.id)) + [original[0].id]
+        XCTAssertEqual(firstStore.favoriteTeas.map(\.id), expectedIDs)
+
+        let restoredStore = TeaStore(modelContainer: container)
+        XCTAssertEqual(restoredStore.favoriteTeas.map(\.id), expectedIDs)
+
+        let data = try XCTUnwrap(AppGroup.userDefaults.data(forKey: FavoriteTeasSnapshot.storageKey))
+        let snapshot = try JSONDecoder().decode(FavoriteTeasSnapshot.self, from: data)
+        XCTAssertEqual(snapshot.teas.map(\.id), expectedIDs)
+    }
+
     func testMigratesLegacyJSONIntoSwiftData() throws {
         let directory = try makeTemporaryDirectory()
         let legacyTea = Tea(
