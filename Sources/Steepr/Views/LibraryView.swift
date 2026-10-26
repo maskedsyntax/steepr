@@ -10,50 +10,77 @@ struct LibraryView: View {
     @State private var showingPaywall = false
     @State private var showingFavoriteLimit = false
     @State private var pendingTeaDeleteIDs: [Tea.ID] = []
+    @State private var searchText = ""
+
+    private let familyOrder: [TeaColorSlot] = [
+        .green, .black, .oolong, .white, .herbal, .chai, .puerh, .matcha
+    ]
+
+    private var visibleCustomTeas: [Tea] {
+        teaStore.customTeas.filter(matchesSearch)
+    }
+
+    private var visibleBuiltInTeas: [Tea] {
+        teaStore.builtInTeas.filter(matchesSearch)
+    }
+
+    private func matchesSearch(_ tea: Tea) -> Bool {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return query.isEmpty || tea.name.localizedStandardContains(query)
+    }
 
     var body: some View {
         NavigationStack(path: $path) {
             List {
-                Section {
-                    if teaStore.customTeas.isEmpty {
-                        Text("Custom teas you add will appear here.")
-                            .foregroundStyle(.secondary)
-                    } else {
-                        ForEach(teaStore.customTeas) { tea in
+                if !visibleCustomTeas.isEmpty {
+                    Section("My Teas") {
+                        ForEach(visibleCustomTeas) { tea in
                             TeaRow(tea: tea) {
                                 showingFavoriteLimit = true
                             }
                         }
                         .onDelete { offsets in
-                            pendingTeaDeleteIDs = offsets.map { teaStore.customTeas[$0].id }
+                            pendingTeaDeleteIDs = offsets.map { visibleCustomTeas[$0].id }
                         }
-                    }
-                } header: {
-                    HStack {
-                        Text("My Teas")
-                        Spacer()
-                        Button {
-                            if teaStore.canAddCustomTea {
-                                showingAddTea = true
-                            } else {
-                                showingPaywall = true
-                            }
-                        } label: {
-                            Image(systemName: "plus")
-                        }
-                        .accessibilityLabel("Add custom tea")
                     }
                 }
 
-                Section("Built-in") {
-                    ForEach(teaStore.builtInTeas) { tea in
-                        TeaRow(tea: tea) {
-                            showingFavoriteLimit = true
+                ForEach(familyOrder) { family in
+                    let teas = visibleBuiltInTeas.filter { $0.colorSlot == family }
+                    if !teas.isEmpty {
+                        Section(family.name) {
+                            ForEach(teas) { tea in
+                                TeaRow(tea: tea) {
+                                    showingFavoriteLimit = true
+                                }
+                            }
                         }
+                    }
+                }
+
+                if visibleCustomTeas.isEmpty && visibleBuiltInTeas.isEmpty && !searchText.isEmpty {
+                    Section {
+                        Text("No teas found. Try another name.")
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
             .navigationTitle("Library")
+            .searchable(text: $searchText, prompt: "Find a tea")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        if teaStore.canAddCustomTea {
+                            showingAddTea = true
+                        } else {
+                            showingPaywall = true
+                        }
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .accessibilityLabel("Add custom tea")
+                }
+            }
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif

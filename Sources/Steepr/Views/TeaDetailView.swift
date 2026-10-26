@@ -39,6 +39,10 @@ struct TeaDetailView: View {
                     }
                 }
 
+                if let preferredSeconds = currentTea.preferredSteepSeconds {
+                    personalTimingCard(preferredSeconds)
+                }
+
                 brewStepsPreview
 
                 VStack(spacing: 12) {
@@ -120,6 +124,38 @@ struct TeaDetailView: View {
         } message: {
             Text("This tea profile will be permanently removed.")
         }
+    }
+
+    private func personalTimingCard(_ seconds: Int) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: "clock.arrow.circlepath")
+                .foregroundStyle(SteeprPalette.accentSolid)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Your timing")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(SteeprPalette.ink)
+                Text(formatDuration(seconds))
+                    .font(.footnote.monospacedDigit())
+                    .foregroundStyle(SteeprPalette.inkSecondary)
+            }
+
+            Spacer()
+
+            Button("Reset to recipe time") {
+                teaStore.setPreferredSteepSeconds(nil, for: currentTea.id)
+            }
+            .font(.footnote.weight(.semibold))
+        }
+        .padding(14)
+        .frame(maxWidth: 420)
+        .background(SteeprPalette.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke(SteeprPalette.controlStroke, lineWidth: 1)
+        }
+        .accessibilityElement(children: .contain)
     }
 
     private var brewStepsPreview: some View {

@@ -3,8 +3,6 @@ import UserNotifications
 
 struct OnboardingView: View {
     @EnvironmentObject private var teaStore: TeaStore
-    @EnvironmentObject private var brewSessionStore: BrewSessionStore
-    @EnvironmentObject private var purchaseCoordinator: PurchaseCoordinator
     @Environment(\.dismiss) private var dismiss
     @State private var page = 0
 
@@ -18,23 +16,19 @@ struct OnboardingView: View {
             TabView(selection: $page) {
                 welcomePage.tag(0)
                 favoritesPage.tag(1)
-                proPage.tag(2)
-                notificationsPage.tag(3)
+                notificationsPage.tag(2)
             }
             #if os(iOS)
             .tabViewStyle(.page(indexDisplayMode: .never))
             #endif
             .safeAreaInset(edge: .bottom) {
-                PageDots(count: 4, currentPage: page)
+                PageDots(count: 3, currentPage: page)
                     .padding(.bottom, 8)
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Skip") { finish() }
                 }
-            }
-            .task {
-                await purchaseCoordinator.loadProducts()
             }
         }
     }
@@ -103,10 +97,10 @@ struct OnboardingView: View {
 
                 VStack(spacing: compact ? 14 : 20) {
                     VStack(spacing: 6) {
-                        Text("Choose your first shelf.")
+                        Text("Make it yours.")
                             .font((compact ? Font.title2 : .largeTitle).bold())
                             .multilineTextAlignment(.center)
-                        Text("Favorites stay close on Brew and Apple Watch, so your usual cup is always one tap away.")
+                        Text("Choose favorites for Brew and Apple Watch, or start with Quick Picks and choose later.")
                             .font(compact ? .subheadline : .body)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
@@ -114,9 +108,11 @@ struct OnboardingView: View {
                     }
 
                     LazyVGrid(columns: columns, spacing: compact ? 8 : 12) {
-                        ForEach(teaStore.builtInTeas) { tea in
+                        ForEach(teaStore.quickPickTeas) { tea in
                             Button {
-                                teaStore.toggleFavorite(tea)
+                                if tea.isFavorite || teaStore.favoriteTeas.count < 6 {
+                                    teaStore.toggleFavorite(tea)
+                                }
                             } label: {
                                 OnboardingTeaSelectionRow(tea: tea, isSelected: tea.isFavorite)
                             }
@@ -134,96 +130,8 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
-                .disabled(teaStore.favoriteTeas.isEmpty)
                 .frame(maxWidth: .infinity)
                 .padding(compact ? 14 : 16)
-            }
-        }
-    }
-
-    private var proPage: some View {
-        GeometryReader { proxy in
-            let compact = proxy.size.height < 720
-
-            VStack(spacing: compact ? 14 : 20) {
-                Spacer(minLength: 0)
-
-                VStack(spacing: compact ? 14 : 20) {
-                    VStack(spacing: 8) {
-                        Text("Make Steepr yours.")
-                            .font((compact ? Font.title2 : .largeTitle).bold())
-                            .multilineTextAlignment(.center)
-                        Text("Pro is a one-time unlock for people who brew often and want their tea routine to stay effortless.")
-                            .font(compact ? .subheadline : .title3)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-
-                    LazyVGrid(columns: columns, spacing: compact ? 10 : 12) {
-                        OnboardingFeatureCard(title: "Unlimited teas", detail: "Save every loose leaf, blend, and recipe.", symbol: "plus.circle.fill")
-                        OnboardingFeatureCard(title: "Brew journal", detail: "Keep tasting notes and brew history.", symbol: "clock.arrow.circlepath")
-                        OnboardingFeatureCard(title: "iCloud sync", detail: "Carry your shelf across every device.", symbol: "icloud.fill")
-                        OnboardingFeatureCard(title: "Guided re-steeps", detail: "Adjust later infusions automatically.", symbol: "arrow.clockwise")
-                    }
-                    .environment(\.onboardingCompactLayout, compact)
-                }
-                .padding(.horizontal, compact ? 14 : 16)
-
-                Spacer(minLength: 0)
-
-                VStack(spacing: compact ? 8 : 12) {
-                    HStack(alignment: .firstTextBaseline) {
-                        Text("Steepr Pro")
-                            .font((compact ? Font.title3 : .title2).bold())
-                        Spacer()
-                        Text(purchaseCoordinator.priceText)
-                            .font((compact ? Font.title3 : .title).bold())
-                            .foregroundStyle(TeaColorSlot.green.color)
-                    }
-                    Text("One purchase. Family Sharing supported. No subscription.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                    Button {
-                        Task {
-                            await purchaseCoordinator.purchasePro(store: teaStore, brewSessionStore: brewSessionStore)
-                            if teaStore.preferences.proPurchased {
-                                page = 3
-                            }
-                        }
-                    } label: {
-                        if purchaseCoordinator.isLoading {
-                            ProgressView()
-                                .frame(maxWidth: .infinity)
-                        } else {
-                            Text("Unlock Pro - \(purchaseCoordinator.priceText)")
-                                .frame(maxWidth: .infinity)
-                        }
-                    }
-                    .disabled(purchaseCoordinator.isLoading)
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-
-                    Button("Continue free") {
-                        page = 3
-                    }
-                    .frame(maxWidth: .infinity)
-
-                    if let errorMessage = purchaseCoordinator.errorMessage {
-                        Text(errorMessage)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-                .padding(compact ? 12 : 16)
-                .background(.thinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                .padding(.horizontal, compact ? 28 : 32)
-                .padding(.bottom, compact ? 14 : 16)
             }
         }
     }
@@ -261,7 +169,7 @@ struct OnboardingView: View {
                     VStack(spacing: compact ? 12 : 16) {
                         NotificationBenefitRow(
                             title: "Step away",
-                            detail: "Start a timer and leave your phone locked. Steepr will tell you when the next step needs you.",
+                            detail: "Start a timer and leave your phone locked. Steepr will tell you when your tea is ready.",
                             symbol: "lock.fill"
                         )
                         NotificationBenefitRow(

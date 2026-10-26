@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1284, initial-scale=1">
+  <title>Steepr 1.4 screenshots</title>
+  <style>
+    @font-face { font-family: "New York"; src: url("file:///System/Library/Fonts/NewYork.ttf"); }
+    @font-face { font-family: "SF Pro"; src: url("file:///System/Library/Fonts/SFNS.ttf"); }
+    * { box-sizing: border-box; }
+    html, body { width: 1284px; height: 2778px; margin: 0; overflow: hidden; }
+    body { font-family: "SF Pro", -apple-system, sans-serif; }
+    .canvas { position: relative; display: none; width: 1284px; height: 2778px; overflow: hidden; }
+    body[data-shot="quick"] .quick, body[data-shot="library"] .library, body[data-shot="timer"] .timer, body[data-shot="completion"] .completion, body[data-shot="pro"] .pro { display: block; }
+    .quick { color: #123f2f; background: radial-gradient(circle at 88% 9%, #e3e7d2, transparent 34%), #f8f3e8; }
+    .library { color: #f8f3e8; background: radial-gradient(circle at 84% 48%, #52715a, transparent 36%), linear-gradient(160deg, #163f30, #072d20); }
+    .timer { color: #123f2f; background: radial-gradient(circle at 88% 8%, #dfe7d6, transparent 34%), #f8f3e8; }
+    .completion { color: #f8f3e8; background: radial-gradient(circle at 82% 38%, #4f725b, transparent 43%), #103b2a; }
+    .pro { color: #123f2f; background: radial-gradient(circle at 88% 8%, #dfe7d6, transparent 34%), #f8f3e8; }
+    .brand { position: absolute; top: 70px; left: 82px; display: flex; gap: 20px; align-items: center; font-size: 30px; font-weight: 800; letter-spacing: .19em; }
+    .brand-mark { width: 50px; height: 38px; border-radius: 65% 8% 65% 8%; background: currentColor; transform: rotate(-18deg); }
+    h1 { position: absolute; top: 166px; left: 82px; width: 1110px; margin: 0; font: 800 116px/.94 "New York", Georgia, serif; letter-spacing: -.045em; }
+    .subhead { position: absolute; top: 440px; left: 84px; width: 1050px; margin: 0; font-size: 41px; line-height: 1.25; }
+    .quick .subhead { color: #5b6e62; }
+    .library .subhead { color: #d3dfd0; }
+    .completion .subhead { color: #d3dfd0; }
+    .phone { position: absolute; top: 790px; left: 174px; width: 936px; height: 2040px; padding: 15px; overflow: hidden; border-radius: 116px 116px 0 0; background: linear-gradient(100deg, #101614, #66716c 18%, #090c0b 44%, #68736e 72%, #101412); box-shadow: 0 50px 110px #09281f50, inset 0 0 0 2px #ffffff50; }
+    .phone img { width: 100%; height: auto; display: block; border-radius: 99px 99px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="canvas quick">
+    <div class="brand"><span class="brand-mark"></span>STEEPR</div>
+    <h1>Tea, ready in<br>one tap.</h1>
+    <p class="subhead">Choose a Quick Pick and start steeping straight away.</p>
+    <div class="phone"><img src="../raw/01-quick-picks.png" alt="Quick Picks Brew screen"></div>
+  </div>
+  <div class="canvas library">
+    <div class="brand"><span class="brand-mark"></span>STEEPR</div>
+    <h1>A tea for<br>every mood.</h1>
+    <p class="subhead">Explore 36 guided teas, organized and easy to find.</p>
+    <div class="phone"><img src="../raw/02-library.png" alt="Expanded searchable tea library"></div>
+  </div>
+  <div class="canvas timer">
+    <div class="brand"><span class="brand-mark"></span>STEEPR</div>
+    <h1>Steep with<br>peace of mind.</h1>
+    <p class="subhead" style="color:#5b6e62">A clear countdown and a gentle alert when it is ready.</p>
+    <div class="phone"><img src="../raw/04-active-timer.png" alt="Active tea timer"></div>
+  </div>
+  <div class="canvas completion">
+    <div class="brand"><span class="brand-mark"></span>STEEPR</div>
+    <h1>Make the next<br>cup yours.</h1>
+    <p class="subhead">Rate the brew, add a note, and re-steep when ready.</p>
+    <div class="phone"><img src="../raw/07-completion.png" alt="Brew completion and tasting notes"></div>
+  </div>
+  <div class="canvas pro">
+    <div class="brand"><span class="brand-mark"></span>STEEPR</div>
+    <h1>One purchase.<br>More tea.</h1>
+    <p class="subhead" style="color:#5b6e62">Unlimited custom teas, guided re-steeps, and private sync.</p>
+    <div class="phone"><img src="../raw/08-pro.png" alt="Steepr Pro purchase screen"></div>
+  </div>
+  <script>
+    document.body.dataset.shot = new URLSearchParams(location.search).get('shot') || 'quick';
+  </script>
+</body>
+</html>

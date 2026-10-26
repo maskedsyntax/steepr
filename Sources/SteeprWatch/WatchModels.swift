@@ -37,6 +37,7 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
     var symbolName: String
     var colorSlot: TeaColorSlot
     var steepSeconds: Int
+    var preferredSteepSeconds: Int? = nil
     var temperatureCelsius: Int
     var caffeineMilligrams: Int?
     var notes: String
@@ -48,6 +49,10 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
 }
 
 extension Tea {
+    var effectiveSteepSeconds: Int {
+        min(900, max(15, preferredSteepSeconds ?? steepSeconds))
+    }
+
     static let builtIns: [Tea] = [
         Tea(id: UUID(), name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, caffeineMilligrams: nil, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 0, createdAt: Date(), updatedAt: Date()),
         Tea(id: UUID(), name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, caffeineMilligrams: nil, notes: "", isBuiltIn: true, isFavorite: true, favoriteRank: 1, createdAt: Date(), updatedAt: Date()),
@@ -172,11 +177,12 @@ extension Tea {
 
     func steepSeconds(forInfusion infusionNumber: Int, proPurchased: Bool) -> Int {
         let infusion = max(1, infusionNumber)
+        let baseSeconds = effectiveSteepSeconds
         guard proPurchased, infusion > 1, supportsGuidedReSteep else {
-            return steepSeconds
+            return baseSeconds
         }
         let addedSeconds = guidedReSteepIncrementSeconds * (infusion - 1)
-        return min(steepSeconds + addedSeconds, steepSeconds + 180)
+        return min(baseSeconds + addedSeconds, baseSeconds + 180)
     }
 }
 

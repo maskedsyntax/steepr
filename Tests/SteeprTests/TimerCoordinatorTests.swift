@@ -31,6 +31,17 @@ final class TimerCoordinatorTests: XCTestCase {
         XCTAssertNotNil(coordinator.startedAt)
     }
 
+    func testStartUsesPersonalTimingWithoutChangingRecipeTime() {
+        var tea = testTea(seconds: 90)
+        tea.preferredSteepSeconds = 135
+        let coordinator = TimerCoordinator()
+
+        coordinator.start(tea, preferences: .defaults)
+
+        XCTAssertEqual(tea.steepSeconds, 90)
+        XCTAssertEqual(coordinator.durationSeconds, 135)
+    }
+
     func testPauseAndResumeKeepsTimerState() {
         let tea = testTea(seconds: 90)
         let coordinator = TimerCoordinator()
@@ -59,15 +70,30 @@ final class TimerCoordinatorTests: XCTestCase {
         XCTAssertEqual(coordinator.durationSeconds, 0)
     }
 
-    func testSkipCompletesActiveTimer() {
+    func testSkipCompletesActiveTimer() throws {
         let coordinator = TimerCoordinator()
 
         coordinator.start(testTea(seconds: 120), preferences: .defaults)
+        let elapsedSeconds = 120 - coordinator.secondsRemaining
         coordinator.skip()
 
         XCTAssertEqual(coordinator.state, .completed)
         XCTAssertEqual(coordinator.secondsRemaining, 0)
         XCTAssertNotNil(coordinator.activeTea)
+        XCTAssertEqual(coordinator.completedElapsedSeconds, elapsedSeconds)
+        XCTAssertEqual(coordinator.completedDurationSeconds, elapsedSeconds)
+
+        let data = try XCTUnwrap(AppGroup.userDefaults.data(forKey: ActiveTimerSnapshot.storageKey))
+        let snapshot = try JSONDecoder().decode(ActiveTimerSnapshot.self, from: data)
+        XCTAssertEqual(snapshot.completedElapsedSeconds, elapsedSeconds)
+    }
+
+    func testCompletedDurationFallsBackToPlannedDurationBeforeCompletion() {
+        let coordinator = TimerCoordinator()
+
+        coordinator.start(testTea(seconds: 120), preferences: .defaults)
+
+        XCTAssertEqual(coordinator.completedDurationSeconds, 120)
     }
 
     func testRestoreRunningTimerFromPersistence() {
@@ -137,6 +163,19 @@ final class TimerCoordinatorTests: XCTestCase {
 
         XCTAssertEqual(coordinator.infusionNumber, 2)
         XCTAssertEqual(coordinator.durationSeconds, 180)
+    }
+
+    func testProReSteepBuildsOnPersonalTiming() {
+        var tea = testTea(seconds: 150, colorSlot: .oolong)
+        tea.preferredSteepSeconds = 165
+        var preferences = UserPreferences.defaults
+        preferences.proPurchased = true
+        let coordinator = TimerCoordinator()
+
+        coordinator.start(tea, preferences: preferences)
+        coordinator.reSteep(preferences: preferences)
+
+        XCTAssertEqual(coordinator.durationSeconds, 195)
     }
 
     private func testTea(seconds: Int = 60, colorSlot: TeaColorSlot = .green) -> Tea {

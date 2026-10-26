@@ -43,10 +43,10 @@ struct PaywallView: View {
                     }
 
                     LazyVGrid(columns: columns, spacing: compact ? 10 : 12) {
-                        PaywallFeatureCard(symbol: "plus.circle.fill", title: "Unlimited teas", detail: "Save every loose leaf and recipe.")
-                        PaywallFeatureCard(symbol: "clock.arrow.circlepath", title: "Brew journal", detail: "Keep tasting notes and history.")
-                        PaywallFeatureCard(symbol: "arrow.clockwise", title: "Guided re-steeps", detail: "Later infusions adjust for you.")
-                        PaywallFeatureCard(symbol: "icloud.fill", title: "iCloud sync", detail: "Carry your shelf across devices.")
+                        PaywallFeatureCard(symbol: "plus.circle.fill", title: "Unlimited teas", detail: "Save every recipe.")
+                        PaywallFeatureCard(symbol: "clock.arrow.circlepath", title: "Brew journal", detail: "Keep notes and history.")
+                        PaywallFeatureCard(symbol: "arrow.clockwise", title: "Guided re-steeps", detail: "Timed later infusions.")
+                        PaywallFeatureCard(symbol: "icloud.fill", title: "iCloud sync", detail: "Sync across devices.")
                     }
 
                     Spacer(minLength: 0)
@@ -63,7 +63,7 @@ struct PaywallView: View {
 
                             Spacer()
 
-                            Text(purchaseCoordinator.priceText)
+                            Text(purchaseCoordinator.priceText ?? "Loading…")
                                 .font((compact ? Font.title3 : .title).bold())
                                 .foregroundStyle(TeaColorSlot.green.color)
                         }
@@ -79,12 +79,15 @@ struct PaywallView: View {
                             if purchaseCoordinator.isLoading {
                                 ProgressView()
                                     .frame(maxWidth: .infinity)
+                            } else if let priceText = purchaseCoordinator.priceText {
+                                Text("Unlock forever - \(priceText)")
+                                    .frame(maxWidth: .infinity)
                             } else {
-                                Text("Unlock forever - \(purchaseCoordinator.priceText)")
+                                Text("Steepr Pro unavailable")
                                     .frame(maxWidth: .infinity)
                             }
                         }
-                        .disabled(purchaseCoordinator.isLoading)
+                        .disabled(purchaseCoordinator.isLoading || !purchaseCoordinator.isProductAvailable)
                         .buttonStyle(.borderedProminent)
                         .controlSize(.large)
 

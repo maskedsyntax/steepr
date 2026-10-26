@@ -35,6 +35,24 @@ final class BrewSessionStore: ObservableObject {
             .sorted { ($0.completedAt ?? .distantPast) > ($1.completedAt ?? .distantPast) }
     }
 
+    func recentDistinctCompletedSessions(
+        availableTeaIDs: Set<Tea.ID>,
+        limit: Int = 3
+    ) -> [BrewSession] {
+        guard limit > 0 else { return [] }
+        var seenTeaIDs = Set<Tea.ID>()
+        var result: [BrewSession] = []
+
+        for session in recentCompletedSessions {
+            guard availableTeaIDs.contains(session.teaID) else { continue }
+            guard seenTeaIDs.insert(session.teaID).inserted else { continue }
+            result.append(session)
+            if result.count == limit { break }
+        }
+
+        return result
+    }
+
     /// Number of sessions that ran to completion. Counts each infusion separately.
     var completedCount: Int {
         sessions.lazy.filter { $0.completedAt != nil }.count

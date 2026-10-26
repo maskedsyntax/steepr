@@ -93,8 +93,12 @@ final class PurchaseCoordinator: ObservableObject {
         }
     }
 
-    var priceText: String {
-        proProduct?.displayPrice ?? "$2.99"
+    var priceText: String? {
+        proProduct?.displayPrice
+    }
+
+    var isProductAvailable: Bool {
+        proProduct != nil
     }
 
     private func handle(

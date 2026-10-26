@@ -162,7 +162,7 @@ final class WatchTimerCoordinator: ObservableObject {
 
         let content = UNMutableNotificationContent()
         content.title = "Your \(tea.name) is ready"
-        content.body = "Steeped for \(formatDuration(tea.steepSeconds))."
+        content.body = "Steeped for \(formatDuration(tea.effectiveSteepSeconds))."
         content.sound = preferences.soundEnabled ? .default : nil
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(secondsRemaining), repeats: false)

@@ -3,8 +3,8 @@ import Foundation
 #if canImport(ActivityKit) && os(iOS)
 import ActivityKit
 
-struct SteeprLiveActivityAttributes: ActivityAttributes {
-    struct ContentState: Codable, Hashable {
+nonisolated struct SteeprLiveActivityAttributes: ActivityAttributes {
+    nonisolated struct ContentState: Codable, Hashable {
         var state: String
         var endDate: Date?
         var secondsRemaining: Int

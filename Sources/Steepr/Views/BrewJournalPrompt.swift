@@ -2,15 +2,20 @@ import SwiftUI
 
 struct BrewJournalPrompt: View {
     @EnvironmentObject private var brewSessionStore: BrewSessionStore
+    @EnvironmentObject private var teaStore: TeaStore
     @Environment(\.dismiss) private var dismiss
 
     let sessionID: UUID
+    var dismissAfterSave = true
+    var initialOutcome: BrewOutcome? = nil
+    var context: BrewJournalContext = .history
 
     @State private var rating: Int?
     @State private var note = ""
     @State private var outcome: BrewOutcome?
     @State private var loadedSessionID: UUID?
     @State private var saved = false
+    @State private var useSuggestedTiming = true
 
     private var session: BrewSession? {
         brewSessionStore.session(with: sessionID)
@@ -18,6 +23,14 @@ struct BrewJournalPrompt: View {
 
     private var hasJournalEntry: Bool {
         rating != nil || outcome != nil || !note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private var suggestedTiming: Int? {
+        context.suggestedTiming(
+            for: session,
+            outcome: outcome,
+            teaExists: session.map { teaStore.tea(with: $0.teaID) != nil } ?? false
+        )
     }
 
     var body: some View {
@@ -55,10 +68,16 @@ struct BrewJournalPrompt: View {
                 }
             }
 
-            if let suggestion = outcome?.suggestion {
-                Text(suggestion)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+            if let suggestedTiming {
+                Toggle(isOn: $useSuggestedTiming) {
+                    Label(
+                        "Use \(formatDuration(suggestedTiming)) next time",
+                        systemImage: "clock.arrow.circlepath"
+                    )
+                    .font(.footnote.weight(.medium))
+                }
+                .tint(SteeprPalette.accentSolid)
+                .accessibilityHint("Saves this as your personal timing for this tea")
             }
 
             TextField("Add a tasting note", text: $note, axis: .vertical)
@@ -70,8 +89,13 @@ struct BrewJournalPrompt: View {
 
             Button {
                 brewSessionStore.updateJournal(sessionID: sessionID, rating: rating, note: note, outcome: outcome)
+                if let suggestedTiming, useSuggestedTiming, let teaID = session?.teaID {
+                    teaStore.setPreferredSteepSeconds(suggestedTiming, for: teaID)
+                }
                 saved = true
-                dismiss()
+                if dismissAfterSave {
+                    dismiss()
+                }
             } label: {
                 Label("Save journal entry", systemImage: "square.and.pencil")
                     .frame(maxWidth: .infinity)
@@ -99,7 +123,8 @@ struct BrewJournalPrompt: View {
         loadedSessionID = sessionID
         rating = session?.rating
         note = session?.note ?? ""
-        outcome = session?.outcome
+        outcome = session?.outcome ?? initialOutcome
+        useSuggestedTiming = true
         saved = session?.rating != nil || session?.outcome != nil || !(session?.note ?? "").isEmpty
     }
 
@@ -108,6 +133,7 @@ struct BrewJournalPrompt: View {
         if value == outcome {
             Button {
                 outcome = value
+                useSuggestedTiming = true
                 saved = false
             } label: {
                 outcomeLabel(value)
@@ -116,6 +142,7 @@ struct BrewJournalPrompt: View {
         } else {
             Button {
                 outcome = value
+                useSuggestedTiming = true
                 saved = false
             } label: {
                 outcomeLabel(value)

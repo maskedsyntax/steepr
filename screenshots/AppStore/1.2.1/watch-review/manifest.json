@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-09-18T20:49:44Z",
+  "raw_dir": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/watch-raw",
+  "framed_dir": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/watch",
+  "output_dir": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/watch-review",
+  "approval_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/watch-review/approved.json",
+  "summary": {
+    "total": 2,
+    "ready": 2,
+    "missing_raw": 0,
+    "invalid_size": 0,
+    "approved": 0,
+    "pending_approval": 2
+  },
+  "entries": [
+    {
+      "key": "||01-timer",
+      "screenshot_id": "01-timer",
+      "framed_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/watch/01-timer.png",
+      "framed_relative_path": "01-timer.png",
+      "raw_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/watch-raw/01-timer.png",
+      "raw_relative_path": "01-timer.png",
+      "width": 416,
+      "height": 496,
+      "display_types": [
+        "APP_WATCH_SERIES_10"
+      ],
+      "valid_app_store_size": true,
+      "status": "ready",
+      "approved": false,
+      "approval_state": "pending"
+    },
+    {
+      "key": "||02-favorites",
+      "screenshot_id": "02-favorites",
+      "framed_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/watch/02-favorites.png",
+      "framed_relative_path": "02-favorites.png",
+      "raw_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/watch-raw/02-favorites.png",
+      "raw_relative_path": "02-favorites.png",
+      "width": 416,
+      "height": 496,
+      "display_types": [
+        "APP_WATCH_SERIES_10"
+      ],
+      "valid_app_store_size": true,
+      "status": "ready",
+      "approved": false,
+      "approval_state": "pending"
+    }
+  ]
+}

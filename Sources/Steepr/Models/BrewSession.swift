@@ -69,6 +69,31 @@ struct BrewSession: Codable, Identifiable, Equatable, Hashable {
     }
 }
 
+enum BrewJournalContext: Equatable {
+    case completion
+    case history
+
+    func suggestedTiming(
+        for session: BrewSession?,
+        outcome: BrewOutcome?,
+        teaExists: Bool
+    ) -> Int? {
+        guard
+            self == .completion,
+            let session,
+            session.completedAt != nil,
+            session.cancelledAt == nil,
+            session.infusionNumber == 1,
+            teaExists,
+            let outcome
+        else {
+            return nil
+        }
+
+        return outcome.suggestedSteepSeconds(actualSteepSeconds: session.actualSteepSeconds)
+    }
+}
+
 enum BrewOutcome: String, Codable, CaseIterable, Identifiable, Hashable {
     case tooWeak
     case good
@@ -89,6 +114,17 @@ enum BrewOutcome: String, Codable, CaseIterable, Identifiable, Hashable {
         case .tooWeak: return "Try 15 seconds longer next time."
         case .good: return nil
         case .tooStrong: return "Try 15 seconds shorter next time."
+        }
+    }
+
+    func suggestedSteepSeconds(actualSteepSeconds: Int) -> Int? {
+        switch self {
+        case .tooWeak:
+            return min(900, max(15, actualSteepSeconds + 15))
+        case .good:
+            return nil
+        case .tooStrong:
+            return min(900, max(15, actualSteepSeconds - 15))
         }
     }
 }

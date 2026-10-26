@@ -31,7 +31,7 @@ struct WatchRootView: View {
                             Text(tea.name)
                                 .font(.headline)
                                 .lineLimit(1)
-                            Text(formatDuration(tea.steepSeconds))
+                            Text(formatDuration(tea.effectiveSteepSeconds))
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }

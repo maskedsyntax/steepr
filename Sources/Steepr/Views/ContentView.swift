@@ -87,7 +87,6 @@ struct ContentView: View {
         )) {
             OnboardingView()
                 .environmentObject(teaStore)
-                .environmentObject(brewSessionStore)
         }
     }
 
@@ -105,7 +104,7 @@ struct ContentView: View {
             sessionID: timerCoordinator.currentSessionID,
             tea: tea,
             startedAt: startedAt,
-            durationSeconds: timerCoordinator.durationSeconds,
+            durationSeconds: timerCoordinator.completedDurationSeconds,
             infusionNumber: timerCoordinator.infusionNumber
         )
     }
@@ -203,11 +202,17 @@ private struct TimerCompleteSheet: View {
                 Text("Your \(tea.name) is ready")
                     .font(.title.bold())
                     .multilineTextAlignment(.center)
-                Text("Steeped for \(formatDuration(timerCoordinator.durationSeconds)).")
+                Text("Steeped for \(formatDuration(timerCoordinator.completedDurationSeconds)).")
                     .foregroundStyle(.secondary)
                 Text("Infusion \(timerCoordinator.infusionNumber) complete")
                     .font(.footnote.weight(.medium))
                     .foregroundStyle(.secondary)
+
+                BrewJournalPrompt(
+                    sessionID: timerCoordinator.currentSessionID,
+                    dismissAfterSave: false,
+                    context: .completion
+                )
 
                 if tea.supportsGuidedReSteep, teaStore.preferences.proPurchased {
                     Text("Next guided steep: \(formatDuration(tea.steepSeconds(forInfusion: timerCoordinator.infusionNumber + 1, proPurchased: true))).")

@@ -8,6 +8,7 @@ final class PersistentTea {
     var symbolName: String = "leaf.fill"
     var colorSlotRawValue: String = TeaColorSlot.green.rawValue
     var steepSeconds: Int = 0
+    var preferredSteepSeconds: Int?
     var temperatureCelsius: Int = 0
     var caffeineMilligrams: Int?
     var notes: String = ""
@@ -25,6 +26,7 @@ final class PersistentTea {
         self.symbolName = tea.symbolName
         self.colorSlotRawValue = tea.colorSlot.rawValue
         self.steepSeconds = tea.steepSeconds
+        self.preferredSteepSeconds = tea.preferredSteepSeconds
         self.temperatureCelsius = tea.temperatureCelsius
         self.caffeineMilligrams = tea.caffeineMilligrams
         self.notes = tea.notes
@@ -42,6 +44,7 @@ final class PersistentTea {
         symbolName = tea.symbolName
         colorSlotRawValue = tea.colorSlot.rawValue
         steepSeconds = tea.steepSeconds
+        preferredSteepSeconds = tea.preferredSteepSeconds
         temperatureCelsius = tea.temperatureCelsius
         caffeineMilligrams = tea.caffeineMilligrams
         notes = tea.notes
@@ -60,6 +63,7 @@ final class PersistentTea {
             symbolName: symbolName,
             colorSlot: TeaColorSlot(rawValue: colorSlotRawValue) ?? .green,
             steepSeconds: steepSeconds,
+            preferredSteepSeconds: preferredSteepSeconds,
             temperatureCelsius: temperatureCelsius,
             caffeineMilligrams: caffeineMilligrams,
             notes: notes,

@@ -1,0 +1,136 @@
+{
+  "generated_at": "2026-09-18T20:49:44Z",
+  "raw_dir": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/raw",
+  "framed_dir": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/final",
+  "output_dir": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/review",
+  "approval_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/review/approved.json",
+  "summary": {
+    "total": 7,
+    "ready": 7,
+    "missing_raw": 0,
+    "invalid_size": 0,
+    "approved": 1,
+    "pending_approval": 6
+  },
+  "entries": [
+    {
+      "key": "||01-perfect-steep",
+      "screenshot_id": "01-perfect-steep",
+      "framed_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/final/01-perfect-steep.png",
+      "framed_relative_path": "01-perfect-steep.png",
+      "raw_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/raw/01-perfect-steep.png",
+      "raw_relative_path": "01-perfect-steep.png",
+      "width": 1284,
+      "height": 2778,
+      "display_types": [
+        "APP_IPHONE_65"
+      ],
+      "valid_app_store_size": true,
+      "status": "ready",
+      "approved": true,
+      "approval_state": "approved"
+    },
+    {
+      "key": "||02-brew-from-your-wrist",
+      "screenshot_id": "02-brew-from-your-wrist",
+      "framed_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/final/02-brew-from-your-wrist.png",
+      "framed_relative_path": "02-brew-from-your-wrist.png",
+      "raw_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/raw/02-brew-from-your-wrist.png",
+      "raw_relative_path": "02-brew-from-your-wrist.png",
+      "width": 1284,
+      "height": 2778,
+      "display_types": [
+        "APP_IPHONE_65"
+      ],
+      "valid_app_store_size": true,
+      "status": "ready",
+      "approved": false,
+      "approval_state": "pending"
+    },
+    {
+      "key": "||03-tea-library",
+      "screenshot_id": "03-tea-library",
+      "framed_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/final/03-tea-library.png",
+      "framed_relative_path": "03-tea-library.png",
+      "raw_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/raw/03-tea-library.png",
+      "raw_relative_path": "03-tea-library.png",
+      "width": 1284,
+      "height": 2778,
+      "display_types": [
+        "APP_IPHONE_65"
+      ],
+      "valid_app_store_size": true,
+      "status": "ready",
+      "approved": false,
+      "approval_state": "pending"
+    },
+    {
+      "key": "||04-visible-everywhere",
+      "screenshot_id": "04-visible-everywhere",
+      "framed_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/final/04-visible-everywhere.png",
+      "framed_relative_path": "04-visible-everywhere.png",
+      "raw_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/raw/04-visible-everywhere.png",
+      "raw_relative_path": "04-visible-everywhere.png",
+      "width": 1284,
+      "height": 2778,
+      "display_types": [
+        "APP_IPHONE_65"
+      ],
+      "valid_app_store_size": true,
+      "status": "ready",
+      "approved": false,
+      "approval_state": "pending"
+    },
+    {
+      "key": "||05-guided-infusions",
+      "screenshot_id": "05-guided-infusions",
+      "framed_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/final/05-guided-infusions.png",
+      "framed_relative_path": "05-guided-infusions.png",
+      "raw_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/raw/05-guided-infusions.png",
+      "raw_relative_path": "05-guided-infusions.png",
+      "width": 1284,
+      "height": 2778,
+      "display_types": [
+        "APP_IPHONE_65"
+      ],
+      "valid_app_store_size": true,
+      "status": "ready",
+      "approved": false,
+      "approval_state": "pending"
+    },
+    {
+      "key": "||06-private-by-design",
+      "screenshot_id": "06-private-by-design",
+      "framed_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/final/06-private-by-design.png",
+      "framed_relative_path": "06-private-by-design.png",
+      "raw_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/raw/06-private-by-design.png",
+      "raw_relative_path": "06-private-by-design.png",
+      "width": 1284,
+      "height": 2778,
+      "display_types": [
+        "APP_IPHONE_65"
+      ],
+      "valid_app_store_size": true,
+      "status": "ready",
+      "approved": false,
+      "approval_state": "pending"
+    },
+    {
+      "key": "||07-steepr-pro",
+      "screenshot_id": "07-steepr-pro",
+      "framed_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/final/07-steepr-pro.png",
+      "framed_relative_path": "07-steepr-pro.png",
+      "raw_path": "/Users/batman/maskedsyntax/steepr/screenshots/AppStore/1.2.1/raw/07-steepr-pro.png",
+      "raw_relative_path": "07-steepr-pro.png",
+      "width": 1284,
+      "height": 2778,
+      "display_types": [
+        "APP_IPHONE_65"
+      ],
+      "valid_app_store_size": true,
+      "status": "ready",
+      "approved": false,
+      "approval_state": "pending"
+    }
+  ]
+}

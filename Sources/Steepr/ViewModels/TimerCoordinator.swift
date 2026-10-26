@@ -24,6 +24,7 @@ final class TimerCoordinator: ObservableObject {
     @Published private(set) var currentSessionID = UUID()
     @Published private(set) var startedAt: Date?
     @Published private(set) var infusionNumber = 1
+    @Published private(set) var completedElapsedSeconds: Int?
 
     private var timer: AnyCancellable?
     private var endDate: Date?
@@ -63,6 +64,10 @@ final class TimerCoordinator: ObservableObject {
     var progress: Double {
         guard durationSeconds > 0 else { return 0 }
         return 1 - (Double(secondsRemaining) / Double(durationSeconds))
+    }
+
+    var completedDurationSeconds: Int {
+        completedElapsedSeconds ?? durationSeconds
     }
 
     func start(_ tea: Tea, preferences: UserPreferences) {
@@ -120,6 +125,7 @@ final class TimerCoordinator: ObservableObject {
         endDate = snapshot.endDate
         pausedRemainingSeconds = snapshot.pausedRemainingSeconds
         infusionNumber = snapshot.infusionNumber
+        completedElapsedSeconds = snapshot.completedElapsedSeconds
         state = snapshot.state
 
         switch snapshot.state {
@@ -180,6 +186,7 @@ final class TimerCoordinator: ObservableObject {
         endDate = nil
         pausedRemainingSeconds = 0
         infusionNumber = 1
+        completedElapsedSeconds = nil
         completionHapticStyle = .standard
         completionSoundEnabled = true
         clearPersistedTimer()
@@ -203,12 +210,11 @@ final class TimerCoordinator: ObservableObject {
     /// Skip remaining time and mark the current steep complete.
     func skip() {
         guard state == .running || state == .paused else { return }
+        refreshRemaining()
+        let elapsedSeconds = max(0, durationSeconds - secondsRemaining)
         timer?.cancel()
         removeNotifications()
-        secondsRemaining = 0
-        endDate = nil
-        pausedRemainingSeconds = 0
-        complete(playFeedback: true)
+        complete(playFeedback: true, elapsedSeconds: elapsedSeconds)
     }
 
     func formattedTime(_ seconds: Int? = nil) -> String {
@@ -237,11 +243,13 @@ final class TimerCoordinator: ObservableObject {
         secondsRemaining = max(0, Int(ceil(endDate.timeIntervalSinceNow)))
     }
 
-    private func complete(playFeedback: Bool = true) {
+    private func complete(playFeedback: Bool = true, elapsedSeconds: Int? = nil) {
         timer?.cancel()
+        completedElapsedSeconds = min(durationSeconds, max(0, elapsedSeconds ?? durationSeconds))
         secondsRemaining = 0
         state = .completed
         endDate = nil
+        pausedRemainingSeconds = 0
         persistTimer()
         if playFeedback {
             Haptics.shared.playCompletion(style: completionHapticStyle, soundEnabled: completionSoundEnabled)
@@ -316,7 +324,8 @@ final class TimerCoordinator: ObservableObject {
             secondsRemaining: secondsRemaining,
             endDate: endDate,
             pausedRemainingSeconds: pausedRemainingSeconds,
-            infusionNumber: infusionNumber
+            infusionNumber: infusionNumber,
+            completedElapsedSeconds: completedElapsedSeconds
         )
 
         guard let data = try? JSONEncoder().encode(snapshot) else { return }

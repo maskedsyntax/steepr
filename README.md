@@ -8,11 +8,11 @@ Steepr is a calm tea timer and brew guide for iPhone and Apple Watch.
 
 ## Features
 
-- Tea presets with suggested temperatures and steep times
-- Multi-step brewing workflows and guided re-steeps
+- 36 tea presets with suggested temperatures and steep times
+- Focused steep timers and guided re-steeps
 - Live Activities, Dynamic Island, Home Screen widgets, and Siri shortcuts
 - Apple Watch quick starts, timer controls, haptics, and complications
-- Favorites, custom teas, brew history, tasting notes, and daily caffeine totals
+- Favorites, custom teas, brew history, and tasting notes
 - Optional one-time Steepr Pro purchase with no subscription
 - Private by design, with no accounts, ads, analytics, or tracking
 

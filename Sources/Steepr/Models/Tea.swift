@@ -103,6 +103,8 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
     var symbolName: String
     var colorSlot: TeaColorSlot
     var steepSeconds: Int
+    /// A user-confirmed timing learned from brew feedback. The recipe time remains unchanged.
+    var preferredSteepSeconds: Int?
     var temperatureCelsius: Int
     var caffeineMilligrams: Int?
     var notes: String
@@ -120,6 +122,7 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
         symbolName: String,
         colorSlot: TeaColorSlot,
         steepSeconds: Int,
+        preferredSteepSeconds: Int? = nil,
         temperatureCelsius: Int,
         caffeineMilligrams: Int? = nil,
         notes: String = "",
@@ -135,6 +138,7 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
         self.symbolName = symbolName
         self.colorSlot = colorSlot
         self.steepSeconds = steepSeconds
+        self.preferredSteepSeconds = preferredSteepSeconds
         self.temperatureCelsius = temperatureCelsius
         self.caffeineMilligrams = caffeineMilligrams
         self.notes = notes
@@ -147,7 +151,7 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case id, name, symbolName, colorSlot, steepSeconds, temperatureCelsius
+        case id, name, symbolName, colorSlot, steepSeconds, preferredSteepSeconds, temperatureCelsius
         case caffeineMilligrams, notes, isBuiltIn, isFavorite, favoriteRank
         case createdAt, updatedAt, steps
     }
@@ -159,6 +163,7 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
         symbolName = try container.decode(String.self, forKey: .symbolName)
         colorSlot = try container.decode(TeaColorSlot.self, forKey: .colorSlot)
         steepSeconds = try container.decode(Int.self, forKey: .steepSeconds)
+        preferredSteepSeconds = try container.decodeIfPresent(Int.self, forKey: .preferredSteepSeconds)
         temperatureCelsius = try container.decode(Int.self, forKey: .temperatureCelsius)
         caffeineMilligrams = try container.decodeIfPresent(Int.self, forKey: .caffeineMilligrams)
         notes = try container.decodeIfPresent(String.self, forKey: .notes) ?? ""
@@ -172,6 +177,10 @@ struct Tea: Codable, Identifiable, Equatable, Hashable {
 }
 
 extension Tea {
+    var effectiveSteepSeconds: Int {
+        min(900, max(15, preferredSteepSeconds ?? steepSeconds))
+    }
+
     /// Short taste-profile label for session meta cards.
     var tasteProfile: String {
         if !isBuiltIn {
@@ -186,6 +195,10 @@ extension Tea {
                 }
             }
             return "Custom blend"
+        }
+
+        if let presetTaste = Self.presetTasteProfiles[name] {
+            return presetTaste
         }
 
         switch colorSlot {
@@ -203,7 +216,7 @@ extension Tea {
 
     /// Steps shown/edited in the tea profile. Falls back to a sensible preset workflow.
     var brewSteps: [BrewStep] {
-        steps.isEmpty ? Self.defaultSteps(steepSeconds: steepSeconds, temperatureCelsius: temperatureCelsius, colorSlot: colorSlot) : steps
+        steps.isEmpty ? Self.defaultSteps(steepSeconds: effectiveSteepSeconds, temperatureCelsius: temperatureCelsius, colorSlot: colorSlot) : steps
     }
 
     var totalBrewSeconds: Int {
@@ -319,23 +332,67 @@ extension Tea {
 
     func steepSeconds(forInfusion infusionNumber: Int, proPurchased: Bool) -> Int {
         let infusion = max(1, infusionNumber)
+        let baseSeconds = effectiveSteepSeconds
         guard proPurchased, infusion > 1, supportsGuidedReSteep else {
-            return steepSeconds
+            return baseSeconds
         }
 
         let addedSeconds = guidedReSteepIncrementSeconds * (infusion - 1)
-        return min(steepSeconds + addedSeconds, steepSeconds + 180)
+        return min(baseSeconds + addedSeconds, baseSeconds + 180)
     }
 
     static let builtIns: [Tea] = [
-        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000001")!, name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, notes: "Lower heat keeps green tea smooth.", isBuiltIn: true, isFavorite: true, favoriteRank: 0),
-        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000002")!, name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "A full, strong steep works best near boiling.", isBuiltIn: true, isFavorite: true, favoriteRank: 1),
-        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000003")!, name: "Oolong", symbolName: "flame.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "Balanced heat opens darker and lighter oolongs.", isBuiltIn: true, isFavorite: true, favoriteRank: 2),
-        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000004")!, name: "Herbal", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, caffeineMilligrams: nil, notes: "Most herbal blends want a longer infusion.", isBuiltIn: true, isFavorite: true, favoriteRank: 3),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000001")!, name: "Green", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, notes: "Lower heat keeps green tea smooth.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000002")!, name: "Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "A full, strong steep works best near boiling.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000003")!, name: "Oolong", symbolName: "flame.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "Balanced heat opens darker and lighter oolongs.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000004")!, name: "Herbal", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, caffeineMilligrams: nil, notes: "Most herbal blends want a longer infusion.", isBuiltIn: true),
         Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000005")!, name: "White", symbolName: "cloud.fill", colorSlot: .white, steepSeconds: 180, temperatureCelsius: 75, notes: "Delicate leaves prefer a cooler cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
-        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000006")!, name: "Chai", symbolName: "sparkles", colorSlot: .chai, steepSeconds: 300, temperatureCelsius: 100, notes: "Spices need time and heat to bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 4),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000006")!, name: "Chai", symbolName: "sparkles", colorSlot: .chai, steepSeconds: 300, temperatureCelsius: 100, notes: "Spices need time and heat to bloom.", isBuiltIn: true),
         Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000007")!, name: "Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 95, notes: "Rinse first if you prefer a cleaner cup.", isBuiltIn: true, isFavorite: false, favoriteRank: nil),
-        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000008")!, name: "Matcha", symbolName: "circle.hexagongrid.fill", colorSlot: .matcha, steepSeconds: 30, temperatureCelsius: 75, notes: "Whisk briskly after a short bloom.", isBuiltIn: true, isFavorite: true, favoriteRank: 5)
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000008")!, name: "Matcha", symbolName: "circle.hexagongrid.fill", colorSlot: .matcha, steepSeconds: 30, temperatureCelsius: 75, notes: "Whisk briskly after a short bloom.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000009")!, name: "Sencha", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 120, temperatureCelsius: 75, notes: "A fresh Japanese green tea; start with cooler water to avoid bitterness.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000010")!, name: "Gyokuro", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 90, temperatureCelsius: 60, notes: "Shade-grown leaves bring a rich umami cup at a low water temperature.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000011")!, name: "Hojicha", symbolName: "flame.fill", colorSlot: .green, steepSeconds: 30, temperatureCelsius: 100, notes: "Roasted leaves open quickly with boiling water.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000012")!, name: "Genmaicha", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 90, temperatureCelsius: 85, notes: "Toasted rice lends a warm, nutty note to green tea.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000013")!, name: "Jasmine Green", symbolName: "camera.macro", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, notes: "Gentle heat keeps the floral aroma clear.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000014")!, name: "Dragon Well", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, notes: "A mellow Chinese green with a softly roasted finish.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000015")!, name: "Gunpowder", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 150, temperatureCelsius: 80, notes: "Rolled green leaves unfurl into a brisk, smoky cup.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000016")!, name: "Assam", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "A bold, malty black tea that takes milk well.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000017")!, name: "Earl Grey", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "Bergamot adds a citrus lift to black tea.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000018")!, name: "English Breakfast", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "A robust everyday black tea blend.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000019")!, name: "Ceylon", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "Bright, brisk black tea with a clean finish.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000020")!, name: "Lapsang Souchong", symbolName: "flame.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 95, notes: "A smoky black tea; adjust the steep to your preferred strength.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000021")!, name: "Darjeeling First Flush", symbolName: "leaf.fill", colorSlot: .black, steepSeconds: 180, temperatureCelsius: 85, notes: "A lighter first-flush cup benefits from gentler heat.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000022")!, name: "Tieguanyin", symbolName: "leaf.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "A floral oolong that opens across multiple infusions.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000023")!, name: "Milk Oolong", symbolName: "leaf.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "Creamy aroma and a smooth finish; no milk required.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000024")!, name: "Dong Ding", symbolName: "leaf.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "A rounded Taiwanese oolong with gentle roast.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000025")!, name: "Oriental Beauty", symbolName: "camera.macro", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "Honeyed and fruity notes shine with a measured steep.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000026")!, name: "Da Hong Pao", symbolName: "flame.fill", colorSlot: .oolong, steepSeconds: 180, temperatureCelsius: 95, notes: "A roasted rock oolong suited to hotter water.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000027")!, name: "Silver Needle", symbolName: "cloud.fill", colorSlot: .white, steepSeconds: 180, temperatureCelsius: 80, notes: "Delicate white buds make a soft, lightly sweet cup.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000028")!, name: "White Peony", symbolName: "cloud.fill", colorSlot: .white, steepSeconds: 180, temperatureCelsius: 80, notes: "A gentle white tea with a fuller leaf aroma.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000029")!, name: "Shou Mei", symbolName: "cloud.fill", colorSlot: .white, steepSeconds: 240, temperatureCelsius: 85, notes: "Mature white leaves brew a deeper, rounded cup.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000030")!, name: "Rooibos", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "Naturally caffeine-free, with a mellow, earthy sweetness.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000031")!, name: "Peppermint", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "A bright, cooling herbal infusion.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000032")!, name: "Chamomile", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "Soft floral notes make a gentle evening cup.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000033")!, name: "Hibiscus", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "A tart, vivid herbal infusion.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000034")!, name: "Ginger", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "A warming infusion with a lively finish.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000035")!, name: "Raw Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 85, notes: "Also called sheng; rinse the leaves if you prefer.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000036")!, name: "Ripe Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 100, notes: "Also called shou; full heat suits its deep, earthy body.", isBuiltIn: true)
+    ]
+
+    static let quickPickNames = ["Green", "Black", "Oolong", "Matcha", "Herbal"]
+
+    private static let presetTasteProfiles: [String: String] = [
+        "Sencha": "Fresh & Grassy", "Gyokuro": "Rich & Umami", "Hojicha": "Roasted & Mellow",
+        "Genmaicha": "Toasty & Nutty", "Jasmine Green": "Floral & Light", "Dragon Well": "Sweet & Chestnut",
+        "Gunpowder": "Brisk & Smoky", "Assam": "Bold & Malty", "Earl Grey": "Citrus & Bright",
+        "English Breakfast": "Strong & Smooth", "Ceylon": "Bright & Brisk", "Lapsang Souchong": "Smoky & Deep",
+        "Darjeeling First Flush": "Floral & Crisp", "Tieguanyin": "Floral & Creamy",
+        "Milk Oolong": "Creamy & Soft", "Dong Ding": "Toasted & Round", "Oriental Beauty": "Honeyed & Fruity",
+        "Da Hong Pao": "Roasted & Mineral", "Silver Needle": "Soft & Sweet", "White Peony": "Gentle & Floral",
+        "Shou Mei": "Round & Mellow", "Rooibos": "Earthy & Sweet", "Peppermint": "Minty & Cool",
+        "Chamomile": "Floral & Gentle", "Hibiscus": "Tart & Bright", "Ginger": "Warm & Zesty",
+        "Raw Pu-erh": "Earthy & Lively", "Ripe Pu-erh": "Deep & Smooth"
     ]
 }
 

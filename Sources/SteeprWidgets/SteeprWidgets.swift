@@ -636,9 +636,9 @@ private struct WidgetActiveTimerSnapshot: Codable, Equatable {
             startedAt: now,
             hapticStyle: preferences.hapticStyle,
             soundEnabled: preferences.soundEnabled,
-            durationSeconds: tea.steepSeconds,
-            secondsRemaining: tea.steepSeconds,
-            endDate: now.addingTimeInterval(TimeInterval(tea.steepSeconds)),
+            durationSeconds: tea.effectiveSteepSeconds,
+            secondsRemaining: tea.effectiveSteepSeconds,
+            endDate: now.addingTimeInterval(TimeInterval(tea.effectiveSteepSeconds)),
             pausedRemainingSeconds: 0
         )
 
@@ -662,8 +662,8 @@ private struct WidgetActiveTimerSnapshot: Codable, Equatable {
     }
 }
 
-struct SteeprLiveActivityAttributes: ActivityAttributes {
-    struct ContentState: Codable, Hashable {
+nonisolated struct SteeprLiveActivityAttributes: ActivityAttributes {
+    nonisolated struct ContentState: Codable, Hashable {
         var state: String
         var endDate: Date?
         var secondsRemaining: Int
@@ -769,6 +769,7 @@ private struct WidgetTea: Codable, Equatable, Hashable, Identifiable {
     var symbolName: String
     var colorSlot: WidgetTeaColorSlot
     var steepSeconds: Int
+    var preferredSteepSeconds: Int? = nil
     var temperatureCelsius: Int
     var caffeineMilligrams: Int?
     var notes: String
@@ -778,13 +779,17 @@ private struct WidgetTea: Codable, Equatable, Hashable, Identifiable {
     var createdAt: Date
     var updatedAt: Date
 
+    var effectiveSteepSeconds: Int {
+        min(900, max(15, preferredSteepSeconds ?? steepSeconds))
+    }
+
     var compactDuration: String {
-        if steepSeconds < 60 {
-            return "\(steepSeconds)s"
+        if effectiveSteepSeconds < 60 {
+            return "\(effectiveSteepSeconds)s"
         }
 
-        let minutes = steepSeconds / 60
-        let seconds = steepSeconds % 60
+        let minutes = effectiveSteepSeconds / 60
+        let seconds = effectiveSteepSeconds % 60
         return seconds == 0 ? "\(minutes)m" : "\(minutes)m \(seconds)s"
     }
 

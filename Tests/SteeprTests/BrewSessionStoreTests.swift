@@ -174,6 +174,76 @@ final class BrewSessionStoreTests: XCTestCase {
         XCTAssertEqual(store.recentCompletedSessions.map(\.id), [newer.id, older.id])
     }
 
+    func testRecentDistinctCompletedSessionsDeduplicatesAndSkipsUnavailableTeas() throws {
+        let container = SteeprModelContainer.make(inMemory: true)
+        let context = ModelContext(container)
+        let now = Date()
+        let firstTeaID = UUID()
+        let secondTeaID = UUID()
+        let deletedTeaID = UUID()
+        let sessions = [
+            BrewSession(teaID: firstTeaID, teaSnapshotName: "First again", startedAt: now, completedAt: now, actualSteepSeconds: 165),
+            BrewSession(teaID: deletedTeaID, teaSnapshotName: "Deleted", startedAt: now, completedAt: now.addingTimeInterval(-10), actualSteepSeconds: 120),
+            BrewSession(teaID: firstTeaID, teaSnapshotName: "First", startedAt: now, completedAt: now.addingTimeInterval(-20), actualSteepSeconds: 150),
+            BrewSession(teaID: secondTeaID, teaSnapshotName: "Second", startedAt: now, completedAt: now.addingTimeInterval(-30), actualSteepSeconds: 240),
+            BrewSession(teaID: UUID(), teaSnapshotName: "Cancelled", startedAt: now, cancelledAt: now, actualSteepSeconds: 5)
+        ]
+        sessions.forEach { context.insert(PersistentBrewSession(session: $0)) }
+        try context.save()
+
+        let store = BrewSessionStore(modelContainer: container)
+        let result = store.recentDistinctCompletedSessions(availableTeaIDs: Set([firstTeaID, secondTeaID]))
+
+        XCTAssertEqual(result.map(\.teaID), [firstTeaID, secondTeaID])
+        XCTAssertEqual(result.first?.actualSteepSeconds, 165)
+    }
+
+    func testTimingSuggestionsUseActualTimeAndClampToSupportedRange() {
+        XCTAssertEqual(BrewOutcome.tooWeak.suggestedSteepSeconds(actualSteepSeconds: 120), 135)
+        XCTAssertEqual(BrewOutcome.tooStrong.suggestedSteepSeconds(actualSteepSeconds: 120), 105)
+        XCTAssertEqual(BrewOutcome.tooStrong.suggestedSteepSeconds(actualSteepSeconds: 5), 15)
+        XCTAssertEqual(BrewOutcome.tooWeak.suggestedSteepSeconds(actualSteepSeconds: 900), 900)
+        XCTAssertNil(BrewOutcome.good.suggestedSteepSeconds(actualSteepSeconds: 120))
+    }
+
+    func testCompletionJournalOffersTimingSuggestionForEligibleSession() {
+        let teaID = UUID()
+        let session = BrewSession(
+            teaID: teaID,
+            teaSnapshotName: "Green",
+            startedAt: Date(),
+            completedAt: Date(),
+            actualSteepSeconds: 150
+        )
+
+        let suggestion = BrewJournalContext.completion.suggestedTiming(
+            for: session,
+            outcome: .tooWeak,
+            teaExists: true
+        )
+
+        XCTAssertEqual(suggestion, 165)
+    }
+
+    func testHistoryJournalNeverOffersTimingSuggestion() {
+        let session = BrewSession(
+            teaID: UUID(),
+            teaSnapshotName: "Green",
+            startedAt: Date(),
+            completedAt: Date(),
+            actualSteepSeconds: 150,
+            outcome: .tooWeak
+        )
+
+        let suggestion = BrewJournalContext.history.suggestedTiming(
+            for: session,
+            outcome: session.outcome,
+            teaExists: true
+        )
+
+        XCTAssertNil(suggestion, "Editing an old journal must not overwrite a newer personal timing")
+    }
+
     func testReviewRequestFlagDefaultsFalseAndPersists() {
         let container = SteeprModelContainer.make(inMemory: true)
         let store = TeaStore(modelContainer: container)

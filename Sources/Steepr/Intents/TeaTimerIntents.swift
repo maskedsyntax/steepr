@@ -27,7 +27,7 @@ struct StartTeaTimerIntent: AppIntent {
 
         return .result(dialog: IntentDialog(stringLiteral: L10n.teaIsSteeping(
             selectedTea.name,
-            duration: formatIntentDuration(selectedTea.steepSeconds)
+            duration: formatIntentDuration(selectedTea.effectiveSteepSeconds)
         )))
     }
 }

@@ -45,6 +45,12 @@ final class TeaStore: ObservableObject {
         teas.filter(\.isBuiltIn).sorted { $0.name < $1.name }
     }
 
+    var quickPickTeas: [Tea] {
+        Tea.quickPickNames.compactMap { name in
+            teas.first { $0.isBuiltIn && $0.name == name }
+        }
+    }
+
     var canAddCustomTea: Bool {
         preferences.proPurchased || customTeas.count < 3
     }
@@ -74,8 +80,19 @@ final class TeaStore: ObservableObject {
     func updateTea(_ tea: Tea) {
         guard let index = teas.firstIndex(where: { $0.id == tea.id }) else { return }
         var updatedTea = tea
+        if updatedTea.steepSeconds != teas[index].steepSeconds {
+            updatedTea.preferredSteepSeconds = nil
+        }
         updatedTea.updatedAt = Date()
         teas[index] = updatedTea
+        saveTeas()
+        publishSharedState()
+    }
+
+    func setPreferredSteepSeconds(_ seconds: Int?, for teaID: Tea.ID) {
+        guard let index = teas.firstIndex(where: { $0.id == teaID }) else { return }
+        teas[index].preferredSteepSeconds = seconds.map { min(900, max(15, $0)) }
+        teas[index].updatedAt = Date()
         saveTeas()
         publishSharedState()
     }
@@ -178,7 +195,7 @@ final class TeaStore: ObservableObject {
 
     private func seedBuiltInsIfNeeded() {
         var changed = false
-        for builtIn in Tea.builtIns where !teas.contains(where: { $0.isBuiltIn && $0.name == builtIn.name }) {
+        for builtIn in Tea.builtIns where !teas.contains(where: { $0.id == builtIn.id }) {
             teas.append(builtIn)
             changed = true
         }

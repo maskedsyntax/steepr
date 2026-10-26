@@ -14,6 +14,7 @@ struct ActiveTimerSnapshot: Codable, Equatable {
     var endDate: Date?
     var pausedRemainingSeconds: Int
     var infusionNumber: Int
+    var completedElapsedSeconds: Int?
 
     init(
         sessionID: UUID,
@@ -26,7 +27,8 @@ struct ActiveTimerSnapshot: Codable, Equatable {
         secondsRemaining: Int,
         endDate: Date?,
         pausedRemainingSeconds: Int,
-        infusionNumber: Int = 1
+        infusionNumber: Int = 1,
+        completedElapsedSeconds: Int? = nil
     ) {
         self.sessionID = sessionID
         self.tea = tea
@@ -39,6 +41,7 @@ struct ActiveTimerSnapshot: Codable, Equatable {
         self.endDate = endDate
         self.pausedRemainingSeconds = pausedRemainingSeconds
         self.infusionNumber = max(1, infusionNumber)
+        self.completedElapsedSeconds = completedElapsedSeconds
     }
 
     var currentSecondsRemaining: Int {
@@ -61,6 +64,7 @@ struct ActiveTimerSnapshot: Codable, Equatable {
         case endDate
         case pausedRemainingSeconds
         case infusionNumber
+        case completedElapsedSeconds
     }
 
     init(from decoder: Decoder) throws {
@@ -76,5 +80,6 @@ struct ActiveTimerSnapshot: Codable, Equatable {
         endDate = try container.decodeIfPresent(Date.self, forKey: .endDate)
         pausedRemainingSeconds = try container.decode(Int.self, forKey: .pausedRemainingSeconds)
         infusionNumber = max(1, try container.decodeIfPresent(Int.self, forKey: .infusionNumber) ?? 1)
+        completedElapsedSeconds = try container.decodeIfPresent(Int.self, forKey: .completedElapsedSeconds)
     }
 }

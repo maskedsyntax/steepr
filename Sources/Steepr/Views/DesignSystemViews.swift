@@ -163,8 +163,8 @@ struct BrewMetaCard: View {
                 Text(title)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(SteeprPalette.ink)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.85)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
                 Text(subtitle)
                     .font(.caption)
                     .foregroundStyle(SteeprPalette.inkSecondary)
@@ -263,7 +263,7 @@ struct SessionControlBar: View {
     let isRunning: Bool
     let onCancel: () -> Void
     let onTogglePause: () -> Void
-    let onNext: () -> Void
+    let onFinishEarly: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: 28) {
@@ -282,10 +282,10 @@ struct SessionControlBar: View {
             )
 
             SessionControlButton(
-                systemImage: "chevron.right",
-                label: "Next",
+                systemImage: "checkmark",
+                label: "Finish Early",
                 style: .secondary,
-                action: onNext
+                action: onFinishEarly
             )
         }
         .frame(maxWidth: .infinity)
@@ -331,14 +331,14 @@ struct TeaMetaLine: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            Label(formatDuration(tea.steepSeconds), systemImage: "clock")
+            Label(formatDuration(tea.effectiveSteepSeconds), systemImage: "clock")
             Text("•")
             Label(formatTemperature(tea.temperatureCelsius, useCelsius: useCelsius), systemImage: "thermometer.medium")
         }
         .font(.footnote.weight(.medium))
         .foregroundStyle(.secondary)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(formatDuration(tea.steepSeconds)), \(formatTemperature(tea.temperatureCelsius, useCelsius: useCelsius))")
+        .accessibilityLabel("\(formatDuration(tea.effectiveSteepSeconds)), \(formatTemperature(tea.temperatureCelsius, useCelsius: useCelsius))")
     }
 }
 

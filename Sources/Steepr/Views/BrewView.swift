@@ -35,15 +35,13 @@ struct BrewView: View {
         }
     }
 
-    /// The newest completed session whose tea still exists in the current library.
-    /// If a custom tea was deleted, continue looking so the card always remains actionable.
-    private var repeatableRecentBrew: (session: BrewSession, tea: Tea)? {
-        for session in brewSessionStore.recentCompletedSessions {
-            if let tea = teaStore.tea(with: session.teaID) {
-                return (session, tea)
-            }
+    /// Up to three distinct completed teas that still exist in the current library.
+    private var repeatableRecentBrews: [(session: BrewSession, tea: Tea)] {
+        brewSessionStore.recentDistinctCompletedSessions(
+            availableTeaIDs: Set(teaStore.teas.map(\.id))
+        ).compactMap { session in
+            teaStore.tea(with: session.teaID).map { (session, $0) }
         }
-        return nil
     }
 
     var body: some View {
@@ -155,37 +153,6 @@ struct BrewView: View {
         }
     }
 
-    /// Caffeine and brew count for today, or `nil` when nothing has been brewed yet.
-    /// Teas deleted since a session was logged still count as a brew but contribute no caffeine.
-    private var todayCaffeineSummary: (milligrams: Int, brews: Int)? {
-        let completed = brewSessionStore.completedSessions(on: Date())
-        guard !completed.isEmpty else { return nil }
-
-        let milligrams = completed.reduce(into: 0) { total, session in
-            total += teaStore.tea(with: session.teaID)?.caffeineMilligrams ?? 0
-        }
-        return (milligrams, completed.count)
-    }
-
-    private func todaySummaryRow(_ summary: (milligrams: Int, brews: Int)) -> some View {
-        HStack(spacing: 8) {
-            Image(systemName: "bolt.fill")
-                .font(.footnote)
-                .foregroundStyle(SteeprPalette.accentSolid)
-            Text("Today: \(summary.milligrams) mg from \(summary.brews) \(summary.brews == 1 ? "brew" : "brews")")
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(SteeprPalette.inkSecondary)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(SteeprPalette.accentSolid.opacity(0.10))
-        )
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Today: \(summary.milligrams) milligrams of caffeine from \(summary.brews) \(summary.brews == 1 ? "brew" : "brews")")
-    }
-
     private var idleContent: some View {
         VStack(alignment: .leading, spacing: 20) {
             VStack(alignment: .leading, spacing: 6) {
@@ -193,13 +160,11 @@ struct BrewView: View {
                     .font(.largeTitle.bold())
                     .foregroundStyle(SteeprPalette.ink)
                     .fixedSize(horizontal: false, vertical: true)
-                Text("Start a favorite tea or browse the full library.")
+                Text(teaStore.favoriteTeas.isEmpty
+                     ? "Start a Quick Pick or browse the full library."
+                     : "Start a favorite tea or browse the full library.")
                     .font(.subheadline)
                     .foregroundStyle(SteeprPalette.inkSecondary)
-            }
-
-            if let summary = todayCaffeineSummary {
-                todaySummaryRow(summary)
             }
 
             if !brewSessionStore.sessions.isEmpty {
@@ -207,25 +172,30 @@ struct BrewView: View {
             }
 
             if teaStore.favoriteTeas.isEmpty {
-                VStack(spacing: 10) {
-                    Image(systemName: "star")
-                        .font(.system(size: 42, weight: .medium))
-                        .foregroundStyle(SteeprPalette.inkSecondary)
-                    Text("Pick your favorites")
-                        .font(.title3.bold())
-                        .foregroundStyle(SteeprPalette.ink)
-                    Text("Choose a few teas in Library for one-tap brewing.")
-                        .foregroundStyle(SteeprPalette.inkSecondary)
-                        .multilineTextAlignment(.center)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 32)
+                Text("Quick Picks")
+                    .font(.title3.bold())
+                    .foregroundStyle(SteeprPalette.ink)
 
-                Button("Pick your favorites") {
-                    selectedTab = 1
+                LazyVGrid(columns: gridColumns, spacing: 12) {
+                    ForEach(teaStore.quickPickTeas) { tea in
+                        Button {
+                            timerCoordinator.start(tea, preferences: teaStore.preferences)
+                        } label: {
+                            FavoriteTeaCard(tea: tea, useCelsius: teaStore.preferences.useCelsius)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Start \(tea.name) timer")
+                    }
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(SteeprPalette.accentSolid)
+
+                Button {
+                    selectedTab = 1
+                } label: {
+                    Label("Browse all teas", systemImage: "books.vertical")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .tint(SteeprPalette.accent)
                 .controlSize(.large)
             } else {
                 if dynamicTypeSize.isAccessibilitySize {
@@ -285,7 +255,7 @@ struct BrewView: View {
         VStack(alignment: .leading, spacing: 12) {
             if dynamicTypeSize.isAccessibilitySize {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("Recent Brew")
+                    Text("Recent Brews")
                         .font(.title3.bold())
                         .foregroundStyle(SteeprPalette.ink)
 
@@ -297,7 +267,7 @@ struct BrewView: View {
                 }
             } else {
                 HStack {
-                    Text("Recent Brew")
+                    Text("Recent Brews")
                         .font(.title3.bold())
                         .foregroundStyle(SteeprPalette.ink)
 
@@ -311,17 +281,18 @@ struct BrewView: View {
                 }
             }
 
-            if let recentBrew = repeatableRecentBrew {
-                RecentBrewCard(
-                    session: recentBrew.session,
-                    tea: recentBrew.tea
-                ) {
-                    timerCoordinator.start(recentBrew.tea, preferences: teaStore.preferences)
-                }
-            } else {
+            if repeatableRecentBrews.isEmpty {
                 Text("No completed brews yet.")
                     .font(.subheadline)
                     .foregroundStyle(SteeprPalette.inkSecondary)
+            } else {
+                VStack(spacing: 10) {
+                    ForEach(repeatableRecentBrews, id: \.tea.id) { recentBrew in
+                        RecentBrewRow(session: recentBrew.session, tea: recentBrew.tea) {
+                            timerCoordinator.start(recentBrew.tea, preferences: teaStore.preferences)
+                        }
+                    }
+                }
             }
         }
     }
@@ -363,7 +334,7 @@ struct BrewView: View {
                             icon: "thermometer.medium",
                             iconColor: SteeprPalette.temperature,
                             title: formatTemperature(tea.temperatureCelsius, useCelsius: teaStore.preferences.useCelsius),
-                            subtitle: "Ideal temperature"
+                            subtitle: "Water temp"
                         )
 
                         BrewMetaCard(
@@ -383,7 +354,7 @@ struct BrewView: View {
                             showingCancelConfirmation = true
                         },
                         onTogglePause: togglePause,
-                        onNext: {
+                        onFinishEarly: {
                             timerCoordinator.skip()
                         }
                     )
@@ -400,11 +371,9 @@ struct BrewView: View {
     // MARK: - Completed
 
     private var completedContent: some View {
-        VStack(spacing: 0) {
-            Spacer(minLength: 24)
-
+        ScrollView {
             if let tea = timerCoordinator.activeTea {
-                VStack(spacing: 18) {
+                VStack(spacing: 20) {
                     ZStack {
                         Circle()
                             .fill(tea.colorSlot.color.opacity(0.14))
@@ -431,6 +400,12 @@ struct BrewView: View {
 
                     reSteepSequenceHint(for: tea)
 
+                    BrewJournalPrompt(
+                        sessionID: timerCoordinator.currentSessionID,
+                        dismissAfterSave: false,
+                        context: .completion
+                    )
+
                     if shouldShowMilestonePrompt {
                         Button {
                             teaStore.markBrewMilestoneProPromptSeen()
@@ -443,30 +418,27 @@ struct BrewView: View {
                         .tint(SteeprPalette.accent)
                         .frame(maxWidth: 420)
                     }
-                }
-                .padding(.horizontal, 28)
 
-                Spacer(minLength: 24)
+                    HStack(spacing: 28) {
+                        SessionControlButton(
+                            systemImage: "checkmark",
+                            label: "Done",
+                            style: .secondary
+                        ) {
+                            timerCoordinator.done()
+                        }
 
-                HStack(spacing: 28) {
-                    SessionControlButton(
-                        systemImage: "checkmark",
-                        label: "Done",
-                        style: .secondary
-                    ) {
-                        timerCoordinator.done()
-                    }
-
-                    SessionControlButton(
-                        systemImage: "arrow.clockwise",
-                        label: nextInfusionTitle(for: tea),
-                        style: .primary
-                    ) {
-                        timerCoordinator.reSteep(preferences: teaStore.preferences)
+                        SessionControlButton(
+                            systemImage: "arrow.clockwise",
+                            label: nextInfusionTitle(for: tea),
+                            style: .primary
+                        ) {
+                            timerCoordinator.reSteep(preferences: teaStore.preferences)
+                        }
                     }
                 }
                 .padding(.horizontal, 24)
-                .padding(.bottom, 28)
+                .padding(.vertical, 28)
             }
         }
         .frame(maxWidth: 640)
@@ -571,8 +543,7 @@ struct BrewView: View {
     }
 }
 
-private struct RecentBrewCard: View {
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+private struct RecentBrewRow: View {
     let session: BrewSession
     let tea: Tea
     let onBrewAgain: () -> Void
@@ -582,28 +553,10 @@ private struct RecentBrewCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            if dynamicTypeSize.isAccessibilitySize {
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack(spacing: 12) {
-                        TeaIconView(tea: tea, size: 48)
-
-                        Text(tea.name)
-                            .font(.headline)
-                            .foregroundStyle(SteeprPalette.ink)
-                    }
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Last brewed")
-                        Text(completedAt, style: .relative)
-                        Label(formatDuration(session.actualSteepSeconds), systemImage: "clock")
-                    }
-                    .font(.footnote)
-                    .foregroundStyle(SteeprPalette.inkSecondary)
-                }
-            } else {
+        Button(action: onBrewAgain) {
+            ViewThatFits(in: .horizontal) {
                 HStack(spacing: 12) {
-                    TeaIconView(tea: tea, size: 48)
+                    TeaIconView(tea: tea, size: 44)
 
                     VStack(alignment: .leading, spacing: 5) {
                         Text(tea.name)
@@ -614,26 +567,39 @@ private struct RecentBrewCard: View {
                             Text("Last brewed")
                             Text(completedAt, style: .relative)
                             Text("•")
-                            Label(formatDuration(session.actualSteepSeconds), systemImage: "clock")
+                            Label(formatDuration(tea.effectiveSteepSeconds), systemImage: "clock")
                         }
                         .font(.footnote)
                         .foregroundStyle(SteeprPalette.inkSecondary)
                     }
 
                     Spacer(minLength: 0)
+
+                    Image(systemName: "play.fill")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 34, height: 34)
+                        .background(Circle().fill(SteeprPalette.accentSolid))
+                }
+
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 10) {
+                        TeaIconView(tea: tea, size: 40)
+                        Text(tea.name)
+                            .font(.headline)
+                            .foregroundStyle(SteeprPalette.ink)
+                        Spacer()
+                        Image(systemName: "play.fill")
+                            .foregroundStyle(SteeprPalette.accentSolid)
+                    }
+
+                    Text("Last brewed \(completedAt.formatted(.relative(presentation: .named))) · \(formatDuration(tea.effectiveSteepSeconds))")
+                        .font(.footnote)
+                        .foregroundStyle(SteeprPalette.inkSecondary)
                 }
             }
-
-            Button(action: onBrewAgain) {
-                Label("Brew Again", systemImage: "arrow.clockwise")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(SteeprPalette.accentSolid)
-            .controlSize(.large)
-            .accessibilityLabel("Brew \(tea.name) again")
-            .accessibilityHint("Starts a new timer using the current tea profile")
         }
+        .buttonStyle(.plain)
         .padding(14)
         .background(SteeprPalette.surface)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
@@ -641,6 +607,8 @@ private struct RecentBrewCard: View {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .stroke(SteeprPalette.controlStroke, lineWidth: 1)
         }
+        .accessibilityLabel("Brew \(tea.name) again, \(formatDuration(tea.effectiveSteepSeconds))")
+        .accessibilityHint("Starts a new timer using your current timing")
     }
 }
 
