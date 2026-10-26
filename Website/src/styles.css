@@ -304,9 +304,49 @@ main {
 }
 
 .hero {
+  position: relative;
   min-height: calc(100svh - 4.75rem);
   padding-top: clamp(2rem, 6vw, 5rem);
   padding-bottom: clamp(2rem, 4vw, 4rem);
+  padding-inline: clamp(1.5rem, 5vw, 5rem);
+  margin-top: 1.25rem;
+  border-radius: clamp(1.5rem, 3vw, 3rem);
+  background:
+    linear-gradient(90deg, rgba(6, 34, 24, 0.89), rgba(6, 34, 24, 0.60) 54%, rgba(6, 34, 24, 0.32)),
+    url('/assets/steepr-hero-1.4.jpg') center / cover;
+  overflow: hidden;
+  color: #f8f3e8;
+}
+
+.hero .eyebrow,
+.hero h1,
+.hero .hero-text {
+  color: #f8f3e8;
+}
+
+.hero .hero-text {
+  max-width: 33rem;
+}
+
+.hero .button.secondary {
+  color: #f8f3e8;
+  background: rgba(248, 243, 232, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(248, 243, 232, 0.36);
+}
+
+.hero-screen-stage {
+  min-height: 34rem;
+  display: grid;
+  place-items: center;
+}
+
+.hero-screen-stage img {
+  width: min(72%, 22rem);
+  height: auto;
+  border: 9px solid #17211b;
+  border-radius: 2.6rem;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.38);
+  transform: rotate(3deg);
 }
 
 .hero-copy {

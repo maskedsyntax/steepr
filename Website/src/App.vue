@@ -127,7 +127,7 @@ const features = [
     icon:
       "<path d='M5 19c0-6.6 4.2-11 14-11 0 6.9-4.6 11.4-10.5 11.4H5Z'/><path d='M5.5 19.5C8 16 11 13.6 14.5 12'/>",
     title: 'Presets that know the tea',
-    text: 'Eight built-in guides, from matcha and green to oolong, chai, and pu-erh, each with a suggested temperature and time.',
+    text: '36 built-in guides, from everyday green and black tea to Gyokuro, oolong, herbal infusions, and pu-erh, each with a suggested temperature and time.',
     detail: 'Plus custom teas with your own steps'
   },
   {
@@ -135,14 +135,14 @@ const features = [
       "<path d='M4.6 12a7.4 7.4 0 0 1 12.6-5.3l2.2 2.1'/><path d='M19.4 12a7.4 7.4 0 0 1-12.6 5.3l-2.2-2.1'/><path d='M19.4 4.4v4.4H15M4.6 19.6v-4.4H9'/>",
     title: 'Every infusion, right on time',
     text: 'Guided re-steeps dial in each later infusion, so gongfu sessions and second cups keep their timing.',
-    detail: 'Multi-step heat, steep, and sip flows'
+    detail: 'Clear timing for second cups'
   },
   {
     icon:
       "<path d='M5 5.2A2 2 0 0 1 7 3.4h11.6v17.2H7A2 2 0 0 1 5 18.8Z'/><path d='M5 17.2h13.6'/><path d='M8.6 7.6h6.4M8.6 11h4.4'/>",
     title: 'Remember every cup',
-    text: 'Brew history, tasting notes, and a daily caffeine total on the Brew tab keep the record of what you actually drank.',
-    detail: 'History, notes, daily caffeine'
+    text: 'Brew history and tasting notes remember what you enjoyed, while personal timing helps make your next cup better.',
+    detail: 'History, notes, personal timing'
   },
   {
     icon:
@@ -161,19 +161,19 @@ const features = [
 ]
 
 const featureProof = [
-  'Eight built-in tea guides',
+  '36 built-in tea guides',
   'Apple Watch app',
   'Watch complications',
   'Siri and Shortcuts',
   'Dynamic Island and Live Activities',
-  'Daily caffeine total'
+  'One-tap Quick Picks'
 ]
 
 const screenshots = [
   {
-    src: '/assets/steepr-screen-timer.png',
-    alt: 'Steepr Brew screen with a Matcha countdown ring at 00:42, 75°C, infusion 1, pause and cancel controls, and a card for the next step.',
-    caption: 'Live timer and next step'
+    src: '/assets/steepr-screen-quick-picks-1.4.png',
+    alt: 'Steepr Brew screen with one-tap Quick Picks for Green, Black, Oolong, Matcha, and Herbal tea.',
+    caption: 'Start a cup in one tap'
   },
   {
     src: '/assets/steepr-screen-watch.png',
@@ -181,26 +181,26 @@ const screenshots = [
     caption: 'Start from your wrist'
   },
   {
-    src: '/assets/steepr-screen-library.png',
-    alt: 'Steepr Library screen listing built-in guides for Matcha, Oolong, Pu-erh, Green, White, and Chai with steep times, temperatures, and favorite stars.',
-    caption: 'Expert tea presets'
+    src: '/assets/steepr-screen-library-1.4.png',
+    alt: 'Steepr Library screen with search and tea families, including the expanded green, black, oolong, white, herbal, and pu-erh guides.',
+    caption: '36 guided teas to explore'
   },
   {
-    src: '/assets/steepr-screen-infusions.png',
-    alt: 'Steepr guided re-steep screen showing infusion 2 ready for Oolong, a session progress track, and a start infusion 3 button timed at 1:10.',
-    caption: 'Re-steeps, already timed'
+    src: '/assets/steepr-screen-timer-1.4.png',
+    alt: 'Steepr active tea timer with a clear countdown, water temperature, and pause and finish controls.',
+    caption: 'A clear countdown'
   },
   {
-    src: '/assets/steepr-screen-history.png',
-    alt: 'Steepr History screen showing 96 mg of caffeine across three brews today, recent Matcha, Oolong, and Green cups, and a tasting note field.',
-    caption: 'History and daily caffeine'
+    src: '/assets/steepr-screen-personal-timing-1.4.png',
+    alt: 'Steepr tasting feedback screen for saving a better steep time after a cup.',
+    caption: 'Make the next cup yours'
   }
 ]
 
 const steps = [
-  { name: 'Pick a tea', detail: 'Green, black, oolong, white, herbal, chai, pu-erh, matcha, or your own custom profile, from iPhone, Apple Watch, or Siri.' },
+  { name: 'Pick a tea', detail: 'Start a Quick Pick, search 36 built-in tea guides, or choose your own custom profile from iPhone, Apple Watch, or Siri.' },
   { name: 'Start steeping', detail: 'Steepr handles the countdown with pause, resume, cancel, and guided re-steeps for later infusions.' },
-  { name: 'Enjoy the cup', detail: 'Notifications and haptics tell you when the timing is right, then history, tasting notes, and your daily caffeine total keep the record.' }
+  { name: 'Enjoy the cup', detail: 'Notifications and haptics tell you when the timing is right, then history and tasting notes remember the cup.' }
 ]
 
 const proItems = [
@@ -296,8 +296,8 @@ const faqs = [
     answer: 'After an infusion finishes, Steepr offers the next one with its timing already adjusted, so oolong, pu-erh, and gongfu sessions stay on track. Guided re-steeps are part of Steepr Pro.'
   },
   {
-    question: 'Where does the daily caffeine total come from?',
-    answer: 'It is estimated from the teas you brewed today and shown on the Brew tab. It is a guide for your own reference, not a medical measurement.'
+    question: 'Can I change a suggested steep time?',
+    answer: 'Yes. Edit a tea profile directly, or save a personal time after a cup tastes too weak or too strong.'
   },
   {
     question: 'How do I create a custom tea?',
@@ -359,12 +359,11 @@ const faqs = [
     <main v-if="currentPage === 'home'" key="home">
       <section class="hero section-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Now on iPhone and Apple Watch</p>
-          <h1>Perfect tea. No guesswork.</h1>
+          <p class="eyebrow">36 tea guides · iPhone and Apple Watch</p>
+          <h1>Your next cup, one tap away.</h1>
           <p class="hero-text">
-            Steepr is a calm tea timer and brew guide for iPhone and Apple Watch.
-            Choose your tea, follow a clear countdown, and get a gentle alert
-            when every infusion is ready.
+            Start with a Quick Pick or explore a whole library of tea.
+            Steepr keeps the timing clear and gently alerts you when your cup is ready.
           </p>
           <div class="hero-actions" aria-label="Primary actions">
             <a class="button primary" :href="appStoreUrl" target="_blank" rel="noopener">Download on the App Store</a>
@@ -372,61 +371,18 @@ const faqs = [
           </div>
         </div>
 
-        <div class="device-stage" aria-label="Steepr on iPhone and Apple Watch">
-          <div class="phone-mockup" aria-hidden="true">
-            <div class="dynamic-island"></div>
-            <div class="phone-screen">
-              <div class="status-row">
-                <span>9:42</span>
-                <span class="status-icons">•••• 􀙇</span>
-              </div>
-              <div class="app-title">
-                Brew
-              </div>
-              <div class="timer-orbit">
-                <div class="timer-ring">
-                  <span class="timer-time">2:49</span>
-                </div>
-              </div>
-              <div class="brew-current">
-                <strong>Oolong</strong>
-                <span>90°C</span>
-                <small>Infusion 1</small>
-              </div>
-              <div class="brew-actions">
-                <span class="pause-action">Ⅱ Pause</span>
-                <span class="cancel-action">× Cancel</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="watch-mockup" aria-hidden="true">
-            <span class="watch-crown"></span>
-            <div class="watch-screen">
-              <div class="watch-head">
-                <span>Green</span>
-                <span>12:52</span>
-              </div>
-              <div class="watch-ring">
-                <span>2:19</span>
-              </div>
-              <div class="watch-actions">
-                <span class="watch-pause">Ⅱ</span>
-                <span class="watch-cancel">×</span>
-              </div>
-            </div>
-          </div>
+        <div class="hero-screen-stage">
+          <img src="/assets/steepr-screen-quick-picks-1.4.png" alt="Steepr showing five Quick Picks ready to brew" width="1284" height="2778" />
         </div>
       </section>
 
       <section id="screenshots" class="screenshot-band" aria-labelledby="screenshots-title">
         <div class="section-heading">
           <p class="eyebrow">Inside Steepr</p>
-          <h2 id="screenshots-title">A quiet workflow from tea choice to final alert.</h2>
+          <h2 id="screenshots-title">Find your tea. Start in one tap.</h2>
           <p>
-            The app keeps the important details close: temperature and timing,
-            favorites on iPhone and Apple Watch, guided re-steeps, brew history,
-            and a timer you can follow from anywhere.
+            Browse 36 guided teas, save favorites, and follow a clear countdown
+            on iPhone and Apple Watch.
           </p>
         </div>
         <div class="screenshot-strip" aria-label="Steepr app screens">
