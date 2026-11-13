@@ -377,10 +377,26 @@ extension Tea {
         Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000033")!, name: "Hibiscus", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "A tart, vivid herbal infusion.", isBuiltIn: true),
         Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000034")!, name: "Ginger", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "A warming infusion with a lively finish.", isBuiltIn: true),
         Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000035")!, name: "Raw Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 85, notes: "Also called sheng; rinse the leaves if you prefer.", isBuiltIn: true),
-        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000036")!, name: "Ripe Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 100, notes: "Also called shou; full heat suits its deep, earthy body.", isBuiltIn: true)
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000036")!, name: "Ripe Pu-erh", symbolName: "mountain.2.fill", colorSlot: .puerh, steepSeconds: 180, temperatureCelsius: 100, notes: "Also called shou; full heat suits its deep, earthy body.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000037")!, name: "Keemun", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 90, notes: "A Chinese black tea with a smooth, gently smoky depth.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000038")!, name: "Yunnan Black", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 210, temperatureCelsius: 90, notes: "Golden-tipped Dian Hong; slightly cooler water keeps it sweet.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000039")!, name: "Nilgiri", symbolName: "cup.and.saucer.fill", colorSlot: .black, steepSeconds: 180, temperatureCelsius: 95, notes: "A bright South Indian black tea that rarely turns bitter.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000040")!, name: "Darjeeling Second Flush", symbolName: "leaf.fill", colorSlot: .black, steepSeconds: 240, temperatureCelsius: 90, notes: "Fuller than first flush, with the classic muscatel note.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000041")!, name: "Bancha", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 60, temperatureCelsius: 80, notes: "An everyday Japanese green with a light, easygoing cup.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000042")!, name: "Kukicha", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 120, temperatureCelsius: 85, notes: "Twig tea made from stems; naturally low in caffeine.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000043")!, name: "Bi Luo Chun", symbolName: "leaf.fill", colorSlot: .green, steepSeconds: 120, temperatureCelsius: 75, notes: "Tightly curled spring leaves; keep the water cool and the steep short.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000044")!, name: "Ali Shan", symbolName: "mountain.2.fill", colorSlot: .oolong, steepSeconds: 210, temperatureCelsius: 90, notes: "A high-mountain Taiwanese oolong with a buttery, floral cup.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000045")!, name: "GABA Oolong", symbolName: "leaf.fill", colorSlot: .oolong, steepSeconds: 180, temperatureCelsius: 95, notes: "Oxygen-processed leaves give a fruity, rounded sweetness.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000046")!, name: "Moonlight White", symbolName: "moon.fill", colorSlot: .white, steepSeconds: 180, temperatureCelsius: 85, notes: "Shade-withered Yunnan leaves with a honeyed, smooth finish.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000047")!, name: "Honeybush", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "Rooibos's sweeter cousin; caffeine-free and forgiving.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000048")!, name: "Lemongrass", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "A clean, citrusy infusion that suits any time of day.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000049")!, name: "Tulsi", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "Holy basil brews a peppery, gently sweet cup.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000050")!, name: "Lemon Verbena", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 100, notes: "Bright lemon aroma without any sharpness.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000051")!, name: "Rose", symbolName: "camera.macro", colorSlot: .herbal, steepSeconds: 300, temperatureCelsius: 95, notes: "Dried rosebuds make a soft, fragrant cup; just off the boil is enough.", isBuiltIn: true),
+        Tea(id: UUID(uuidString: "2E2A25B8-1E8E-432C-B0F0-000000000052")!, name: "Koicha", symbolName: "circle.hexagongrid.fill", colorSlot: .matcha, steepSeconds: 45, temperatureCelsius: 80, notes: "Thick matcha: twice the powder, whisked slowly into a glossy paste.", isBuiltIn: true)
     ]
 
-    static let quickPickNames = ["Green", "Black", "Oolong", "Matcha", "Herbal"]
+    static let quickPickNames = ["Green", "Black", "Oolong", "Matcha", "Herbal", "Chai"]
 
     private static let presetTasteProfiles: [String: String] = [
         "Sencha": "Fresh & Grassy", "Gyokuro": "Rich & Umami", "Hojicha": "Roasted & Mellow",
@@ -392,7 +408,13 @@ extension Tea {
         "Da Hong Pao": "Roasted & Mineral", "Silver Needle": "Soft & Sweet", "White Peony": "Gentle & Floral",
         "Shou Mei": "Round & Mellow", "Rooibos": "Earthy & Sweet", "Peppermint": "Minty & Cool",
         "Chamomile": "Floral & Gentle", "Hibiscus": "Tart & Bright", "Ginger": "Warm & Zesty",
-        "Raw Pu-erh": "Earthy & Lively", "Ripe Pu-erh": "Deep & Smooth"
+        "Raw Pu-erh": "Earthy & Lively", "Ripe Pu-erh": "Deep & Smooth",
+        "Keemun": "Smooth & Cocoa", "Yunnan Black": "Malty & Honeyed", "Nilgiri": "Brisk & Fragrant",
+        "Darjeeling Second Flush": "Muscatel & Rich", "Bancha": "Light & Grassy", "Kukicha": "Nutty & Sweet",
+        "Bi Luo Chun": "Fruity & Floral", "Ali Shan": "Buttery & Floral", "GABA Oolong": "Fruity & Round",
+        "Moonlight White": "Honeyed & Smooth", "Honeybush": "Honeyed & Warm", "Lemongrass": "Citrus & Clean",
+        "Tulsi": "Peppery & Sweet", "Lemon Verbena": "Lemony & Bright", "Rose": "Floral & Soft",
+        "Koicha": "Thick & Rich"
     ]
 }
 

@@ -127,10 +127,10 @@ Build these in order after the v1.1 screen refresh. Keep the app tea-only.
 5. [ ] Add 7-day Pro trial support.
    - Keep one-time purchase positioning.
    - Update paywall copy around trial and no subscription.
-6. [ ] Improve Brew tab retention.
+6. [x] Improve Brew tab retention.
    - Add quiet summaries like today's brew count and recent tea.
    - Avoid habit-app clutter.
-7. [ ] Make favorites more useful.
+7. [x] Make favorites more useful.
    - Improve reorder access.
    - Show recent brew context where useful.
 8. [x] Re-enable and refresh onboarding.

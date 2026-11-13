@@ -18,10 +18,10 @@ final class TeaStoreSharedSnapshotTests: XCTestCase {
     func testFreshLibrarySeedsAllPresetsWithQuickPicksAndNoFavorites() {
         let store = TeaStore(modelContainer: SteeprModelContainer.make(inMemory: true))
 
-        XCTAssertEqual(store.builtInTeas.count, 36)
+        XCTAssertEqual(store.builtInTeas.count, Tea.builtIns.count)
         XCTAssertEqual(store.quickPickTeas.map(\.name), Tea.quickPickNames)
         XCTAssertTrue(store.favoriteTeas.isEmpty)
-        XCTAssertEqual(Set(store.builtInTeas.map(\.id)).count, 36)
+        XCTAssertEqual(Set(store.builtInTeas.map(\.id)).count, Tea.builtIns.count)
     }
 
     func testNewPresetsSeedOnceWithoutChangingSavedFavorites() throws {
@@ -38,11 +38,11 @@ final class TeaStoreSharedSnapshotTests: XCTestCase {
         try context.save()
 
         let upgradedStore = TeaStore(modelContainer: container)
-        XCTAssertEqual(upgradedStore.builtInTeas.count, 36)
+        XCTAssertEqual(upgradedStore.builtInTeas.count, Tea.builtIns.count)
         XCTAssertEqual(upgradedStore.favoriteTeas.map(\.id), [Tea.builtIns[0].id])
 
         let reopenedStore = TeaStore(modelContainer: container)
-        XCTAssertEqual(reopenedStore.builtInTeas.count, 36)
+        XCTAssertEqual(reopenedStore.builtInTeas.count, Tea.builtIns.count)
         XCTAssertEqual(reopenedStore.favoriteTeas.map(\.id), [Tea.builtIns[0].id])
     }
 
@@ -160,6 +160,30 @@ final class TeaStoreSharedSnapshotTests: XCTestCase {
         let data = try XCTUnwrap(AppGroup.userDefaults.data(forKey: FavoriteTeasSnapshot.storageKey))
         let snapshot = try JSONDecoder().decode(FavoriteTeasSnapshot.self, from: data)
         XCTAssertEqual(snapshot.teas.map(\.id), expectedIDs)
+    }
+
+    func testMoveFavoriteByOneStepsAndStopsAtEdges() {
+        let store = TeaStore(modelContainer: SteeprModelContainer.make(inMemory: true))
+        for tea in store.quickPickTeas.prefix(3) {
+            store.toggleFavorite(tea)
+        }
+        let original = store.favoriteTeas.map(\.id)
+        XCTAssertEqual(original.count, 3)
+
+        store.moveFavorite(store.favoriteTeas[0], by: 1)
+        XCTAssertEqual(store.favoriteTeas.map(\.id), [original[1], original[0], original[2]])
+
+        store.moveFavorite(store.favoriteTeas[2], by: -1)
+        XCTAssertEqual(store.favoriteTeas.map(\.id), [original[1], original[2], original[0]])
+
+        store.moveFavorite(store.favoriteTeas[0], by: -1)
+        store.moveFavorite(store.favoriteTeas[2], by: 1)
+        XCTAssertEqual(store.favoriteTeas.map(\.id), [original[1], original[2], original[0]])
+    }
+
+    func testBuiltInPresetsHaveUniqueIDsAndNames() {
+        XCTAssertEqual(Set(Tea.builtIns.map(\.id)).count, Tea.builtIns.count)
+        XCTAssertEqual(Set(Tea.builtIns.map(\.name)).count, Tea.builtIns.count)
     }
 
     func testMigratesLegacyJSONIntoSwiftData() throws {

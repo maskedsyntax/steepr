@@ -69,6 +69,11 @@ struct BrewSession: Codable, Identifiable, Equatable, Hashable {
     }
 }
 
+struct DailyBrewSummary: Equatable {
+    var brewCount: Int
+    var teaCount: Int
+}
+
 enum BrewJournalContext: Equatable {
     case completion
     case history

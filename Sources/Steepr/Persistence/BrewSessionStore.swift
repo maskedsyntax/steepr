@@ -67,6 +67,27 @@ final class BrewSessionStore: ObservableObject {
             .sorted { $0.startedAt > $1.startedAt }
     }
 
+    /// Quiet daily totals for the Brew tab. Each completed infusion counts as one brew.
+    func dailySummary(on day: Date, calendar: Calendar = .current) -> DailyBrewSummary {
+        let completed = completedSessions(on: day, calendar: calendar).filter { $0.cancelledAt == nil }
+        return DailyBrewSummary(
+            brewCount: completed.count,
+            teaCount: Set(completed.map(\.teaID)).count
+        )
+    }
+
+    /// When each tea last finished a completed brew.
+    var lastCompletedDateByTeaID: [Tea.ID: Date] {
+        var result: [Tea.ID: Date] = [:]
+        for session in sessions where session.cancelledAt == nil {
+            guard let completedAt = session.completedAt else { continue }
+            if completedAt > result[session.teaID] ?? .distantPast {
+                result[session.teaID] = completedAt
+            }
+        }
+        return result
+    }
+
     func session(with id: BrewSession.ID) -> BrewSession? {
         sessions.first { $0.id == id }
     }

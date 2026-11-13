@@ -165,6 +165,8 @@ struct BrewView: View {
                      : "Start a favorite tea or browse the full library.")
                     .font(.subheadline)
                     .foregroundStyle(SteeprPalette.inkSecondary)
+
+                todaySummaryLine
             }
 
             if !brewSessionStore.sessions.isEmpty {
@@ -226,15 +228,55 @@ struct BrewView: View {
                     }
                 }
 
+                let favorites = teaStore.favoriteTeas
+                let lastBrewedDates = brewSessionStore.lastCompletedDateByTeaID
+
                 LazyVGrid(columns: gridColumns, spacing: 12) {
-                    ForEach(teaStore.favoriteTeas) { tea in
+                    ForEach(Array(favorites.enumerated()), id: \.element.id) { index, tea in
+                        let isFirst = index == 0
+                        let isLast = index == favorites.count - 1
+
                         Button {
                             timerCoordinator.start(tea, preferences: teaStore.preferences)
                         } label: {
-                            FavoriteTeaCard(tea: tea, useCelsius: teaStore.preferences.useCelsius)
+                            FavoriteTeaCard(
+                                tea: tea,
+                                useCelsius: teaStore.preferences.useCelsius,
+                                lastBrewedAt: lastBrewedDates[tea.id]
+                            )
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("Start \(tea.name) timer")
+                        .accessibilityValue(lastBrewedDates[tea.id].map {
+                            "Brewed \($0.formatted(.relative(presentation: .named)))"
+                        } ?? "")
+                        .contextMenu {
+                            Button {
+                                withAnimation { teaStore.moveFavorite(tea, by: -1) }
+                            } label: {
+                                Label("Move Earlier", systemImage: "arrow.backward")
+                            }
+                            .disabled(isFirst)
+
+                            Button {
+                                withAnimation { teaStore.moveFavorite(tea, by: 1) }
+                            } label: {
+                                Label("Move Later", systemImage: "arrow.forward")
+                            }
+                            .disabled(isLast)
+
+                            Button {
+                                withAnimation { teaStore.toggleFavorite(tea) }
+                            } label: {
+                                Label("Remove from Favorites", systemImage: "star.slash")
+                            }
+                        }
+                        .accessibilityAction(named: "Move earlier") {
+                            if !isFirst { teaStore.moveFavorite(tea, by: -1) }
+                        }
+                        .accessibilityAction(named: "Move later") {
+                            if !isLast { teaStore.moveFavorite(tea, by: 1) }
+                        }
                     }
                 }
 
@@ -248,6 +290,25 @@ struct BrewView: View {
                 .tint(SteeprPalette.accent)
                 .controlSize(.large)
             }
+        }
+    }
+
+    @ViewBuilder
+    private var todaySummaryLine: some View {
+        let summary = brewSessionStore.dailySummary(on: Date())
+        if summary.brewCount > 0 {
+            Label {
+                if summary.teaCount > 1 {
+                    Text("Today · ^[\(summary.brewCount) brew](inflect: true) · ^[\(summary.teaCount) tea](inflect: true)")
+                } else {
+                    Text("Today · ^[\(summary.brewCount) brew](inflect: true)")
+                }
+            } icon: {
+                Image(systemName: "cup.and.saucer")
+            }
+            .font(.footnote.weight(.medium))
+            .foregroundStyle(SteeprPalette.inkSecondary)
+            .padding(.top, 2)
         }
     }
 
@@ -615,6 +676,7 @@ private struct RecentBrewRow: View {
 private struct FavoriteTeaCard: View {
     let tea: Tea
     let useCelsius: Bool
+    var lastBrewedAt: Date? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -628,6 +690,20 @@ private struct FavoriteTeaCard: View {
                     .minimumScaleFactor(0.82)
 
                 TeaMetaLine(tea: tea, useCelsius: useCelsius)
+
+                if tea.preferredSteepSeconds != nil {
+                    Label("Your timing", systemImage: "slider.horizontal.3")
+                        .font(.caption)
+                        .foregroundStyle(SteeprPalette.accent)
+                }
+
+                if let lastBrewedAt {
+                    Text("Brewed \(lastBrewedAt.formatted(.relative(presentation: .named)))")
+                        .font(.caption)
+                        .foregroundStyle(SteeprPalette.inkSecondary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.82)
+                }
             }
         }
         .padding(14)

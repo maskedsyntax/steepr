@@ -138,6 +138,49 @@ final class BrewSessionStoreTests: XCTestCase {
         XCTAssertEqual(store.completedSessions(on: yesterday).count, 0)
     }
 
+    func testDailySummaryCountsTodaysInfusionsAndDistinctTeas() throws {
+        let container = SteeprModelContainer.make(inMemory: true)
+        let context = ModelContext(container)
+        let now = Date()
+        let yesterday = now.addingTimeInterval(-60 * 60 * 24)
+        let firstTeaID = UUID()
+        let secondTeaID = UUID()
+        let sessions = [
+            BrewSession(teaID: firstTeaID, teaSnapshotName: "First", startedAt: now, completedAt: now, actualSteepSeconds: 150),
+            BrewSession(teaID: firstTeaID, teaSnapshotName: "First", startedAt: now, completedAt: now, actualSteepSeconds: 165, infusionNumber: 2),
+            BrewSession(teaID: secondTeaID, teaSnapshotName: "Second", startedAt: now, completedAt: now, actualSteepSeconds: 240),
+            BrewSession(teaID: UUID(), teaSnapshotName: "Yesterday", startedAt: yesterday, completedAt: yesterday, actualSteepSeconds: 240),
+            BrewSession(teaID: UUID(), teaSnapshotName: "Cancelled", startedAt: now, completedAt: now, cancelledAt: now, actualSteepSeconds: 10)
+        ]
+        sessions.forEach { context.insert(PersistentBrewSession(session: $0)) }
+        try context.save()
+
+        let store = BrewSessionStore(modelContainer: container)
+
+        XCTAssertEqual(store.dailySummary(on: now), DailyBrewSummary(brewCount: 3, teaCount: 2))
+        XCTAssertEqual(store.dailySummary(on: now.addingTimeInterval(-60 * 60 * 48)), DailyBrewSummary(brewCount: 0, teaCount: 0))
+    }
+
+    func testLastCompletedDateByTeaUsesNewestCompletionAndSkipsCancellations() throws {
+        let container = SteeprModelContainer.make(inMemory: true)
+        let context = ModelContext(container)
+        let now = Date()
+        let teaID = UUID()
+        let cancelledTeaID = UUID()
+        let sessions = [
+            BrewSession(teaID: teaID, teaSnapshotName: "Older", startedAt: now, completedAt: now.addingTimeInterval(-3600), actualSteepSeconds: 150),
+            BrewSession(teaID: teaID, teaSnapshotName: "Newer", startedAt: now, completedAt: now.addingTimeInterval(-60), actualSteepSeconds: 150),
+            BrewSession(teaID: cancelledTeaID, teaSnapshotName: "Cancelled", startedAt: now, cancelledAt: now, actualSteepSeconds: 10)
+        ]
+        sessions.forEach { context.insert(PersistentBrewSession(session: $0)) }
+        try context.save()
+
+        let lastBrewed = BrewSessionStore(modelContainer: container).lastCompletedDateByTeaID
+
+        XCTAssertEqual(lastBrewed[teaID], now.addingTimeInterval(-60))
+        XCTAssertNil(lastBrewed[cancelledTeaID])
+    }
+
     func testRecentCompletedSessionsExcludeCancellationsAndUseCompletionOrder() throws {
         let container = SteeprModelContainer.make(inMemory: true)
         let context = ModelContext(container)

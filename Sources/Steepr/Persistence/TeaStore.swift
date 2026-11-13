@@ -153,6 +153,16 @@ final class TeaStore: ObservableObject {
         publishSharedState()
     }
 
+    /// Moves a favorite one place earlier (negative) or later (positive) in the Brew grid.
+    func moveFavorite(_ tea: Tea, by offset: Int) {
+        let favorites = favoriteTeas
+        guard let currentIndex = favorites.firstIndex(where: { $0.id == tea.id }) else { return }
+        let targetIndex = currentIndex + offset
+        guard favorites.indices.contains(targetIndex) else { return }
+        let destination = offset > 0 ? targetIndex + 1 : targetIndex
+        moveFavorite(from: IndexSet(integer: currentIndex), to: destination)
+    }
+
     func setOnboardingComplete(_ complete: Bool) {
         preferences.onboardingComplete = complete
     }
