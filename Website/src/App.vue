@@ -127,7 +127,7 @@ const features = [
     icon:
       "<path d='M5 19c0-6.6 4.2-11 14-11 0 6.9-4.6 11.4-10.5 11.4H5Z'/><path d='M5.5 19.5C8 16 11 13.6 14.5 12'/>",
     title: 'Presets that know the tea',
-    text: '36 built-in guides, from everyday green and black tea to Gyokuro, oolong, herbal infusions, and pu-erh, each with a suggested temperature and time.',
+    text: '52 built-in guides, from everyday green and black tea to Gyokuro, oolong, herbal infusions, and pu-erh, each with a suggested temperature and time.',
     detail: 'Plus custom teas with your own steps'
   },
   {
@@ -161,7 +161,7 @@ const features = [
 ]
 
 const featureProof = [
-  '36 built-in tea guides',
+  '52 built-in tea guides',
   'Apple Watch app',
   'Watch complications',
   'Siri and Shortcuts',
@@ -171,8 +171,8 @@ const featureProof = [
 
 const screenshots = [
   {
-    src: '/assets/steepr-screen-quick-picks-1.4.png',
-    alt: 'Steepr Brew screen with one-tap Quick Picks for Green, Black, Oolong, Matcha, and Herbal tea.',
+    src: '/assets/steepr-screen-quick-picks-1.5.png',
+    alt: 'Steepr Brew screen with one-tap Quick Picks for Green, Black, Oolong, Matcha, Herbal, and Chai.',
     caption: 'Start a cup in one tap'
   },
   {
@@ -181,9 +181,9 @@ const screenshots = [
     caption: 'Start from your wrist'
   },
   {
-    src: '/assets/steepr-screen-library-1.4.png',
+    src: '/assets/steepr-screen-library-1.5.png',
     alt: 'Steepr Library screen with search and tea families, including the expanded green, black, oolong, white, herbal, and pu-erh guides.',
-    caption: '36 guided teas to explore'
+    caption: '52 guided teas to explore'
   },
   {
     src: '/assets/steepr-screen-timer-1.4.png',
@@ -198,7 +198,7 @@ const screenshots = [
 ]
 
 const steps = [
-  { name: 'Pick a tea', detail: 'Start a Quick Pick, search 36 built-in tea guides, or choose your own custom profile from iPhone, Apple Watch, or Siri.' },
+  { name: 'Pick a tea', detail: 'Start a Quick Pick, search 52 built-in tea guides, or choose your own custom profile from iPhone, Apple Watch, or Siri.' },
   { name: 'Start steeping', detail: 'Steepr handles the countdown with pause, resume, cancel, and guided re-steeps for later infusions.' },
   { name: 'Enjoy the cup', detail: 'Notifications and haptics tell you when the timing is right, then history and tasting notes remember the cup.' }
 ]
@@ -359,7 +359,7 @@ const faqs = [
     <main v-if="currentPage === 'home'" key="home">
       <section class="hero section-grid">
         <div class="hero-copy">
-          <p class="eyebrow">36 tea guides · iPhone and Apple Watch</p>
+          <p class="eyebrow">52 tea guides · iPhone and Apple Watch</p>
           <h1>Your next cup, one tap away.</h1>
           <p class="hero-text">
             Start with a Quick Pick or explore a whole library of tea.
@@ -372,7 +372,7 @@ const faqs = [
         </div>
 
         <div class="hero-screen-stage">
-          <img src="/assets/steepr-screen-quick-picks-1.4.png" alt="Steepr showing five Quick Picks ready to brew" width="1284" height="2778" />
+          <img src="/assets/steepr-screen-quick-picks-1.5.png" alt="Steepr showing six Quick Picks ready to brew" width="1284" height="2778" />
         </div>
       </section>
 
@@ -381,7 +381,7 @@ const faqs = [
           <p class="eyebrow">Inside Steepr</p>
           <h2 id="screenshots-title">Find your tea. Start in one tap.</h2>
           <p>
-            Browse 36 guided teas, save favorites, and follow a clear countdown
+            Browse 52 guided teas, save favorites, and follow a clear countdown
             on iPhone and Apple Watch.
           </p>
         </div>

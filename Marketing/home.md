@@ -6,7 +6,7 @@ Steepr is a calm tea timer and brew guide for iPhone and Apple Watch. Choose you
 
 ## Features
 
-- 36 built-in tea guides, from everyday green and black tea to Sencha, Gyokuro, oolong varieties, herbal infusions, and pu-erh.
+- 52 built-in tea guides, from everyday green and black tea to Sencha, Gyokuro, oolong varieties, herbal infusions, and pu-erh.
 - One-tap Quick Picks before you set up favorites.
 - Searchable library grouped by tea family.
 - Custom teas with steep time, temperature, notes, color, and icon.
